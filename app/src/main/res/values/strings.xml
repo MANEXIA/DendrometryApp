@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">CapstoneApp</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="backButton">back</string>
+    <string name="AccessCamera">Access Camera</string>
+
+    <string name="bottomBtn">Bottom</string>
+    <string name="topBtn">Top</string>
+
+    <string name="HeigthText">Height</string>
+    <string name="Distance">Meters Distance</string>
+    <string name="markX">X</string>
+    <string name="iconDesc">Icon</string>
+    <string name="titleMain">Start Measuring</string>
+    <string name="menuBar">Menu</string>
+    <string name="calHeight">Calculate</string>
+    <string name="topbottom">"Top: \nBottom: "</string>
+    <string name="resetText">Reset</string>
+    <string name="diameter">Diameter</string>
+    <string name="testText">BOOM WALA PA</string>
+    <string name="addsign">+</string>
+    <string name="decssign">-</string>
+
+
+
+</resources>

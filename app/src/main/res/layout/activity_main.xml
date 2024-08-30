@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2F5044"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/hBtn"
+        android:layout_width="159dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/HeigthText"
+        android:textSize="25sp"
+        android:visibility="visible"
+        app:cornerRadius="10sp"
+        app:iconPadding="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
+    <Button
+        android:id="@+id/dBtn"
+        android:layout_width="159dp"
+        android:layout_height="53dp"
+        android:text="@string/diameter"
+        android:textSize="25sp"
+        android:layout_marginTop="10dp"
+        android:visibility="visible"
+        app:cornerRadius="10sp"
+        app:iconPadding="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/hBtn"
+        app:layout_constraintStart_toStartOf="@+id/hBtn"
+        app:layout_constraintTop_toBottomOf="@+id/hBtn" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="215dp"
+        android:layout_height="218dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="90dp"
+        android:contentDescription="@string/iconDesc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/menuBar"
+        android:visibility="visible"
+        app:cornerRadius="10sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/titleMain"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
