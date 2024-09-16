@@ -8,16 +8,6 @@
     android:background="#2F5044"
     tools:context=".DiameterActivity">
 
-
-    <!--    <Space-->
-
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/textWidth"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
@@ -30,11 +20,18 @@
         app:layout_constraintVertical_bias="0.497">
 
 
-
     </androidx.camera.view.PreviewView>
 
 
-
+    <EditText
+        android:id="@+id/distanceValue"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:autofillHints="@string/Distance"
+        android:hint="@string/Distance"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/viewFinder" />
 
 
     <TextView
@@ -50,7 +47,7 @@
 
     <TextView
         android:id="@+id/textWidth"
-        android:layout_width="100dp"
+        android:layout_width="20dp"
         android:layout_height="100dp"
         android:background="@drawable/lnr_width_border"
         android:gravity="center"

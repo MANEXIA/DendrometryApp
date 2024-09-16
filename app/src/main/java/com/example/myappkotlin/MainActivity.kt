@@ -47,10 +47,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent2ndAct)
         }
 
-        binding.dBtn.setOnClickListener(){
-            val intent2ndAct = Intent(this, DiameterActivity::class.java)
-            startActivity(intent2ndAct)
-        }
+
 
 
     }//END OF ONCREATE FUNCTIONS

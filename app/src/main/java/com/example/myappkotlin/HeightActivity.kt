@@ -67,11 +67,16 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
         }
 
 
-        //ONCLICK BTN FOR GOING BACK TO THE LAST ACTIVITY
+        //ONCLICK BTN FOR ACTIVITIES
         binding.backBtn.setOnClickListener{
               val intentMain = Intent(this, MainActivity::class.java)
               startActivity(intentMain)
         }
+        binding.diameterStartBtn.setOnClickListener(){
+              val intent3rdAct = Intent(this, DiameterActivity::class.java)
+            startActivity(intent3rdAct)
+        }
+
 
         //REQUEST CAMERA PERMISSION BY CALLING FUNCTIONS
         if (allPermissionsGranted()) {
