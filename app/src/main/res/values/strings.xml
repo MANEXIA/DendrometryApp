@@ -26,6 +26,9 @@
     <string name="addsign">+</string>
     <string name="decssign">-</string>
 
+    <string name="LeftRightValue">Left: \nRight: </string>
+    <string name="left">left</string>
+    <string name="right">right</string>
 
 
 </resources>

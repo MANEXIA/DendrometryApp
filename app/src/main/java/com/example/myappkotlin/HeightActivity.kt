@@ -87,10 +87,10 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         //CALL FOR SENSORS AND TEXTVIEWS
+        setupSensorStuff()
         angleView = binding.angleTextView
         resText = binding.resultTextview 
         treeHeight = binding.heightResult
-
 
         binding.bottomBtn.setOnClickListener{
              setValueBOTTOM()
@@ -132,7 +132,7 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
             binding.distanceValue.text.clear()
         }
 
-        setupSensorStuff()
+
 
 
     }//END OF ONCREATE FUNCTIONS

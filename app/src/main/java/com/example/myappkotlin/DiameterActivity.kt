@@ -11,10 +11,7 @@ import android.hardware.camera2.CameraCharacteristics
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.util.TypedValue
-import android.view.MotionEvent
-import android.view.View
-import android.widget.EditText
+import android.view.Surface
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -41,16 +38,17 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var binding: ActivityDiameterBinding
     //CAMERA THINGS
     private lateinit var cameraExecutor: ExecutorService
-
     private lateinit var angleView: TextView
-//    private lateinit var diameterView: TextView
+    private lateinit var leftRightvaltxt: TextView
     private lateinit var sensorM: SensorManager
     private var accelerometer: Sensor? = null
     private var gyroscope: Sensor? = null
+    private var magnetometer: Sensor? = null
+    private var LeftAngle: Float = 0f
+    private var RightAngle: Float = 0f
+
     private var inclination: Float = 0f
 
-    private lateinit var treeDiameterView:TextView
-    private lateinit var distanceValue: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,53 +75,42 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         }
         cameraExecutor = Executors.newSingleThreadExecutor()
        //START ANGLE SETUP
+        setupSensorStuff()
         angleView = binding.textView2
+        leftRightvaltxt = binding.leftrightValuetxt
+
+        binding.leftWbutton.setOnClickListener(){
+            setLeftAngleValue()
+        }
+        binding.rightWbutton.setOnClickListener(){
+            setRigtAngleValue()
+        }
+        binding.calculateDiameter.setOnClickListener(){
+            try {
+                val distanceText = binding.distanceValue.text.toString().trim()
+
+                if (distanceText.isEmpty()) {
+                    Toast.makeText(this, "Please enter a distance value", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val distanceValue = distanceText.toFloatOrNull()
+
+                if (distanceValue == null) {
+                    Toast.makeText(this, "Invalid distance value", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val diameterValue = calculateTreeDiameter(LeftAngle, RightAngle, distanceValue)
+                val diaMtoInch = diameterValue * 39.3701
+                binding.diameterRES.text = "Diamter: ${String.format("%.1f", diaMtoInch)}inch"
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
         val density = resources.displayMetrics.density // Screen density
 
-
-        binding.addWbutton.setOnTouchListener { view, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    if (checkDistanceValue()) {
-                        startIncreasingWidth()
-                    }
-                    true
-                }
-                MotionEvent.ACTION_UP -> {
-                    if (checkDistanceValue()) {
-                        stopIncreasingWidth()
-                    }
-                    true
-                }
-                else -> false
-            }
-
-        }
-
-        binding.decrWbutton.setOnTouchListener { view, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    if (checkDistanceValue()) {
-                        startDecreasingWidth()
-                    }
-                    true
-                }
-                MotionEvent.ACTION_UP -> {
-                    if (checkDistanceValue()) {
-                        stopDecreasingWidth()
-                    }
-                    true
-                }
-                else -> false
-            }
-
-        }
-
-        treeDiameterView = binding.textWidth
-
-
-
-        setupSensorStuff()
     }//END OF ONCREATE FUNCTON
 
 
@@ -141,7 +128,6 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 Toast.makeText(this, "Invalid distance value", Toast.LENGTH_SHORT).show()
                 return false
             }
-
             true
         } catch (e: Exception) {
             e.printStackTrace()
@@ -149,8 +135,8 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             false
         }
     }
-    //STARTING PERMISSION FOR CAMERA AND OTHERS
 
+    //STARTING PERMISSION FOR CAMERA AND OTHERS
     @OptIn(ExperimentalCamera2Interop::class)
     fun getCameraFov(context: Context, cameraSelector: CameraSelector, callback: (Float?) -> Unit) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
@@ -230,7 +216,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 //END FOR PERMISSIONS
 
     //START CAMERA ACTIVITY
-    private var treeDiameterValue: Float = 0f
+//    private var treeDiameterValue: Float = 0f
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener({
@@ -262,11 +248,21 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
 
     //DIAMETER MEASURING STARTS HERE
+
+    private val gravity = FloatArray(3)
+    private val geomagnetic = FloatArray(3)
+    private val rotationMatrix = FloatArray(9)
+    private val orientationAngles = FloatArray(3)
+    private var yaw: Float = 0f
+
+
     private fun setupSensorStuff() {
         sensorM = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
         accelerometer = sensorM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) //GET TYPE SENSOR ACC
         gyroscope = sensorM.getDefaultSensor(Sensor.TYPE_GYROSCOPE)  //GET TYPE SENSOR GYRO
+        magnetometer = sensorM.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)  // Add magnetometer
+
 
         accelerometer?.also { acc ->
             sensorM.registerListener(this, acc, SensorManager.SENSOR_DELAY_NORMAL)
@@ -275,15 +271,58 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         gyroscope?.also { gyro ->
             sensorM.registerListener(this, gyro, SensorManager.SENSOR_DELAY_NORMAL)
         }
+        magnetometer?.also{ mag ->
+            sensorM.registerListener(this, mag, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+
     }
+
+
 
     override fun onSensorChanged(event: SensorEvent?) {
         event ?: return
         when (event.sensor.type) {
-            Sensor.TYPE_ACCELEROMETER -> handleAccelerometer(event)
+            Sensor.TYPE_ACCELEROMETER -> {
+                gravity[0] = event.values[0]
+                gravity[1] = event.values[1]
+                gravity[2] = event.values[2]
+                handleAccelerometer(event)
+            }
             Sensor.TYPE_GYROSCOPE -> handleGyroscope(event, event.timestamp)
+
+            Sensor.TYPE_MAGNETIC_FIELD -> {
+                geomagnetic[0] = event.values[0]
+                geomagnetic[1] = event.values[1]
+                geomagnetic[2] = event.values[2]
+            }
+
         }
-        updateUI()
+        if (SensorManager.getRotationMatrix(rotationMatrix, null, gravity, geomagnetic)) {
+            val rotationMatrixAdjusted = FloatArray(9)
+            val currentRotation = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                // For API level 30 and above (Android 11+)
+                this.display?.rotation ?: Surface.ROTATION_0
+            } else {
+                // For older versions
+                @Suppress("DEPRECATION")
+                windowManager.defaultDisplay.rotation
+            }
+
+            when (currentRotation) {
+                Surface.ROTATION_0 -> SensorManager.remapCoordinateSystem(rotationMatrix, SensorManager.AXIS_X, SensorManager.AXIS_Z, rotationMatrixAdjusted)
+                Surface.ROTATION_90 -> SensorManager.remapCoordinateSystem(rotationMatrix, SensorManager.AXIS_Y, SensorManager.AXIS_MINUS_X, rotationMatrixAdjusted)
+                Surface.ROTATION_180 -> SensorManager.remapCoordinateSystem(rotationMatrix, SensorManager.AXIS_MINUS_X, SensorManager.AXIS_MINUS_Z, rotationMatrixAdjusted)
+                Surface.ROTATION_270 -> SensorManager.remapCoordinateSystem(rotationMatrix, SensorManager.AXIS_MINUS_Y, SensorManager.AXIS_X, rotationMatrixAdjusted)
+            }
+
+            SensorManager.getOrientation(rotationMatrixAdjusted, orientationAngles)
+
+            // Get yaw angle (orientationAngles[0] is the yaw)
+            yaw = Math.toDegrees(orientationAngles[0].toDouble()).toFloat()
+
+            // Update UI with yaw
+            updateUI()
+        }
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
@@ -307,10 +346,10 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         val tiltZ = z / gravity
 
         // Calculate the pitch angle/inclination angle from accelerometer data
-        val pitchAcc = Math.toDegrees(atan2(tiltX.toDouble(), tiltZ.toDouble())).toFloat()
+        val pitchAcc = Math.toDegrees(atan2(tiltY.toDouble(), tiltZ.toDouble())).toFloat()
         pitchAngle = alpha * (pitchAngle + pitchGyro) + (1 - alpha) * pitchAcc
 
-        inclination = pitchAngle
+        inclination = pitchAngle - 90
     }
 
     private fun handleGyroscope(event: SensorEvent, timestamp: Long) {
@@ -320,195 +359,36 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
         if (timestamp != 0L) {
             val dt = (event.timestamp - timestamp) * 1.0f / 1_000_000_000.0f
-            pitchGyro = wx * dt
+            pitchGyro = wy * dt
         }
         this@DiameterActivity.timestamp = event.timestamp
 
     }
+
+
+
+    private fun setLeftAngleValue(){
+        LeftAngle = yaw
+        leftRightvaltxt.text = "Left: ${String.format("%.1f", LeftAngle)}°\nRight: ${String.format("%.1f", RightAngle)}°"
+    }
+
+    private fun setRigtAngleValue(){
+        RightAngle = yaw
+        leftRightvaltxt.text = "Left: ${String.format("%.1f", LeftAngle)}°\nRight: ${String.format("%.1f", RightAngle)}°"
+    }
+    private fun calculateTreeDiameter(yawLeft: Float, yawRight: Float, distanceToTree: Float): Double {
+        val yawDifference = Math.abs(yawRight - yawLeft)
+        return 2 * distanceToTree * Math.tan(Math.toRadians(yawDifference / 2.0))
+    }
+
     private fun updateUI(){
-        angleView.text = "${String.format("%.1f", inclination)}°"
+//        angleView.text = "${String.format("%.1f", inclination)}°"
+
+        angleView.text = "Yaw: ${String.format("%.1f", yaw)}°"
     }
 
 
-   //GET WIDTH FOR DIAMETER PIXEL TO REAL WORLDS SIZE
 
-
-    private fun updateDiameterText(diameter: Float) {
-       binding.diameterText.text = "${String.format("%.4f", diameter)}m"
-   }
-
-    private var increaseWidthRunnable: Runnable? = null
-    private var isIncreasing = false
-    private fun startIncreasingWidth() {
-        if (isIncreasing) return
-        isIncreasing = true
-        increaseWidthRunnable = object : Runnable {
-            override fun run() {
-                if (!isIncreasing) return
-                val currentWidth = binding.textWidth.width
-                val newWidth = currentWidth + 5 // Increment width by 10 pixels
-                val params = binding.textWidth.layoutParams
-                params.width = newWidth
-                binding.textWidth.layoutParams = params
-                // Repeat this runnable after a short delay
-                binding.addWbutton.postDelayed(this, 25) // 100ms delay
-
-
-
-                //UPDATING UI FOR DIAMTER COMPONENT
-                val screenWidthMeters = 0.076f // Example: 6.8 cm screen width
-                val screenWidthPixels = resources.displayMetrics.heightPixels
-                val distanceToTreeMeters = binding.distanceValue.text.toString().toFloat() // Replace with the actual distance to the tree
-//                treeDiameterValue = calculateRealWorldSize(this@DiameterActivity, treeDiameterView,  screenWidthPixels, distanceToTreeMeters)
-                getCameraFov(this@DiameterActivity, CameraSelector.DEFAULT_BACK_CAMERA) { fovDegrees ->
-                    if (fovDegrees != null) {
-                        // Once we have the FOV, calculate the real-world size
-                        val screenWidthPixels =
-                            getScreenWidthInMeters(this@DiameterActivity) // Assuming portrait mode
-
-                        // Calculate the real-world diameter using the FOV
-                        val realWorldDiameter = calculateRealWorldSizeWithFOV(
-                            context = this@DiameterActivity,
-                            view = binding.textWidth, // The view width component
-                            distanceToTreeMeters = distanceToTreeMeters,
-                            fovDegrees = fovDegrees
-                        )
-
-                        // Update the diameter text or any other UI component
-                        Log.d("FOV Value", "FOV Degrees: $fovDegrees")
-                        updateDiameterText(realWorldDiameter)
-                    }
-                }
-
-//                updateDiameterText()
-
-
-            }
-        }
-        binding.addWbutton.post(increaseWidthRunnable)
-    }
-    private fun stopIncreasingWidth() {
-        isIncreasing = false
-        increaseWidthRunnable?.let {
-            binding.addWbutton.removeCallbacks(it)
-        }
-    }
-
-    private var decreaseWidthRunnable: Runnable? = null
-    private var isDecreasing = false
-    private fun startDecreasingWidth() {
-        if (isDecreasing) return
-        isDecreasing = true
-        decreaseWidthRunnable = object : Runnable {
-            override fun run() {
-                if (!isDecreasing) return
-                val currentWidth = binding.textWidth.width
-                val newWidth = currentWidth - 5 // Increment width by 10 pixels
-                val params = binding.textWidth.layoutParams
-                params.width = newWidth
-                binding.textWidth.layoutParams = params
-                // Repeat this runnable after a short delay
-                binding.decrWbutton.postDelayed(this, 25) // 100ms delay
-
-                //UPDATING UI FOR DIAMTER COMPONENT
-                val screenWidthMeters = 0.068f // Example: 6.8 cm screen width
-                val screenWidthPixels = resources.displayMetrics.heightPixels
-                val distanceToTreeMeters = binding.distanceValue.text.toString().toFloat() // Replace with the actual distance to the tree
-//                treeDiameterValue = calculateRealWorldSize(this@DiameterActivity, treeDiameterView, screenWidthPixels, distanceToTreeMeters)
-                getCameraFov(this@DiameterActivity, CameraSelector.DEFAULT_BACK_CAMERA) { fovDegrees ->
-                    if (fovDegrees != null) {
-                        // Once we have the FOV, calculate the real-world size
-                        val screenWidthPixels =
-                            getScreenWidthInMeters(this@DiameterActivity)  // Assuming portrait mode
-
-                        // Calculate the real-world diameter using the FOV
-                        val realWorldDiameter = calculateRealWorldSizeWithFOV(
-                            context = this@DiameterActivity,
-                            view = binding.textWidth, // The view width component
-                            distanceToTreeMeters = distanceToTreeMeters,
-                            fovDegrees = fovDegrees
-                        )
-
-                        // Update the diameter text or any other UI component
-                        Log.d("FOV Value", "FOV Degrees: $fovDegrees")
-
-                        updateDiameterText(realWorldDiameter)
-                    }
-                }
-
-
-            }
-        }
-        binding.decrWbutton.post(decreaseWidthRunnable)
-    }
-
-    private fun stopDecreasingWidth() {
-        isDecreasing = false
-        decreaseWidthRunnable?.let {
-            binding.decrWbutton.removeCallbacks(it)
-        }
-    }
-
-
-    fun calculateRealWorldSizeWithFOV(
-        context: Context,
-        view: View,
-        distanceToTreeMeters: Float,
-        fovDegrees: Float
-    ): Float {
-        // Log input data
-        Log.d("data-get", "distanceToTreeMeters: $distanceToTreeMeters")
-        Log.d("data-get", "fovDegrees: $fovDegrees")
-
-        // Get the width of the view in dp and convert it to pixels
-        val dpWidth = view.layoutParams.width.toFloat()
-        val pixelsWidth = dpToPixels(context, dpWidth)
-
-        // Convert FOV from degrees to radians
-        val fovRadians = Math.toRadians(fovDegrees.toDouble())
-
-        // Get the screen width in meters using the helper function
-        val screenWidthMeters = getScreenWidthInMeters(context)
-        Log.d("data-get", "Screen Width in meters: $screenWidthMeters")
-
-        // Calculate the screen width in meters based on the distance to the tree and FOV
-        val calculatedScreenWidthMeters = 2 * distanceToTreeMeters * Math.tan(fovRadians / 2)
-        Log.d("Calculated Screen Width", "Calculated Screen Width in meters: $calculatedScreenWidthMeters")
-
-        // Calculate meters per pixel using the calculated screen width
-        val screenWidthPixels = context.resources.displayMetrics.widthPixels.toFloat()
-        val metersPerPixel = calculatedScreenWidthMeters / screenWidthPixels
-        Log.d("Meters Per Pixel", "Meters Per Pixel: $metersPerPixel")
-
-        // Calculate the apparent width in meters (real-world diameter of the tree)
-        val apparentWidthMeters = pixelsWidth * metersPerPixel
-        Log.d("Apparent Width", "Apparent Width in meters: $apparentWidthMeters")
-
-        // Return the apparent width as the real-world diameter of the tree
-        return apparentWidthMeters.toFloat()
-    }
-
-    // Convert dp to pixels
-    private fun dpToPixels(context: Context, dp: Float): Float {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dp,
-            context.resources.displayMetrics
-        )
-    }
-
-    // Helper function to get screen width in meters
-    fun getScreenWidthInMeters(context: Context): Float {
-        val displayMetrics = context.resources.displayMetrics
-        val screenWidthPixels = displayMetrics.widthPixels
-        val screenDensityDpi = displayMetrics.densityDpi
-
-        // Calculate  screen width in inches
-        val screenWidthInches = screenWidthPixels / screenDensityDpi.toFloat()
-
-        // Convert inches to meters (1 inch = 0.0254 meters)
-        return screenWidthInches * 0.0254f
-    }
 
 
 
