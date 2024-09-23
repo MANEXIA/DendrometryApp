@@ -9,18 +9,33 @@
     tools:context=".HeightActivity">
 
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/viewFinder"
+<!--    <androidx.camera.view.PreviewView-->
+<!--        android:id="@+id/viewFinder"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:layout_marginBottom="-10dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/calBtn"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/backBtn">-->
+
+
+<!--    </androidx.camera.view.PreviewView>-->
+
+
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/cam_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="-10dp"
+        tools:layout="@layout/fragment_camera_fragmet"
         app:layout_constraintBottom_toBottomOf="@+id/calBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toplinearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/backBtn" />
 
 
-    </androidx.camera.view.PreviewView>
 
     <EditText
         android:id="@+id/distanceValue"
@@ -32,20 +47,20 @@
         android:hint="@string/Distance"
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/viewFinder" />
+        app:layout_constraintTop_toTopOf="@+id/cam_fragment_container" />
 
 
 
-    <LinearLayout
-        android:id="@+id/toplinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="#2F5044"
-        android:orientation="vertical"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <LinearLayout-->
+<!--        android:id="@+id/toplinearLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="70dp"-->
+<!--        android:background="#2F5044"-->
+<!--        android:orientation="vertical"-->
+<!--        android:visibility="visible"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <TextView
         android:id="@+id/angleTextView"
@@ -66,7 +81,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:lineSpacingExtra="10sp"
         android:text="@string/topbottom"
         android:textAlignment="viewStart"
@@ -75,7 +90,7 @@
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toplinearLayout" />
+        app:layout_constraintTop_toTopOf="@+id/cam_fragment_container" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -150,7 +165,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="30dp"
-        android:text="@string/calHeight"
+        android:text="@string/HeightText"
         android:textSize="20sp"
         app:cornerRadius="5dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -4,28 +4,21 @@ package com.example.myappkotlin
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.myappkotlin.databinding.ActivityHeightBinding
 import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
@@ -37,6 +30,7 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
 
     //CAMERA THINGS
     private lateinit var cameraExecutor: ExecutorService
+    private var cameraProvider: ProcessCameraProvider? = null
 
     //SENSOR THINGS
     private lateinit var sensorM: SensorManager
@@ -66,7 +60,6 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
             insets
         }
 
-
         //ONCLICK BTN FOR ACTIVITIES
         binding.backBtn.setOnClickListener{
               val intentMain = Intent(this, MainActivity::class.java)
@@ -74,17 +67,16 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
         }
         binding.diameterStartBtn.setOnClickListener(){
               val intent3rdAct = Intent(this, DiameterActivity::class.java)
-            startActivity(intent3rdAct)
+              startActivity(intent3rdAct)
+        }
+        // Check if savedInstanceState is null to avoid adding the fragment multiple times
+        if (savedInstanceState == null) {
+            val cameraFragment = CameraFragmet() // Replace with your actual Fragment class
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.cam_fragment_container, cameraFragment)
+                .commitNow() // Use commitNow to add it synchronously
         }
 
-
-        //REQUEST CAMERA PERMISSION BY CALLING FUNCTIONS
-        if (allPermissionsGranted()) {
-            startCamera()
-        } else {
-            requestPermissions()
-        }
-        cameraExecutor = Executors.newSingleThreadExecutor()
 
         //CALL FOR SENSORS AND TEXTVIEWS
         setupSensorStuff()
@@ -99,8 +91,8 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
              setValueTOP()
         }
         binding.calBtn.setOnClickListener{
-//            val distanceValue = binding.distanceValue.text.toString().toFloat()
-//            treeHeight.text = "Height: ${String.format("%.1f", calculateTreeHeight(distanceValue, bottomAngle, topAngle))}m"
+        //val distanceValue = binding.distanceValue.text.toString().toFloat()
+        //treeHeight.text = "Height: ${String.format("%.1f", calculateTreeHeight(distanceValue, bottomAngle, topAngle))}m"
             try {
                 val distanceText = binding.distanceValue.text.toString()
 
@@ -133,100 +125,58 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
         }
 
 
-
-
     }//END OF ONCREATE FUNCTIONS
 
-    //STARTING PERMISSION FOR CAMERA AND OTHERS
-    //ASKING FOR PERMISSION ALL NEEDED FOR CAMERA
-    private fun requestPermissions() {
-        activityResultLauncher.launch(REQUIRED_PERMISSIONS)
-    }
 
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(
-            baseContext, it) == PackageManager.PERMISSION_GRANTED
-    }
-
-    companion object {
-        private const val TAG = "CameraXApp"
-        private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
-        private val REQUIRED_PERMISSIONS =
-            mutableListOf (
-                android.Manifest.permission.CAMERA,
-
-            ).apply {
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                    add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                }
-            }.toTypedArray()
-    }
-
-    private val activityResultLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions())
-        { permissions ->
-            // Handle Permission granted/rejected
-            var permissionGranted = true
-            permissions.entries.forEach {
-                if (it.key in REQUIRED_PERMISSIONS && it.value == false)
-                    permissionGranted = false
-            }
-            if (!permissionGranted) {
-                Toast.makeText(baseContext,
-                    "Permission request denied",
-                    Toast.LENGTH_SHORT).show()
-            } else {
-                startCamera()
-            }
+private var isActivityFinishing = false
+    override fun onResume() {
+        super.onResume()
+        if (isActivityFinishing) {
+            Log.d("BackDebug", "Activity is finishing, skipping setup")
+            return
         }
-//END FOR PERMISSIONS
-//START CAMERA ACTIVITY
-    private fun startCamera() {
-    val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-    cameraProviderFuture.addListener({
-        // Used to bind the lifecycle of cameras to the lifecycle owner
-        val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-
-        // Preview
-        val preview = Preview.Builder()
-            .build()
-            .also {
-                it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
-            }
-        // Select back camera as a default
-        val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
-        try {
-            // Unbind use cases before rebinding
-            cameraProvider.unbindAll()
-
-            // Bind use cases to camera
-            cameraProvider.bindToLifecycle(
-                this, cameraSelector, preview)
-
-        } catch(exc: Exception) {
-            Log.e(TAG, "Use case binding failed", exc)
+        Log.d("BackDebug", "onResume called, setting up sensors and starting camera")
+        setupSensorStuff()
+    }
+    private var areSensorsRegistered = false
+    override fun onPause() {
+        super.onPause()
+        if (areSensorsRegistered) {
+            sensorM.unregisterListener(this)
+            areSensorsRegistered = false
         }
+        Log.d("BackDebug", "onPause called, unbinding camera in Height KT")
 
-    }, ContextCompat.getMainExecutor(this))
-} //END FOR CAMERA ACTIVITY
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Unregister sensor listeners in both onPause() and onStop() for redundancy
+        if (areSensorsRegistered) {
+            sensorM.unregisterListener(this)
+            areSensorsRegistered = false
+        }
+    }
 
 
 //START FOR BODY SENSORS ACTIVITY
     private fun setupSensorStuff() {
-        sensorM = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        Log.d("BackDebug", "setupSensorStuff called in  HeightKT")
+        if (!areSensorsRegistered) {
+            sensorM = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-        accelerometer = sensorM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) //GET TYPE SENSOR ACC
-        gyroscope = sensorM.getDefaultSensor(Sensor.TYPE_GYROSCOPE)  //GET TYPE SENSOR GYRO
+            accelerometer = sensorM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) //GET TYPE SENSOR ACC
+            gyroscope = sensorM.getDefaultSensor(Sensor.TYPE_GYROSCOPE)  //GET TYPE SENSOR GYRO
 
-        accelerometer?.also { acc ->
-            sensorM.registerListener(this, acc, SensorManager.SENSOR_DELAY_NORMAL)
-        }
+            accelerometer?.also { acc ->
+                sensorM.registerListener(this, acc, SensorManager.SENSOR_DELAY_UI)
+            }
 
-        gyroscope?.also { gyro ->
-            sensorM.registerListener(this, gyro, SensorManager.SENSOR_DELAY_NORMAL)
+            gyroscope?.also { gyro ->
+                sensorM.registerListener(this, gyro, SensorManager.SENSOR_DELAY_UI)
+            }
+            areSensorsRegistered = true
         }
     }
 
@@ -243,9 +193,7 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
              //ALWAYS REMOVE T0DO IN A NEEDED FUNCTION
     }
-
     //VARIABLES FOR SENSOR ACCELEMOTER
-
     private var pitchAngle: Float = 0f
     private var timestamp: Long = 0
     private var pitchGyro: Float = 0f
@@ -311,19 +259,13 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
     }
 
 
-    override fun onDestroy() {
-        sensorM.unregisterListener(this)
-        super.onDestroy()
-        cameraExecutor.shutdown()
-
-    }
-
-
-
-
-
-
-
+//    override fun onDestroy() {
+//        super.onDestroy()
+////        stopCameraX()  // Ensure camera is fully stopped when the activity is destroyed
+//        if (::cameraExecutor.isInitialized) {
+//            cameraExecutor.shutdown()
+//        }
+//    }
 
 
 }
