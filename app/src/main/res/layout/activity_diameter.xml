@@ -15,49 +15,56 @@
         android:id="@+id/cam_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:layout="@layout/fragment_camera_fragmet"
-        app:layout_constraintBottom_toBottomOf="@+id/leftWbutton"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/backBtn"
-        app:layout_constraintVertical_bias="0.497" />
+        app:layout_constraintVertical_bias="0.497"
+        tools:layout="@layout/fragment_camera_fragmet" />
 
-        <EditText
-            android:id="@+id/distanceValue"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:autofillHints="@string/Distance"
-            android:hint="@string/Distance"
-            android:inputType="numberDecimal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/cam_fragment_container" />
+    <EditText
+        android:id="@+id/distanceValue"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:autofillHints="@string/Distance"
+        android:hint="@string/Distance"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cam_fragment_container" />
 
-        <TextView
-            android:id="@+id/leftrightValuetxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:lineSpacingExtra="10sp"
-            android:textAlignment="viewStart"
-            android:textColor="#FCF9F9"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:visibility="visible"
-            android:text="@string/LeftRightValue"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/cam_fragment_container" />
+    <TextView
+        android:id="@+id/leftrightValuetxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#2F5044"
+        android:lineSpacingExtra="10sp"
+        android:padding="5dp"
+        android:text="@string/LeftRightValue"
+        android:textAlignment="viewStart"
+        android:textColor="#FCF9F9"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cam_fragment_container" />
 
-        <TextView
-            android:id="@+id/diameterRES"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintStart_toStartOf="@+id/leftrightValuetxt"
-            app:layout_constraintTop_toBottomOf="@+id/leftrightValuetxt" />
+<!--    <TextView-->
+<!--        android:id="@+id/diameterRES"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:text="@string/DiameterResult"-->
+<!--        android:textColor="#FCF9F9"-->
+<!--        android:textSize="20sp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/leftrightValuetxt"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/leftrightValuetxt" />-->
 
 
         <ImageView
@@ -72,7 +79,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/newcross" />
+            app:srcCompat="@drawable/whitecrosshair" />
 
         <TextView
             android:id="@+id/textView2"
@@ -113,7 +120,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:background="#2F5044"
         android:contentDescription="@string/iconDesc"
         android:padding="0dp"
@@ -129,7 +136,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/right"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -139,7 +146,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/left"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -153,6 +160,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <Switch
+        android:id="@+id/crosshairSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:text="@string/crosshair"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--    <Button-->
     <!--        android:id="@+id/addWbutton"-->

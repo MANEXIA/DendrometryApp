@@ -14,11 +14,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.myappkotlin.databinding.ActivityHeightBinding
-import java.util.concurrent.ExecutorService
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
@@ -27,10 +25,6 @@ import kotlin.math.sqrt
 class HeightActivity : AppCompatActivity(), SensorEventListener{
     //BINDING ID/THIS IS THE SECOND ACTIVITY XML
     private lateinit var binding: ActivityHeightBinding
-
-    //CAMERA THINGS
-    private lateinit var cameraExecutor: ExecutorService
-    private var cameraProvider: ProcessCameraProvider? = null
 
     //SENSOR THINGS
     private lateinit var sensorM: SensorManager
@@ -44,7 +38,7 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
     private var bottomAngle: Float = 0f
     private var topAngle: Float = 0f
 
-    private lateinit var treeHeight: TextView
+//    private lateinit var treeHeight: TextView
 
     //STARTING FUNCTION ON CREATE/DISPLAYING APPLICATION AND RUNNING FUNCTIONS
     @SuppressLint("SetTextI18n")
@@ -82,7 +76,7 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
         setupSensorStuff()
         angleView = binding.angleTextView
         resText = binding.resultTextview 
-        treeHeight = binding.heightResult
+//        treeHeight = binding.heightResult
 
         binding.bottomBtn.setOnClickListener{
              setValueBOTTOM()
@@ -109,7 +103,8 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
                 }
 
                 val treeHeightValue = calculateTreeHeight(distanceValue, bottomAngle, topAngle)
-                treeHeight.text = "Height: ${String.format("%.1f", treeHeightValue)}m"
+                // "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)} HEIGHT: ${String.format("%.1f", treeHeightValue)}m°"
+                resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°\nHEIGHT: ${String.format("%.1f", treeHeightValue)}m"
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(this, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -120,13 +115,22 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
             topAngle = 0f
             bottomAngle = 0f
             resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°"
-            treeHeight.text = ""
             binding.distanceValue.text.clear()
         }
 
+        //CROSSHAIR CHANGE
+        binding.crosshairSwitch.setOnCheckedChangeListener{ _, isChecked ->
+
+            if (isChecked){
+                binding.imageView.setImageResource(R.drawable.blackcrosshair)
+            }else{
+                binding.imageView.setImageResource(R.drawable.whitecrosshair)
+            }
+        }
+
+
 
     }//END OF ONCREATE FUNCTIONS
-
 
 private var isActivityFinishing = false
     override fun onResume() {
@@ -170,11 +174,11 @@ private var isActivityFinishing = false
             gyroscope = sensorM.getDefaultSensor(Sensor.TYPE_GYROSCOPE)  //GET TYPE SENSOR GYRO
 
             accelerometer?.also { acc ->
-                sensorM.registerListener(this, acc, SensorManager.SENSOR_DELAY_UI)
+                sensorM.registerListener(this, acc, SensorManager.SENSOR_DELAY_NORMAL)
             }
 
             gyroscope?.also { gyro ->
-                sensorM.registerListener(this, gyro, SensorManager.SENSOR_DELAY_UI)
+                sensorM.registerListener(this, gyro, SensorManager.SENSOR_DELAY_NORMAL)
             }
             areSensorsRegistered = true
         }
@@ -237,11 +241,11 @@ private var isActivityFinishing = false
     //CALCULATION FOR TREE HEIGHT
     private fun setValueTOP() {
         topAngle = inclination
-        resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°"
+        resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°\nHEIGHT:"
     }
     private fun setValueBOTTOM() {
         bottomAngle = inclination
-        resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°"
+        resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°\nHEIGHT:"
     }
 
     fun calculateTreeHeight(distance: Float, bottomAngle: Float, topAngle: Float): Double {
@@ -257,16 +261,6 @@ private var isActivityFinishing = false
         return heightTop - heightBottom
 
     }
-
-
-//    override fun onDestroy() {
-//        super.onDestroy()
-////        stopCameraX()  // Ensure camera is fully stopped when the activity is destroyed
-//        if (::cameraExecutor.isInitialized) {
-//            cameraExecutor.shutdown()
-//        }
-//    }
-
 
 }
 

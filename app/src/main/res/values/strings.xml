@@ -19,18 +19,21 @@
     <string name="titleMain">Start Measuring</string>
     <string name="menuBar">Menu</string>
     <string name="calHeight">Calculate</string>
-    <string name="topbottom">"Top: \nBottom: "</string>
+    <string name="topbottom">"Top: \nBottom: \nHEIGHT: "</string>
     <string name="resetText">Reset</string>
     <string name="diameter">Diameter</string>
     <string name="testText">BOOM WALA PA</string>
     <string name="addsign">+</string>
     <string name="decssign">-</string>
 
-    <string name="LeftRightValue">Left: \nRight: </string>
+    <string name="LeftRightValue">Left: \nRight: \nDIAMETER:</string>
     <string name="left">left</string>
     <string name="right">right</string>
 
     <string name="HeightText">Height</string>
+    <string name="HeightResult">Height:</string>
+    <string name="DiameterResult">Diameter:</string>
+    <string name="crosshair">Crosshair Dark</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

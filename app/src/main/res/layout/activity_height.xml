@@ -8,38 +8,21 @@
     android:background="#2F5044"
     tools:context=".HeightActivity">
 
-
-<!--    <androidx.camera.view.PreviewView-->
-<!--        android:id="@+id/viewFinder"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginTop="5dp"-->
-<!--        android:layout_marginBottom="-10dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/calBtn"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/backBtn">-->
-
-
-<!--    </androidx.camera.view.PreviewView>-->
-
-
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/cam_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:layout="@layout/fragment_camera_fragmet"
-        app:layout_constraintBottom_toBottomOf="@+id/calBtn"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backBtn" />
-
+        app:layout_constraintTop_toBottomOf="@+id/backBtn"
+        tools:layout="@layout/fragment_camera_fragmet" />
 
 
     <EditText
         android:id="@+id/distanceValue"
-        android:layout_width="150dp"
+        android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
@@ -50,17 +33,16 @@
         app:layout_constraintTop_toTopOf="@+id/cam_fragment_container" />
 
 
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/toplinearLayout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="70dp"-->
-<!--        android:background="#2F5044"-->
-<!--        android:orientation="vertical"-->
-<!--        android:visibility="visible"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/toplinearLayout"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="70dp"-->
+    <!--        android:background="#2F5044"-->
+    <!--        android:orientation="vertical"-->
+    <!--        android:visibility="visible"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <TextView
         android:id="@+id/angleTextView"
@@ -78,11 +60,13 @@
 
     <TextView
         android:id="@+id/resultTextview"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:background="#2F5044"
         android:lineSpacingExtra="10sp"
+        android:padding="5dp"
         android:text="@string/topbottom"
         android:textAlignment="viewStart"
         android:textColor="#FCF9F9"
@@ -94,17 +78,17 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:alpha="0.5"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginStart="90dp"
         android:layout_marginEnd="90dp"
+        android:alpha="0.5"
         android:contentDescription="@string/iconDesc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/newcross" />
+        app:srcCompat="@drawable/whitecrosshair" />
 
 
     <ImageButton
@@ -112,7 +96,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:background="#2F5044"
         android:contentDescription="@string/iconDesc"
         android:padding="0dp"
@@ -128,7 +112,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/bottomBtn"
         android:textSize="20sp"
         app:cornerRadius="5dp"
@@ -146,25 +130,26 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomBtn"
         app:layout_constraintEnd_toEndOf="@+id/bottomBtn" />
 
-    <TextView
-        android:id="@+id/heightResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/resultTextview"
-        app:layout_constraintTop_toBottomOf="@+id/resultTextview" />
+<!--    <TextView-->
+<!--        android:id="@+id/heightResult"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:gravity="center"-->
+<!--        android:text="@string/HeightResult"-->
+<!--        android:textColor="#FFFFFF"-->
+<!--        android:textSize="24sp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:visibility="visible"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/resultTextview"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/resultTextview" />-->
 
     <Button
         android:id="@+id/calBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/HeightText"
         android:textSize="20sp"
         app:cornerRadius="5dp"
@@ -186,25 +171,22 @@
         android:id="@+id/diameterStartBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         android:text="@string/diameter"
         android:textSize="14sp"
         app:cornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/distanceValue" />
 
-
-    <!--    <TextureView-->
-    <!--        android:id="@+id/textureView"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="500dp"-->
-
-    <!--        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.0"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintVertical_bias="0.386" />-->
+    <Switch
+        android:id="@+id/crosshairSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:text="@string/crosshair"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

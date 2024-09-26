@@ -14,11 +14,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.myappkotlin.databinding.ActivityDiameterBinding
-import java.util.concurrent.ExecutorService
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.sqrt
@@ -27,9 +25,6 @@ import kotlin.math.tan
 class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var binding: ActivityDiameterBinding
-    //CAMERA THINGS
-    private lateinit var cameraExecutor: ExecutorService
-    private var cameraProvider: ProcessCameraProvider? = null
 
     private lateinit var angleView: TextView
     private lateinit var leftRightvaltxt: TextView
@@ -67,27 +62,6 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 .commitNow() // Use commitNow to add it synchronously
         }
 
-
-        //REQUEST CAMERA PERMISSION BY CALLING FUNCTIONS
-
-//        cameraExecutor = Executors.newSingleThreadExecutor()
-
-        // Back button handling with OnBackInvokedDispatcher (Android 13+)
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//            onBackInvokedDispatcher.registerOnBackInvokedCallback(
-//                OnBackInvokedDispatcher.PRIORITY_DEFAULT
-//            ) {
-//                handleBackButtonPress() // Call your back button logic
-//            }
-//        } else {
-//            // Fallback for older versions
-//            onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-//                override fun handleOnBackPressed() {
-//                    handleBackButtonPress()
-//                }
-//            })
-//        }
-
        //START ANGLE SETUP
         angleView = binding.textView2
         leftRightvaltxt = binding.leftrightValuetxt
@@ -113,16 +87,24 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                     Toast.makeText(this, "Invalid distance value", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
-
                 val diameterValue = calculateTreeDiameter(leftAngle, rightAngle, distanceValue)
-                val diaMtoInch = diameterValue * 39.3701 //CONVERT METERS IN INCH
-                binding.diameterRES.text = "Diamter: ${String.format("%.1f", diaMtoInch)}inch"
+                val diaMtoCm = diameterValue * 100 // Convert meters to cm
+                //"Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}° DIAMETER: ${String.format("%.1f", diaMtoCm)}cm"
+                binding.leftrightValuetxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°\nDIAMETER: ${String.format("%.1f", diaMtoCm)}cm"
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(this, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
+        //CROSSHAIR CHANGE
+        binding.crosshairSwitch.setOnCheckedChangeListener{ _, isChecked ->
 
+            if (isChecked){
+                binding.imageView.setImageResource(R.drawable.blackcrosshair)
+            }else{
+                binding.imageView.setImageResource(R.drawable.whitecrosshair)
+            }
+        }
     }//END OF ONCREATE FUNCTON
 
     private var isActivityFinishing = false
@@ -175,14 +157,14 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         magnetometer = sensorM.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)  // Add magnetometer
 
         accelerometer?.also { acc ->
-            sensorM.registerListener(this, acc, SensorManager.SENSOR_DELAY_UI)
+            sensorM.registerListener(this, acc, SensorManager.SENSOR_DELAY_NORMAL)
         }
 
         gyroscope?.also { gyro ->
-            sensorM.registerListener(this, gyro, SensorManager.SENSOR_DELAY_UI)
+            sensorM.registerListener(this, gyro, SensorManager.SENSOR_DELAY_NORMAL)
         }
         magnetometer?.also{ mag ->
-            sensorM.registerListener(this, mag, SensorManager.SENSOR_DELAY_UI)
+            sensorM.registerListener(this, mag, SensorManager.SENSOR_DELAY_NORMAL)
         }
             areSensorsRegistered = true
         }
@@ -277,12 +259,12 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
     private fun setLeftAngleValue(){
         leftAngle = yaw
-        leftRightvaltxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°"
+        leftRightvaltxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°\nDIAMETER:"
     }
 
     private fun setRigtAngleValue(){
         rightAngle = yaw
-        leftRightvaltxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°"
+        leftRightvaltxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°\nDIAMETER:"
     }
     private fun calculateTreeDiameter(yawLeft: Float, yawRight: Float, distanceToTree: Float): Double {
         val yawDifference = abs(yawRight - yawLeft)
@@ -293,13 +275,6 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 //        angleView.text = "${String.format("%.1f", inclination)}°"
         angleView.text = "Yaw: ${String.format("%.1f", yaw)}°"
     }
-
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        if (::cameraExecutor.isInitialized) {
-//            cameraExecutor.shutdown()
-//        }
-//    }
 
 
 }
