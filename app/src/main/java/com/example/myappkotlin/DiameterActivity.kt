@@ -39,6 +39,10 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
     private var inclination: Float = 0f
 
 
+    // Yaw threshold to filter out noise (small angle differences)
+    private val yawNoiseThreshold = 1.0f // You can adjust this value as needed
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDiameterBinding.inflate(layoutInflater)
@@ -83,14 +87,20 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
                 val distanceValue = distanceText.toFloatOrNull()
 
-                if (distanceValue == null) {
+                if (distanceValue == null || distanceValue <= 0) {
                     Toast.makeText(this, "Invalid distance value", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
+
+                if (abs(leftAngle - rightAngle) < yawNoiseThreshold) {
+                    Toast.makeText(this, "Please ensure the left and right angles are different", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
                 val diameterValue = calculateTreeDiameter(leftAngle, rightAngle, distanceValue)
                 val diaMtoCm = diameterValue * 100 // Convert meters to cm
                 //"Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}° DIAMETER: ${String.format("%.1f", diaMtoCm)}cm"
-                binding.leftrightValuetxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°\nDIAMETER: ${String.format("%.1f", diaMtoCm)}cm"
+                binding.diameterRES.text = "Diameter: ${String.format("%.1f", diaMtoCm)}cm"
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(this, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -259,16 +269,28 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
     private fun setLeftAngleValue(){
         leftAngle = yaw
-        leftRightvaltxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°\nDIAMETER:"
+        leftRightvaltxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°"
     }
 
     private fun setRigtAngleValue(){
         rightAngle = yaw
-        leftRightvaltxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°\nDIAMETER:"
+        leftRightvaltxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°"
     }
     private fun calculateTreeDiameter(yawLeft: Float, yawRight: Float, distanceToTree: Float): Double {
         val yawDifference = abs(yawRight - yawLeft)
-        return 2 * distanceToTree * tan(Math.toRadians(yawDifference / 2.0))
+
+        // Apply correction factor for very close distances
+        val correctionFactor = if (distanceToTree < 1.5) {
+            0.95  // Adjust this based on tests, reduce diameter slightly for close distances
+        } else {
+            1.0
+        }
+
+        // Adjusted yaw difference for non-linear effects at close distances
+        val adjustedYawDifference = yawDifference * correctionFactor
+
+        // Calculate diameter using trigonometry
+        return 2 * distanceToTree * tan(Math.toRadians(adjustedYawDifference / 2.0))
     }
 
     private fun updateUI(){

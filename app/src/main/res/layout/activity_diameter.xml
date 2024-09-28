@@ -9,38 +9,59 @@
     tools:context=".DiameterActivity">
 
 
-
 <!--    </androidx.camera.view.PreviewView>-->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/cam_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backBtn"
-        app:layout_constraintVertical_bias="0.497"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_camera_fragmet" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/darkgreencolor"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="15dp"
+        android:background="#2F5044"
+        app:layout_constraintEnd_toEndOf="@+id/crosshairSwitch"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/backBtn"
+        app:layout_constraintTop_toBottomOf="@+id/materialToolbar">
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <EditText
         android:id="@+id/distanceValue"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:autofillHints="@string/Distance"
         android:hint="@string/Distance"
         android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cam_fragment_container" />
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
 
     <TextView
         android:id="@+id/leftrightValuetxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
         android:background="#2F5044"
         android:lineSpacingExtra="10sp"
@@ -51,20 +72,20 @@
         android:textSize="14sp"
         android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cam_fragment_container" />
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/diameterRES"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:text="@string/DiameterResult"-->
-<!--        android:textColor="#FCF9F9"-->
-<!--        android:textSize="20sp"-->
-<!--        android:textStyle="bold"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/leftrightValuetxt"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/leftrightValuetxt" />-->
+    <TextView
+        android:id="@+id/diameterRES"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/DiameterResult"
+        android:textColor="#FCF9F9"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/leftrightValuetxt"
+        app:layout_constraintTop_toBottomOf="@+id/leftrightValuetxt" />
 
 
         <ImageView
@@ -119,16 +140,16 @@
         android:id="@+id/backBtn"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
         android:background="#2F5044"
         android:contentDescription="@string/iconDesc"
         android:padding="0dp"
         android:scaleType="fitCenter"
         android:text="@string/backButton"
         app:cornerRadius="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/materialToolbar"
+        app:layout_constraintTop_toTopOf="@+id/materialToolbar"
         app:srcCompat="@drawable/back_icon" />
 
     <Button
@@ -165,11 +186,31 @@
         android:id="@+id/crosshairSwitch"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:text="@string/crosshair"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/materialToolbar"
+        app:layout_constraintTop_toTopOf="@+id/materialToolbar" />
+
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:id="@+id/toolbar"-->
+<!--        android:layout_width="409dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="?attr/colorPrimary"-->
+<!--        android:minHeight="?attr/actionBarSize"-->
+<!--        android:theme="?attr/actionBarTheme"-->
+<!--        tools:layout_editor_absoluteX="1dp"-->
+<!--        tools:layout_editor_absoluteY="172dp" />-->
+
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="384dp"-->
+<!--        android:layout_height="78dp"-->
+<!--        android:background="#2F5044"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
     <!--    <Button-->
     <!--        android:id="@+id/addWbutton"-->

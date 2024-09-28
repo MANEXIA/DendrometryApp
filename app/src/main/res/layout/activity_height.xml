@@ -12,25 +12,22 @@
         android:id="@+id/cam_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backBtn"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_camera_fragmet" />
 
-
-    <EditText
-        android:id="@+id/distanceValue"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:autofillHints="@string/Distance"
-        android:hint="@string/Distance"
-        android:inputType="numberDecimal"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/darkgreencolor"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cam_fragment_container" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <!--    <LinearLayout-->
@@ -43,6 +40,41 @@
     <!--        app:layout_constraintEnd_toEndOf="parent"-->
     <!--        app:layout_constraintStart_toStartOf="parent"-->
     <!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="15dp"
+        android:background="#2F5044"
+        app:layout_constraintEnd_toEndOf="@+id/crosshairSwitch"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/backBtn"
+        app:layout_constraintTop_toBottomOf="@+id/materialToolbar">
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <EditText
+        android:id="@+id/distanceValue"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:autofillHints="@string/Distance"
+        android:hint="@string/Distance"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+
+    <Button
+        android:id="@+id/diameterStartBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/diameter"
+        android:textSize="14sp"
+        app:cornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/distanceValue"
+        app:layout_constraintTop_toBottomOf="@+id/distanceValue" />
 
     <TextView
         android:id="@+id/angleTextView"
@@ -57,24 +89,6 @@
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-
-    <TextView
-        android:id="@+id/resultTextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:background="#2F5044"
-        android:lineSpacingExtra="10sp"
-        android:padding="5dp"
-        android:text="@string/topbottom"
-        android:textAlignment="viewStart"
-        android:textColor="#FCF9F9"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cam_fragment_container" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -95,16 +109,16 @@
         android:id="@+id/backBtn"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
         android:background="#2F5044"
         android:contentDescription="@string/iconDesc"
         android:padding="0dp"
         android:scaleType="fitCenter"
         android:text="@string/backButton"
         app:cornerRadius="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/materialToolbar"
+        app:layout_constraintTop_toTopOf="@+id/materialToolbar"
         app:srcCompat="@drawable/back_icon" />
 
     <Button
@@ -130,19 +144,19 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomBtn"
         app:layout_constraintEnd_toEndOf="@+id/bottomBtn" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/heightResult"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:gravity="center"-->
-<!--        android:text="@string/HeightResult"-->
-<!--        android:textColor="#FFFFFF"-->
-<!--        android:textSize="24sp"-->
-<!--        android:textStyle="bold"-->
-<!--        android:visibility="visible"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/resultTextview"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/resultTextview" />-->
+    <TextView
+        android:id="@+id/heightResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="@string/HeightResult"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/resultTextview"
+        app:layout_constraintTop_toBottomOf="@+id/resultTextview" />
 
     <Button
         android:id="@+id/calBtn"
@@ -167,26 +181,34 @@
         app:layout_constraintBottom_toTopOf="@+id/calBtn"
         app:layout_constraintStart_toStartOf="@+id/calBtn" />
 
-    <Button
-        android:id="@+id/diameterStartBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:text="@string/diameter"
-        android:textSize="14sp"
-        app:cornerRadius="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/distanceValue" />
-
     <Switch
         android:id="@+id/crosshairSwitch"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
         android:text="@string/crosshair"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/materialToolbar"
+        app:layout_constraintTop_toTopOf="@+id/materialToolbar" />
+
+
+    <TextView
+        android:id="@+id/resultTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:background="#2F5044"
+        android:lineSpacingExtra="10sp"
+        android:padding="5dp"
+        android:text="@string/topbottom"
+        android:textAlignment="viewStart"
+        android:textColor="#FCF9F9"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

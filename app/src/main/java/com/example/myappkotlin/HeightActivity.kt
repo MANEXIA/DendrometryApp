@@ -38,7 +38,7 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
     private var bottomAngle: Float = 0f
     private var topAngle: Float = 0f
 
-//    private lateinit var treeHeight: TextView
+    private lateinit var treeHeight: TextView
 
     //STARTING FUNCTION ON CREATE/DISPLAYING APPLICATION AND RUNNING FUNCTIONS
     @SuppressLint("SetTextI18n")
@@ -76,7 +76,7 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
         setupSensorStuff()
         angleView = binding.angleTextView
         resText = binding.resultTextview 
-//        treeHeight = binding.heightResult
+        treeHeight = binding.heightResult
 
         binding.bottomBtn.setOnClickListener{
              setValueBOTTOM()
@@ -97,14 +97,14 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
 
                 val distanceValue = distanceText.toFloatOrNull()
 
-                if (distanceValue == null) {
+                if (distanceValue == null || distanceValue <= 0) {
                     Toast.makeText(this, "Invalid distance value", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
                 val treeHeightValue = calculateTreeHeight(distanceValue, bottomAngle, topAngle)
                 // "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)} HEIGHT: ${String.format("%.1f", treeHeightValue)}m°"
-                resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°\nHEIGHT: ${String.format("%.1f", treeHeightValue)}m"
+                treeHeight.text = "Height: ${String.format("%.1f", treeHeightValue)}m"
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(this, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -241,11 +241,11 @@ private var isActivityFinishing = false
     //CALCULATION FOR TREE HEIGHT
     private fun setValueTOP() {
         topAngle = inclination
-        resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°\nHEIGHT:"
+        resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°"
     }
     private fun setValueBOTTOM() {
         bottomAngle = inclination
-        resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°\nHEIGHT:"
+        resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°"
     }
 
     fun calculateTreeHeight(distance: Float, bottomAngle: Float, topAngle: Float): Double {
