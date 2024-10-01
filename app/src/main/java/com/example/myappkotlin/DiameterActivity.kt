@@ -80,6 +80,11 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         val focalLengths = characteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)
         val sensorSize = characteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE)
 
+        // Check if focal lengths and sensor size are available
+        if (focalLengths == null || focalLengths.isEmpty() || sensorSize == null) {
+            Toast.makeText(this, "Unable to get camera characteristics", Toast.LENGTH_SHORT).show()
+            return // Exit early if we can't retrieve necessary data
+        }
         binding.calculateDiameter.setOnClickListener(){
             try {
                 val distanceText = binding.distanceValue.text.toString().trim()
@@ -102,14 +107,15 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 }
 
                 // Calculate the FOV in degrees (for simplicity, assuming focalLengths[0] is the current focal length)
-                val fov = Math.toDegrees(2 * Math.atan((sensorSize!!.width / (2 * focalLengths!![0].toDouble())))).toFloat()
+                val fov = Math.toDegrees(2 * Math.atan((sensorSize.width / (2 * focalLengths[0].toDouble())))).toFloat()
 
-//                Log.d("myFOV", "Calculated FOV: $fov degrees")
+                Log.d("myFOV", "Calculated FOV: $fov degrees")
 
                 val diameterValue = calculateTreeDiameter(leftAngle, rightAngle, distanceValue, fov)
                 val diaMtoCm = diameterValue * 100 // Convert meters to cm
                 //"Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}° DIAMETER: ${String.format("%.1f", diaMtoCm)}cm"
                 binding.diameterRES.text = "Diameter: ${String.format("%.1f", diaMtoCm)}cm"
+                Log.d("DiameterDebug", "Calculated Diameter: $diameterValue")
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(this, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -240,41 +246,68 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
         //ALWAYS REMOVE T0DO IN A NEEDED FUNCTION
     }
+    // Function to normalize the yaw angles to 0° - 360°
+    private fun normalizeAngle(angle: Float): Float {
+        var normalizedAngle = angle % 360f  // Get the angle within the 360° range
+        if (normalizedAngle < 0) {
+            normalizedAngle += 360f  // If it's negative, bring it into the positive range
+        }
+        return normalizedAngle
+    }
 
     private fun setLeftAngleValue(){
-        leftAngle = yaw
+        leftAngle = normalizeAngle(yaw)
         leftRightvaltxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°"
     }
 
     private fun setRigtAngleValue(){
-        rightAngle = yaw
+        rightAngle = normalizeAngle(yaw)
         leftRightvaltxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°"
     }
 
-private fun calculateTreeDiameter(yawLeft: Float, yawRight: Float, distanceToTree: Float, cameraFOV: Float): Double {
-    val yawDifference = abs(yawRight - yawLeft)
 
-    // Apply correction factor for very close distances
-    val correctionFactor = if (distanceToTree < 1.5) {
-        0.95  // Adjust this based on tests, reduce diameter slightly for close distances
-    } else {
-        1.0
+    private fun calculateTreeDiameter(yawLeft: Float, yawRight: Float, distanceToTree: Float, cameraFOV: Float): Double {
+        val yawDifference = getSmallestAngleDifference(yawLeft, yawRight)
+
+        // Apply correction factor for very close distances
+        val correctionFactor = if (distanceToTree < 1.5) {
+            0.95  // Adjust this based on tests, reduce diameter slightly for close distances
+        } else {
+            1.0
+        }
+
+        // Adjust the yaw difference based on the camera's FOV
+        val referenceFOV = 74.92703f // Set this to the FOV of the device you used for testing
+//        val referenceFOV = 65.0f // Set this to the FOV of the device you used for testing
+        val fovAdjustedYawDifference = (yawDifference * cameraFOV) / referenceFOV
+
+        // Apply the correction factor for non-linear effects at close distances
+        val adjustedYawDifference = fovAdjustedYawDifference * correctionFactor
+
+        // Calculate diameter using trigonometry
+        Log.d("DiameterDebug", "Left Angle: $leftAngle, Right Angle: $rightAngle")
+        Log.d("DiameterDebug", "Yaw Difference: $yawDifference")
+        return 2 * distanceToTree * tan(Math.toRadians(adjustedYawDifference / 2.0))
+
     }
 
-    // Adjust the yaw difference based on the camera's FOV
-    val referenceFOV = 74.92703f // Set this to the FOV of the device you used for testing // FOV OF HUAWEI NOVA 5T
-    val fovAdjustedYawDifference = (yawDifference * cameraFOV) / referenceFOV
+    // Function to get the smallest angle difference
+    private fun getSmallestAngleDifference(angle1: Float, angle2: Float): Float {
+        val normalizedAngle1 = normalizeAngle(angle1)
+        val normalizedAngle2 = normalizeAngle(angle2)
 
-    // Apply the correction factor for non-linear effects at close distances
-    val adjustedYawDifference = fovAdjustedYawDifference * correctionFactor
+        val diff = abs(normalizedAngle1 - normalizedAngle2)
+        return if (diff > 180f) {
+            360f - diff  // Ensure the difference is the smallest path on the circle
+        } else {
+            diff
+        }
+    }
 
-    // Calculate diameter using trigonometry
-    return 2 * distanceToTree * tan(Math.toRadians(adjustedYawDifference / 2.0))
-}
 
     private fun updateUI(){
         //angleView.text = "${String.format("%.1f", inclination)}°"
-        angleView.text = "Yaw: ${String.format("%.1f", yaw)}°"
+        angleView.text = "Yaw: ${String.format("%.1f", normalizeAngle(yaw))}°"
     }
 
 

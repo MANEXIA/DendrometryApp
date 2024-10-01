@@ -174,11 +174,11 @@ private var isActivityFinishing = false
             gyroscope = sensorM.getDefaultSensor(Sensor.TYPE_GYROSCOPE)  //GET TYPE SENSOR GYRO
 
             accelerometer?.also { acc ->
-                sensorM.registerListener(this, acc, SensorManager.SENSOR_DELAY_NORMAL)
+                sensorM.registerListener(this, acc, SensorManager.SENSOR_DELAY_FASTEST)
             }
 
             gyroscope?.also { gyro ->
-                sensorM.registerListener(this, gyro, SensorManager.SENSOR_DELAY_NORMAL)
+                sensorM.registerListener(this, gyro, SensorManager.SENSOR_DELAY_FASTEST)
             }
             areSensorsRegistered = true
         }
