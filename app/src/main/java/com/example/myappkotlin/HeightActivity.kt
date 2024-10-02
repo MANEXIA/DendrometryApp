@@ -46,7 +46,7 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
     //VARIABLES FOR GETTING DIAMETER VALUE FROM DIAMETER ACTIVITY
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
     private val REQUEST_CODE = 1001
-    private val diameterValue = 0.0
+    private var diameterValue = 0.0
 
     //STARTING FUNCTION ON CREATE/DISPLAYING APPLICATION AND RUNNING FUNCTIONS
     @SuppressLint("SetTextI18n")
@@ -118,8 +118,10 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
         binding.resetBtn.setOnClickListener{
             topAngle = 0f
             bottomAngle = 0f
-            resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°"
+            resText.text = "Top:\nBottom:"
             treeHeight.text = "Height:"
+            diameterValue = 0.0
+            binding.DiamterValue.text = "Diameter:"
             binding.distanceValue.text.clear()
         }
 
@@ -141,7 +143,7 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
                 val diametertxt = result.data?.getStringExtra("diameterValue")
                 // Use the diameter value here (e.g., update UI or calculations)
                 Log.d("ETORESULT", "Received diameter value: $diametertxt")
-                val diameterValue = diametertxt?.toDouble()
+                diameterValue = diametertxt?.toDouble()!!
                 binding.DiamterValue.text = "Diameter: ${String.format("%.1f", diameterValue)}cm"
             }
         }
@@ -154,7 +156,7 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val diametertxt = data?.getStringExtra("diameterValue") // Get the result
             Log.d("ETORESULT", "Received diameter value: $diametertxt")
-            val diameterValue = diametertxt?.toDouble()
+            diameterValue = diametertxt?.toDouble()!!
             binding.DiamterValue.text = "Diameter: ${String.format("%.1f", diameterValue)}cm"
         }
     }
