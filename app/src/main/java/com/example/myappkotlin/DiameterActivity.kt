@@ -1,5 +1,6 @@
 package com.example.myappkotlin
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
@@ -35,6 +36,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
     private var rotationVectorSensor: Sensor? = null
     private var leftAngle: Float = 0f
     private var rightAngle: Float = 0f
+    private var holdDiameter: Double = 0.0
 
     // Yaw threshold to filter out noise (small angle differences)
     private val yawNoiseThreshold = 1.0f // You can adjust this value as needed
@@ -50,10 +52,6 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             insets
         }
 
-        binding.backBtn.setOnClickListener{
-            val intentMain = Intent(this, HeightActivity::class.java)
-            startActivity(intentMain)
-        }
         // Check if savedInstanceState is null to avoid adding the fragment multiple times
         if (savedInstanceState == null) {
             val cameraFragment = CameraFragmet() // Replace with your actual Fragment class
@@ -115,6 +113,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 val diaMtoCm = diameterValue * 100 // Convert meters to cm
                 //"Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}° DIAMETER: ${String.format("%.1f", diaMtoCm)}cm"
                 binding.diameterRES.text = "Diameter: ${String.format("%.1f", diaMtoCm)}cm"
+                holdDiameter = diaMtoCm
                 Log.d("DiameterDebug", "Calculated Diameter: $diameterValue")
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -130,11 +129,37 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 binding.imageView.setImageResource(R.drawable.whitecrosshair)
             }
         }
+
+        binding.resetDiameter.setOnClickListener(){
+            Log.d("resetClick", "wow")
+            leftAngle = 0f
+            rightAngle = 0f
+            leftRightvaltxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°"
+            binding.diameterRES.text = "Diameter:"
+            binding.distanceValue.text.clear()
+
+        }
+
+        binding.backBtn.setOnClickListener{
+            finish()
+        }
+        binding.applyButton.setOnClickListener {
+            // Prepare data to send back
+            val resultIntent = Intent()
+            resultIntent.putExtra("diameterValue", holdDiameter.toString())
+
+            // Set the result for the previous activity
+            setResult(Activity.RESULT_OK, resultIntent)
+
+            // Close the current activity and return to the previous one
+            finish()
+        }
+
+
     }//END OF ONCREATE FUNCTON
 
     private var isActivityFinishing = false
     private var areSensorsRegistered = false
-
     override fun onResume() {
         super.onResume()
         if (isActivityFinishing) {
@@ -151,9 +176,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             sensorM.unregisterListener(this)
             areSensorsRegistered = false
         }
-
     }
-
     override fun onStop() {
         super.onStop()
         // Unregister sensor listeners in both onPause() and onStop() for redundancy
@@ -166,12 +189,9 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
     //DIAMETER MEASURING STARTS HERE
     //YAW VARIABLES FOR SENSOR
-    private val gravity = FloatArray(3)
-    private val geomagnetic = FloatArray(3)
     private val rotationMatrix = FloatArray(9)
     private val orientationAngles = FloatArray(3)
     private var yaw: Float = 0f
-
 
     private fun setupSensorStuff() {
         if (!areSensorsRegistered) {
@@ -185,7 +205,6 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         }
 
     }
-
 
     override fun onSensorChanged(event: SensorEvent?) {
         event ?: return

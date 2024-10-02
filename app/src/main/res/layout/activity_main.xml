@@ -8,6 +8,8 @@
     android:background="#2F5044"
     tools:context=".MainActivity">
 
+
+
     <Button
         android:id="@+id/hBtn"
         android:layout_width="159dp"
@@ -22,19 +24,6 @@
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-<!--    <Button-->
-<!--        android:id="@+id/dBtn"-->
-<!--        android:layout_width="159dp"-->
-<!--        android:layout_height="53dp"-->
-<!--        android:text="@string/diameter"-->
-<!--        android:textSize="25sp"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:visibility="visible"-->
-<!--        app:cornerRadius="10sp"-->
-<!--        app:iconPadding="5dp"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/hBtn"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/hBtn"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/hBtn" />-->
 
     <ImageView
         android:id="@+id/imageView"

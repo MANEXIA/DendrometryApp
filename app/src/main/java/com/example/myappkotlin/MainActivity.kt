@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-
         enableEdgeToEdge()
         setContentView(binding.root)
         //THIS CODE ADJUST ITS PADDING TO THE SYSTEM BAR
@@ -48,8 +47,6 @@ class MainActivity : AppCompatActivity() {
             val intent2ndAct = Intent(this, HeightActivity::class.java)
             startActivity(intent2ndAct)
         }
-
-
 
 
     }//END OF ONCREATE FUNCTIONS

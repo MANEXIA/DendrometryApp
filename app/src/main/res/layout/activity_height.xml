@@ -45,25 +45,24 @@
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="110dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:background="#2F5044"
         app:layout_constraintEnd_toEndOf="@+id/crosshairSwitch"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/backBtn"
-        app:layout_constraintTop_toBottomOf="@+id/materialToolbar">
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@+id/materialToolbar"></androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
         android:id="@+id/distanceValue"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
         android:autofillHints="@string/Distance"
         android:hint="@string/Distance"
         android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout" />
 
     <Button
         android:id="@+id/diameterStartBtn"
@@ -73,8 +72,8 @@
         android:text="@string/diameter"
         android:textSize="14sp"
         app:cornerRadius="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/distanceValue"
-        app:layout_constraintTop_toBottomOf="@+id/distanceValue" />
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <TextView
         android:id="@+id/angleTextView"
@@ -125,61 +124,58 @@
         android:id="@+id/bottomBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:text="@string/bottomBtn"
-        android:textSize="20sp"
-        app:cornerRadius="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/topBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="@string/topBtn"
-        android:textSize="20sp"
-        app:cornerRadius="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomBtn"
-        app:layout_constraintEnd_toEndOf="@+id/bottomBtn" />
-
-    <TextView
-        android:id="@+id/heightResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:text="@string/HeightResult"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/resultTextview"
-        app:layout_constraintTop_toBottomOf="@+id/resultTextview" />
-
-    <Button
-        android:id="@+id/calBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="20dp"
-        android:text="@string/HeightText"
+        android:layout_marginBottom="15dp"
+        android:text="@string/bottomBtn"
         android:textSize="20sp"
         app:cornerRadius="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
+        android:id="@+id/topBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/topBtn"
+        android:textSize="20sp"
+        app:cornerRadius="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/heightResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="@string/HeightResult"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+
+    <Button
+        android:id="@+id/calBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:text="@string/CalculateHeight"
+        app:layout_constraintBottom_toTopOf="@+id/topBtn"
+        app:layout_constraintEnd_toEndOf="@+id/topBtn" />
+
+    <Button
         android:id="@+id/resetBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="@string/resetText"
-        android:textSize="20sp"
-        app:cornerRadius="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/calBtn"
-        app:layout_constraintStart_toStartOf="@+id/calBtn" />
+        android:layout_marginBottom="15dp"
+        android:text="@string/clear"
+        app:layout_constraintBottom_toTopOf="@+id/bottomBtn"
+        app:layout_constraintStart_toStartOf="@+id/bottomBtn" />
 
     <Switch
         android:id="@+id/crosshairSwitch"
@@ -196,8 +192,6 @@
         android:id="@+id/resultTextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
         android:background="#2F5044"
         android:lineSpacingExtra="10sp"
         android:padding="5dp"
@@ -207,8 +201,21 @@
         android:textSize="14sp"
         android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+        app:layout_constraintBottom_toTopOf="@+id/distanceValue"
+        app:layout_constraintStart_toStartOf="@+id/distanceValue" />
+
+    <TextView
+        android:id="@+id/DiamterValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/DiameterResult"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/heightResult"
+        app:layout_constraintTop_toBottomOf="@+id/heightResult" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

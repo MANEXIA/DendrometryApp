@@ -5,30 +5,30 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
-    <string name="backButton">back</string>
-    <string name="AccessCamera">Access Camera</string>
-
+    <string name="apply">Apply</string>
     <string name="bottomBtn">Bottom</string>
     <string name="topBtn">Top</string>
-
+    <string name="backButton">Back</string>
     <string name="HeigthText">Height</string>
     <string name="Distance">Meters Distance</string>
     <string name="markX">X</string>
     <string name="iconDesc">Icon</string>
     <string name="titleMain">Dendrometry</string>
     <string name="menuBar">Menu</string>
-    <string name="calHeight">Calculate</string>
+    <string name="Calculate">Calculate</string>
+    <string name="CalculateHeight">Calculate Height</string>
+    <string name="CalculateDiameter">Calculate Diameter</string>
     <string name="topbottom">"Top: \nBottom: "</string>
     <string name="resetText">Reset</string>
+    <string name="clear">Clear</string>
     <string name="diameter">Diameter</string>
-    <string name="testText">BOOM WALA PA</string>
+
     <string name="addsign">+</string>
     <string name="decssign">-</string>
 
     <string name="LeftRightValue">Left: \nRight:</string>
-    <string name="left">left</string>
-    <string name="right">right</string>
+    <string name="left">Left</string>
+    <string name="right">Right</string>
 
     <string name="HeightText">Height</string>
     <string name="HeightResult">Height:</string>

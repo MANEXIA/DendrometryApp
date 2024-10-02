@@ -2,6 +2,7 @@ package com.example.myappkotlin
 
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
@@ -13,6 +14,8 @@ import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -26,19 +29,24 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
     //BINDING ID/THIS IS THE SECOND ACTIVITY XML
     private lateinit var binding: ActivityHeightBinding
 
-    //SENSOR THINGS
+    //VARIABLES FOR SENSOR THINGS
     private lateinit var sensorM: SensorManager
     private var accelerometer: Sensor? = null
     private var gyroscope: Sensor? = null
     private lateinit var angleView: TextView
     private lateinit var resText: TextView
 
+
    //VARIABLES FOR CALCULATIONS TREE HEIGHT
     private var inclination: Float = 0f
     private var bottomAngle: Float = 0f
     private var topAngle: Float = 0f
-
     private lateinit var treeHeight: TextView
+
+    //VARIABLES FOR GETTING DIAMETER VALUE FROM DIAMETER ACTIVITY
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+    private val REQUEST_CODE = 1001
+    private val diameterValue = 0.0
 
     //STARTING FUNCTION ON CREATE/DISPLAYING APPLICATION AND RUNNING FUNCTIONS
     @SuppressLint("SetTextI18n")
@@ -56,12 +64,12 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
 
         //ONCLICK BTN FOR ACTIVITIES
         binding.backBtn.setOnClickListener{
-              val intentMain = Intent(this, MainActivity::class.java)
-              startActivity(intentMain)
+            finish()
         }
+
         binding.diameterStartBtn.setOnClickListener(){
               val intent3rdAct = Intent(this, DiameterActivity::class.java)
-              startActivity(intent3rdAct)
+              startActivityForResult(intent3rdAct, REQUEST_CODE)
         }
         // Check if savedInstanceState is null to avoid adding the fragment multiple times
         if (savedInstanceState == null) {
@@ -70,8 +78,6 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
                 .replace(R.id.cam_fragment_container, cameraFragment)
                 .commitNow() // Use commitNow to add it synchronously
         }
-
-
         //CALL FOR SENSORS AND TEXTVIEWS
         setupSensorStuff()
         angleView = binding.angleTextView
@@ -85,8 +91,6 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
              setValueTOP()
         }
         binding.calBtn.setOnClickListener{
-        //val distanceValue = binding.distanceValue.text.toString().toFloat()
-        //treeHeight.text = "Height: ${String.format("%.1f", calculateTreeHeight(distanceValue, bottomAngle, topAngle))}m"
             try {
                 val distanceText = binding.distanceValue.text.toString()
 
@@ -103,8 +107,8 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
                 }
 
                 val treeHeightValue = calculateTreeHeight(distanceValue, bottomAngle, topAngle)
-                // "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)} HEIGHT: ${String.format("%.1f", treeHeightValue)}m°"
                 treeHeight.text = "Height: ${String.format("%.1f", treeHeightValue)}m"
+
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(this, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -115,6 +119,7 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
             topAngle = 0f
             bottomAngle = 0f
             resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°"
+            treeHeight.text = "Height:"
             binding.distanceValue.text.clear()
         }
 
@@ -128,9 +133,33 @@ class HeightActivity : AppCompatActivity(), SensorEventListener{
             }
         }
 
-
+        // Register the ActivityResultLauncher to handle results GETTING DIAMETER VALUE FROM DIAMETER ACTIVITY
+        resultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val diametertxt = result.data?.getStringExtra("diameterValue")
+                // Use the diameter value here (e.g., update UI or calculations)
+                Log.d("ETORESULT", "Received diameter value: $diametertxt")
+                val diameterValue = diametertxt?.toDouble()
+                binding.DiamterValue.text = "Diameter: ${String.format("%.1f", diameterValue)}cm"
+            }
+        }
 
     }//END OF ONCREATE FUNCTIONS
+    // Handle the result when HeightActivity finishes
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val diametertxt = data?.getStringExtra("diameterValue") // Get the result
+            Log.d("ETORESULT", "Received diameter value: $diametertxt")
+            val diameterValue = diametertxt?.toDouble()
+            binding.DiamterValue.text = "Diameter: ${String.format("%.1f", diameterValue)}cm"
+        }
+    }
+
+
 
 private var isActivityFinishing = false
     override fun onResume() {
@@ -142,6 +171,8 @@ private var isActivityFinishing = false
         Log.d("BackDebug", "onResume called, setting up sensors and starting camera")
         setupSensorStuff()
     }
+
+
     private var areSensorsRegistered = false
     override fun onPause() {
         super.onPause()
