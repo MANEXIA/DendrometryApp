@@ -16,8 +16,6 @@ import com.example.myappkotlin.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -29,6 +27,11 @@ class MainActivity : AppCompatActivity() {
          v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
          insets
          }
+        //ONCLICK BTN FOR GOING TO A NEW ACTIVITY
+        binding.hBtn.setOnClickListener(){
+            val intentHeight = Intent(this, HeightActivity::class.java)
+            startActivity(intentHeight)
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -42,11 +45,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        //ONCLICK BTN FOR GOING TO A NEW ACTIVITY
-        binding.hBtn.setOnClickListener(){
-            val intent2ndAct = Intent(this, HeightActivity::class.java)
-            startActivity(intent2ndAct)
-        }
+
 
 
     }//END OF ONCREATE FUNCTIONS
