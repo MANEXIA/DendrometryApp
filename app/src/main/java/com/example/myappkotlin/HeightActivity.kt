@@ -46,7 +46,10 @@ import kotlin.math.sqrt
         //VARIABLES FOR GETTING DIAMETER VALUE FROM DIAMETER ACTIVITY
         private lateinit var resultLauncher: ActivityResultLauncher<Intent>
         private val REQUEST_CODE = 1001
+
+        private var treeHeightValue = 0.0
         private var diameterValue = 0.0
+
 
         //STARTING FUNCTION ON CREATE/DISPLAYING APPLICATION AND RUNNING FUNCTIONS
         @SuppressLint("SetTextI18n")
@@ -80,31 +83,51 @@ import kotlin.math.sqrt
             resText = binding.resultTextview
             treeHeight = binding.heightResult
 
-            binding.bottomBtn.setOnClickListener{ setValueBOTTOM() }
-            binding.topBtn.setOnClickListener{ setValueTOP() }
+            binding.bottomBtn.setOnClickListener{
+                val distanceText = binding.distanceValue.text.toString()
+                // Validate distance input using checkDistance
+                val distanceValue = checkDistance(distanceText) ?: return@setOnClickListener
+                // If distance is valid, call setValueBOTTOM
+                setValueBOTTOM()
+                if(topAngle == 0f){
+                    //Toast.makeText(this, "Please Set Top Angle", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }else{
+                    treeHeightValue = calculateTreeHeight(distanceValue, bottomAngle, topAngle)
+                    treeHeight.text = "Height: ${String.format("%.1f", treeHeightValue)}m"
+                }
+            }
+            binding.topBtn.setOnClickListener{
+                val distanceText = binding.distanceValue.text.toString()
+                // Validate distance input using checkDistance
+                val distanceValue = checkDistance(distanceText) ?: return@setOnClickListener
+                // If distance is valid, call setValueTOP
+                setValueTOP()
+                if(bottomAngle == 0f){
+                    //Toast.makeText(this, "Please Set Bottom Angle", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }else{
+                    treeHeightValue = calculateTreeHeight(distanceValue, bottomAngle, topAngle)
+                    treeHeight.text = "Height: ${String.format("%.1f", treeHeightValue)}m"
+                }
+
+            }
 
             binding.calBtn.setOnClickListener{
-                try {
-                    val distanceText = binding.distanceValue.text.toString()
-
-                    if (distanceText.isEmpty()) {
-                        Toast.makeText(this, "Please enter a distance value", Toast.LENGTH_SHORT).show()
-                        return@setOnClickListener
+                Log.d("setHEIGHTndDIAMATER", "H: $treeHeightValue D: $diameterValue")
+                if (treeHeightValue != 0.0 && diameterValue != 0.0) {
+                    if (treeHeightValue > 0 && diameterValue > 0) {
+                        // Proceed to calculation using the formula
+                        val volume = 0.7854 * (treeHeightValue / 2) * (diameterValue * diameterValue)
+                        // Display the calculated volume in a TextView
+                        binding.volumeResult.text = "V: ${String.format("%.1f", volume)}"
+                    } else {
+                        // Handle invalid or zero values
+                        Toast.makeText(this, "Please enter valid non-zero height and diameter", Toast.LENGTH_SHORT).show()
                     }
-
-                    val distanceValue = distanceText.toFloatOrNull()
-
-                    if (distanceValue == null || distanceValue <= 0) {
-                        Toast.makeText(this, "Invalid distance value", Toast.LENGTH_SHORT).show()
-                        return@setOnClickListener
-                    }
-
-                    val treeHeightValue = calculateTreeHeight(distanceValue, bottomAngle, topAngle)
-                    treeHeight.text = "Height: ${String.format("%.1f", treeHeightValue)}m"
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    Toast.makeText(this, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
+                } else {
+                    // Handle empty input fields
+                    Toast.makeText(this, "Please fill in both height and diameter", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -144,31 +167,38 @@ import kotlin.math.sqrt
 
         }//END OF ONCREATE FUNCTIONS
 
+        private fun checkDistance(distanceText: String): Float? {
+            // Check if distance input is empty
+            if (distanceText.isEmpty()) {
+                Toast.makeText(this, "Please enter a distance value", Toast.LENGTH_SHORT).show()
+                return null
+            }
+
+            // Convert distance input to float
+            val distanceValue = distanceText.toFloatOrNull()
+
+            // Validate if the converted value is not null and greater than 0
+            if (distanceValue == null || distanceValue <= 0) {
+                Toast.makeText(this, "Invalid distance value", Toast.LENGTH_SHORT).show()
+                return null
+            }
+
+            // Return the valid distance value
+            return distanceValue
+        }
+
         private fun resetsValue() {
             topAngle = 0f
             bottomAngle = 0f
             resText.text = "Top:\nBottom:"
             treeHeight.text = "Height:"
             diameterValue = 0.0
+            treeHeightValue = 0.0
             binding.DiamterValue.text = "Diameter:"
             binding.distanceValue.text.clear()
         }
 
         // Handle the result when HeightActivity finishes
-//        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//            super.onActivityResult(requestCode, resultCode, data)
-//
-//            // This will only work on API 29 and below
-//            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.R) {
-//                if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-//                    val diametertxt = data?.getStringExtra("diameterValue")
-//                    Log.d("ETORESULT", "Received diameter value: $diametertxt")
-//                    diameterValue = diametertxt?.toDouble()!!
-//                    binding.DiamterValue.text = "Diameter: ${String.format("%.1f", diameterValue)}cm"
-//                }
-//            }
-//        }
-
         @Deprecated("This method has been deprecated in favor of using the Activity Result API\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt\n      contracts for common intents available in\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for\n      testing, and allow receiving results in separate, testable classes independent from your\n      activity. Use\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}\n      with the appropriate {@link ActivityResultContract} and handling the result in the\n      {@link ActivityResultCallback#onActivityResult(Object) callback}.")
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
             super.onActivityResult(requestCode, resultCode, data)
@@ -186,7 +216,6 @@ import kotlin.math.sqrt
         }
 
 
-
     private var isActivityFinishing = false
         override fun onResume() {
             super.onResume()
@@ -198,8 +227,7 @@ import kotlin.math.sqrt
             setupSensorStuff()
         }
 
-
-        private var areSensorsRegistered = false
+    private var areSensorsRegistered = false
         override fun onPause() {
             super.onPause()
             if (areSensorsRegistered) {
@@ -207,11 +235,9 @@ import kotlin.math.sqrt
                 areSensorsRegistered = false
             }
             Log.d("BackDebug", "onPause called, unbinding camera in Height KT")
-
-
         }
 
-        override fun onStop() {
+    override fun onStop() {
             super.onStop()
             // Unregister sensor listeners in both onPause() and onStop() for redundancy
             if (areSensorsRegistered) {
@@ -222,7 +248,7 @@ import kotlin.math.sqrt
 
 
     //START FOR BODY SENSORS ACTIVITY
-        private fun setupSensorStuff() {
+    private fun setupSensorStuff() {
             Log.d("BackDebug", "setupSensorStuff called in  HeightKT")
             if (!areSensorsRegistered) {
                 sensorM = getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -241,7 +267,7 @@ import kotlin.math.sqrt
             }
         }
 
-        override fun onSensorChanged(event: SensorEvent?) {
+    override fun onSensorChanged(event: SensorEvent?) {
             event ?: return
             when (event.sensor.type) {
                 Sensor.TYPE_ACCELEROMETER -> handleAccelerometer(event)
@@ -251,7 +277,7 @@ import kotlin.math.sqrt
         }
 
 
-        override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
                  //ALWAYS REMOVE T0DO IN A NEEDED FUNCTION
         }
         //VARIABLES FOR SENSOR ACCELEMOTER
@@ -261,7 +287,7 @@ import kotlin.math.sqrt
         private var alpha: Float = 0.98f  // Complementary filter coefficient
         // private var isMeasuringTop: Boolean = true // Toggle to switch between measuring top and base
 
-        private fun handleAccelerometer(event: SensorEvent) {
+    private fun handleAccelerometer(event: SensorEvent) {
             val x = event.values[0]
             val y = event.values[1]
             val z = event.values[2]
@@ -278,7 +304,7 @@ import kotlin.math.sqrt
             inclination = pitchAngle - 90
         }
 
-        private fun handleGyroscope(event: SensorEvent, timestamp: Long) {
+    private fun handleGyroscope(event: SensorEvent, timestamp: Long) {
             val wx = event.values[0]
             val wy = event.values[1]
             val wz = event.values[2]
@@ -291,21 +317,21 @@ import kotlin.math.sqrt
 
         }
 
-        private fun updateUI(){
+    private fun updateUI(){
             angleView.text = "${String.format("%.1f", inclination)}°"
         }
 
         //CALCULATION FOR TREE HEIGHT
-        private fun setValueTOP() {
+    private fun setValueTOP() {
             topAngle = inclination
             resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°"
         }
-        private fun setValueBOTTOM() {
+    private fun setValueBOTTOM() {
             bottomAngle = inclination
             resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°"
         }
 
-        fun calculateTreeHeight(distance: Float, bottomAngle: Float, topAngle: Float): Double {
+    fun calculateTreeHeight(distance: Float, bottomAngle: Float, topAngle: Float): Double {
             // Convert angles from degrees to radians
             val bottomAngleRad = Math.toRadians(bottomAngle.toDouble())
             val topAngleRad = Math.toRadians(topAngle.toDouble())

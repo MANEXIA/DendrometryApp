@@ -326,7 +326,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
     private fun updateUI(){
         //angleView.text = "${String.format("%.1f", inclination)}°"
-        angleView.text = "Yaw: ${String.format("%.1f", normalizeAngle(yaw))}°"
+        angleView.text = "${String.format("%.1f", normalizeAngle(yaw))}°"
     }
 
 

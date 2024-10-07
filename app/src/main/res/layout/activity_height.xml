@@ -50,7 +50,9 @@
         app:layout_constraintEnd_toEndOf="@+id/crosshairSwitch"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/backBtn"
-        app:layout_constraintTop_toBottomOf="@+id/materialToolbar"></androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@+id/materialToolbar">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
         android:id="@+id/distanceValue"
@@ -164,7 +166,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
-        android:text="@string/CalculateHeight"
+        android:text="@string/CalcutateVolume"
         app:layout_constraintBottom_toTopOf="@+id/topBtn"
         app:layout_constraintEnd_toEndOf="@+id/topBtn" />
 
@@ -216,6 +218,19 @@
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="@+id/heightResult"
         app:layout_constraintTop_toBottomOf="@+id/heightResult" />
+
+    <TextView
+        android:id="@+id/volumeResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/Volume"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/DiamterValue"
+        app:layout_constraintTop_toBottomOf="@+id/DiamterValue" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

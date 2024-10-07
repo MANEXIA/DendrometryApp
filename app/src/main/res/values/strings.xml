@@ -17,12 +17,13 @@
     <string name="menuBar">Menu</string>
     <string name="Calculate">Calculate</string>
     <string name="CalculateHeight">Calculate Height</string>
+    <string name="CalcutateVolume">Calculate Volume</string>
     <string name="CalculateDiameter">Calculate Diameter</string>
     <string name="topbottom">"Top: \nBottom: "</string>
     <string name="resetText">Reset</string>
     <string name="clear">Clear</string>
     <string name="diameter">Diameter</string>
-
+    <string name="Volume">V:</string>
     <string name="addsign">+</string>
     <string name="decssign">-</string>
 
