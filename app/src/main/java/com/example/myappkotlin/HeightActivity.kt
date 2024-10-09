@@ -11,7 +11,8 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
+    import android.view.View
+    import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
@@ -143,6 +144,26 @@ import kotlin.math.sqrt
                     binding.imageView.setImageResource(R.drawable.whitecrosshair)
                 }
             }
+            //SWITCH BUTTONS VISIBILITY
+            val visibilityBottomBtn = binding.bottomBtn
+            val visibilityTopBtn = binding.topBtn
+            binding.arrowButtonRight.setOnClickListener {
+                if (visibilityBottomBtn.visibility == View.VISIBLE) {
+                    toggleVisibility(visibilityTopBtn, visibilityBottomBtn)
+                } else {
+                    toggleVisibility(visibilityBottomBtn, visibilityTopBtn)
+                }
+            }
+
+            binding.arrowButtonLeft.setOnClickListener {
+                if (visibilityTopBtn.visibility == View.VISIBLE) {
+                    toggleVisibility(visibilityBottomBtn, visibilityTopBtn)
+                } else {
+                    toggleVisibility(visibilityTopBtn, visibilityBottomBtn)
+                }
+            }
+
+
 
             // Register ActivityResultLauncher based on API level
             // Register ActivityResultLauncher for all API levels
@@ -196,6 +217,11 @@ import kotlin.math.sqrt
             treeHeightValue = 0.0
             binding.DiamterValue.text = "Diameter:"
             binding.distanceValue.text.clear()
+        }
+
+        fun toggleVisibility(btnToShow: View, btnToHide: View) {
+            btnToShow.visibility = View.VISIBLE
+            btnToHide.visibility = View.GONE
         }
 
         // Handle the result when HeightActivity finishes

@@ -254,7 +254,12 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 SensorManager.getOrientation(rotationMatrixAdjusted, orientationAngles)
 
                 // Yaw (azimuth) is the angle you're interested in
-                yaw = Math.toDegrees(orientationAngles[0].toDouble()).toFloat()
+//                yaw = Math.toDegrees(orientationAngles[0].toDouble()).toFloat()
+//                yaw = Math.toDegrees(orientationAngles[0].toDouble()).toInt().toFloat()
+
+                yaw = Math.round(Math.toDegrees(orientationAngles[0].toDouble())).toFloat()
+
+
 
                 // Update UI with yaw
                 updateUI()
@@ -276,12 +281,12 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
     private fun setLeftAngleValue(){
         leftAngle = normalizeAngle(yaw)
-        leftRightvaltxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°"
+        leftRightvaltxt.text = "Left: ${leftAngle}°\nRight: ${rightAngle}°"
     }
 
     private fun setRigtAngleValue(){
         rightAngle = normalizeAngle(yaw)
-        leftRightvaltxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°"
+        leftRightvaltxt.text = "Left: ${leftAngle}°\nRight: ${rightAngle}°"
     }
 
 
@@ -326,7 +331,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
     private fun updateUI(){
         //angleView.text = "${String.format("%.1f", inclination)}°"
-        angleView.text = "${String.format("%.1f", normalizeAngle(yaw))}°"
+        angleView.text = "${normalizeAngle(yaw)}°"
     }
 
 
