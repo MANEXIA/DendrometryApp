@@ -17,11 +17,13 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+    import androidx.appcompat.app.AlertDialog
+    import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.myappkotlin.databinding.ActivityHeightBinding
-import kotlin.math.atan2
+    import com.google.android.material.dialog.MaterialAlertDialogBuilder
+    import kotlin.math.atan2
 import kotlin.math.sqrt
 
     //typealias LumaListener = (luma: Double) -> Unit
@@ -50,7 +52,7 @@ import kotlin.math.sqrt
 
         private var treeHeightValue = 0.0
         private var diameterValue = 0.0
-
+        private var volumeValue = 0.0
 
         //STARTING FUNCTION ON CREATE/DISPLAYING APPLICATION AND RUNNING FUNCTIONS
         @SuppressLint("SetTextI18n")
@@ -119,9 +121,9 @@ import kotlin.math.sqrt
                 if (treeHeightValue != 0.0 && diameterValue != 0.0) {
                     if (treeHeightValue > 0 && diameterValue > 0) {
                         // Proceed to calculation using the formula
-                        val volume = 0.7854 * (treeHeightValue / 2) * (diameterValue * diameterValue)
+                        volumeValue = 0.7854 * (treeHeightValue / 2) * (diameterValue * diameterValue)
                         // Display the calculated volume in a TextView
-                        binding.volumeResult.text = "V: ${String.format("%.1f", volume)}"
+                        binding.volumeResult.text = "V: ${String.format("%.1f", volumeValue)}"
                     } else {
                         // Handle invalid or zero values
                         Toast.makeText(this, "Please enter valid non-zero height and diameter", Toast.LENGTH_SHORT).show()
@@ -130,7 +132,19 @@ import kotlin.math.sqrt
                     // Handle empty input fields
                     Toast.makeText(this, "Please fill in both height and diameter", Toast.LENGTH_SHORT).show()
                 }
+
             }
+
+            binding.ViewClass.setOnClickListener(){
+                // Check if holdDiameter is still 0.0
+                if (volumeValue == 0.0) {
+                    // Optional: Show a message to the user indicating that the value cannot be 0.0
+                    Toast.makeText(this, "Please Calculate Volume First", Toast.LENGTH_SHORT).show()
+                } else {
+                    showCurvedAlertDialog()
+                }
+            }
+
 
             binding.resetBtn.setOnClickListener{
                resetsValue()
@@ -144,6 +158,7 @@ import kotlin.math.sqrt
                     binding.imageView.setImageResource(R.drawable.whitecrosshair)
                 }
             }
+
             //SWITCH BUTTONS VISIBILITY
             val visibilityBottomBtn = binding.bottomBtn
             val visibilityTopBtn = binding.topBtn
@@ -163,10 +178,8 @@ import kotlin.math.sqrt
                 }
             }
 
-
-
-            // Register ActivityResultLauncher based on API level
-            // Register ActivityResultLauncher for all API levels
+            //Register ActivityResultLauncher based on API level
+            //Register ActivityResultLauncher for all API levels
             resultLauncher = registerForActivityResult(
                 ActivityResultContracts.StartActivityForResult()
             ) { result ->
@@ -184,9 +197,22 @@ import kotlin.math.sqrt
                 resultLauncher.launch(intent3rdAct)
             }
 
-
-
         }//END OF ONCREATE FUNCTIONS
+
+        //SHOW CALCULATION FOR VOLUME
+        private fun showCurvedAlertDialog(){
+         val dialog: AlertDialog = MaterialAlertDialogBuilder(this, R.style.RoundedMaterialDialog)
+             .setView(R.layout.volume_dialog).show()
+
+
+         dialog.findViewById<TextView>(R.id.heightResult)?.text = "Height: ${String.format("%.1f", treeHeightValue)}m"
+         dialog.findViewById<TextView>(R.id.diameterResult)?.text = "Diameter: ${String.format("%.1f", diameterValue)}cm"
+         dialog.findViewById<TextView>(R.id.volumeResult)?.text = "V: ${String.format("%.1f", volumeValue)}"
+
+         dialog.findViewById<View>(R.id.closeDialog)?.setOnClickListener{
+             dialog.dismiss()
+         }
+        }
 
         private fun checkDistance(distanceText: String): Float? {
             // Check if distance input is empty
@@ -215,7 +241,9 @@ import kotlin.math.sqrt
             treeHeight.text = "Height:"
             diameterValue = 0.0
             treeHeightValue = 0.0
+            volumeValue = 0.0
             binding.DiamterValue.text = "Diameter:"
+            binding.volumeResult.text = "V:"
             binding.distanceValue.text.clear()
         }
 

@@ -30,10 +30,13 @@
     <string name="LeftRightValue">Left: \nRight:</string>
     <string name="left">Left</string>
     <string name="right">Right</string>
+    <string name="ViewClass">View Classification</string>
 
     <string name="HeightText">Height</string>
     <string name="HeightResult">Height:</string>
     <string name="DiameterResult">Diameter:</string>
+    <string name="VolumeResult">Volume:</string>
+    <string name="DistanceResult">Distance:</string>
     <string name="crosshair">Crosshair Dark</string>
     <string name="start">Start</string>
     <!-- TODO: Remove or change this placeholder text -->

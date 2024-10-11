@@ -144,15 +144,22 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             finish()
         }
         binding.applyButton.setOnClickListener {
-            // Prepare data to send back
-            val resultIntent = Intent()
-            resultIntent.putExtra("diameterValue", holdDiameter.toString())
+            // Check if holdDiameter is still 0.0
+            if (holdDiameter == 0.0) {
+                // Optional: Show a message to the user indicating that the value cannot be 0.0
+                Toast.makeText(this, "Diameter value cannot be 0.0. Please enter a valid value.", Toast.LENGTH_SHORT).show()
+            } else {
+                // Prepare data to send back
+                val resultIntent = Intent().apply {
+                    putExtra("diameterValue", holdDiameter.toString())
+                }
 
-            // Set the result for the previous activity
-            setResult(Activity.RESULT_OK, resultIntent)
+                // Set the result for the previous activity
+                setResult(Activity.RESULT_OK, resultIntent)
 
-            // Close the current activity and return to the previous one
-            finish()
+                // Close the current activity and return to the previous one
+                finish()
+            }
         }
 
 
