@@ -3,43 +3,45 @@
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="apply">Apply</string>
-    <string name="bottomBtn">Bottom</string>
-    <string name="topBtn">Top</string>
     <string name="backButton">Back</string>
-    <string name="HeigthText">Height</string>
     <string name="Distance">Meters Distance</string>
     <string name="markX">X</string>
     <string name="iconDesc">Icon</string>
     <string name="titleMain">Dendrometry</string>
     <string name="menuBar">Menu</string>
     <string name="Calculate">Calculate</string>
-    <string name="CalculateHeight">Calculate Height</string>
-    <string name="CalcutateVolume">Calculate Volume</string>
-    <string name="CalculateDiameter">Calculate Diameter</string>
-    <string name="topbottom">"Top: \nBottom: "</string>
     <string name="resetText">Reset</string>
     <string name="clear">Clear</string>
-    <string name="diameter">Diameter</string>
-    <string name="Volume">V:</string>
-    <string name="addsign">+</string>
-    <string name="decssign">-</string>
-
-    <string name="LeftRightValue">Left: \nRight:</string>
-    <string name="left">Left</string>
-    <string name="right">Right</string>
-    <string name="ViewClass">View Classification</string>
-    <string name="Classification">Classification</string>
-    <string name="HeightText">Height</string>
-    <string name="HeightResult">Height:</string>
-    <string name="DiameterResult">Diameter:</string>
-    <string name="VolumeResult">Volume:</string>
     <string name="DistanceResult">Distance:</string>
     <string name="crosshair">Crosshair Dark</string>
     <string name="start">Start</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!--HEIGTH STRING-->
+    <string name="CalculateHeight">Calculate Height</string>
+    <string name="HeightText">Height</string>
+    <string name="HeightResult">Height:</string>
+    <string name="bottomBtn">Bottom</string>
+    <string name="topBtn">Top</string>
+    <string name="topbottom">"Top: \nBottom: "</string>
+
+    <!--DIAMETER STRINGS-->
+    <string name="LeftRightValue">Left: \nRight:</string>
+    <string name="left">Left</string>
+    <string name="right">Right</string>
+    <string name="DiameterResult">Diameter:</string>
+    <string name="diameter">Diameter</string>
+    <string name="CalculateDiameter">Calculate Diameter</string>
+    <string name="apply">Apply</string>
+
+
+    <!--CLASIFICATION AND VOLUME STRING-->
+    <string name="Volume">V:</string>
+    <string name="ViewClass">View Classification</string>
+    <string name="Classification">Classification</string>
+    <string name="VolumeResult">Volume:</string>
+    <string name="CalcutateVolume">Calculate Volume</string>
+    <string name="DiameterClass">Diameter Class\n-</string>
 
     <!--    //NAVIGATION DRAVER-->
     <string name="History">History</string>
@@ -48,4 +50,6 @@
     <string name="open_nav">Open Navigation Drawer</string>
     <string name="close_nav">Close Navigation Drawer</string>
     <string name="home">Home</string>
+
+
 </resources>

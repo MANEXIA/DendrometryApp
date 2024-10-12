@@ -43,13 +43,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="110dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
-        android:background="#2F5044"
-        app:layout_constraintEnd_toEndOf="@+id/crosshairSwitch"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/backBtn"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialToolbar">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -135,22 +135,23 @@
 
     <Button
         android:id="@+id/bottomBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="100dp"
         android:text="@string/bottomBtn"
-        android:visibility="visible"
         android:textSize="20sp"
+        android:visibility="visible"
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/angleTextView" />
 
     <Button
         android:id="@+id/topBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="100dp"
         android:text="@string/topBtn"
         android:textSize="20sp"
         android:visibility="gone"
@@ -209,7 +210,6 @@
         android:id="@+id/resultTextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#2F5044"
         android:lineSpacingExtra="10sp"
         android:padding="5dp"
         android:text="@string/topbottom"
@@ -225,7 +225,6 @@
         android:id="@+id/DiamterValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:text="@string/DiameterResult"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
@@ -238,7 +237,6 @@
         android:id="@+id/volumeResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:text="@string/Volume"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
@@ -251,25 +249,27 @@
         android:id="@+id/arrowButtonLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="100dp"
+        android:background="#00783737"
         android:contentDescription="@string/iconDesc"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
-        android:background="#00FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/angleTextView"
-        app:srcCompat="@drawable/baseline_arrow_circle_left_24" />
+        app:srcCompat="@drawable/baseline_arrow_circle_left_24"
+        app:tint="#387F39" />
 
     <ImageButton
         android:id="@+id/arrowButtonRight"
-        android:contentDescription="@string/iconDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="50dp"
         android:background="#00FFFFFF"
+        android:contentDescription="@string/iconDesc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/angleTextView"
-        app:srcCompat="@drawable/baseline_arrow_circle_right_24" />
+        app:srcCompat="@drawable/baseline_arrow_circle_right_24"
+        app:tint="#387F39" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

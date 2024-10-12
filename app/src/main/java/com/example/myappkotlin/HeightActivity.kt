@@ -205,6 +205,14 @@ import kotlin.math.sqrt
              .setView(R.layout.volume_dialog).show()
 
 
+         if(diameterValue in 1.0..30.0){
+             dialog.findViewById<TextView>(R.id.diameterClass)?.text = "Diameter Class\n-Small Tree"
+         }else if(diameterValue in 30.0..60.0){
+             dialog.findViewById<TextView>(R.id.diameterClass)?.text = "Diameter Class\n-Medium-sized Tree"
+         }else if(diameterValue > 60.0){
+             dialog.findViewById<TextView>(R.id.diameterClass)?.text = "Diameter Class\n-Large Tree"
+         }
+
          dialog.findViewById<TextView>(R.id.heightResult)?.text = "Height: ${String.format("%.1f", treeHeightValue)}m"
          dialog.findViewById<TextView>(R.id.diameterResult)?.text = "Diameter: ${String.format("%.1f", diameterValue)}cm"
          dialog.findViewById<TextView>(R.id.volumeResult)?.text = "V: ${String.format("%.1f", volumeValue)}"
