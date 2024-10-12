@@ -1,38 +1,43 @@
 package com.example.myappkotlin
-//import android.view.View
-//import android.widget.TextView
-import android.content.Intent
+
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
-import android.view.WindowInsets
 import android.view.WindowInsetsController
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.myappkotlin.databinding.ActivityMainBinding
+import com.google.android.material.navigation.NavigationView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private lateinit var drawerLayout: DrawerLayout
     lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-        //THIS CODE ADJUST ITS PADDING TO THE SYSTEM BAR
-         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-         val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-         v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-         insets
-         }
-        //ONCLICK BTN FOR GOING TO A NEW ACTIVITY
-        binding.hBtn.setOnClickListener(){
-            val intentHeight = Intent(this, HeightActivity::class.java)
-            startActivity(intentHeight)
+
+        // Adjust padding for system bars
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawer_layout)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
 
+        // Hide system UI
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WindowCompat.setDecorFitsSystemWindows(window, false)
         } else {
@@ -44,23 +49,40 @@ class MainActivity : AppCompatActivity() {
                     )
         }
 
+        // Set up navigation drawer
+        drawerLayout = findViewById(R.id.drawer_layout)
+        val toolbar = findViewById<Toolbar>(R.id.toolBar)
+        setSupportActionBar(toolbar)
 
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        navigationView.setNavigationItemSelectedListener(this)
 
+        val toggle = ActionBarDrawerToggle(
+            this, drawerLayout, toolbar,
+            R.string.open_nav, R.string.close_nav
+        )
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
 
+        // Initially display HomeFragment and set the checked item in the navigation view
+        if (savedInstanceState == null) {
+            replaceFragment(HomeFragment())
+            navigationView.setCheckedItem(R.id.nav_home)
+        }
+    }//END OF ON CREATE
 
-    }//END OF ONCREATE FUNCTIONS
-
-    //HIDE SYSTEM NAVIGATION AND STATUS BAR
+//     Hide system navigation and status bar
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             hideSystemUI()
         }
     }
+
     private fun hideSystemUI() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.let {
-                it.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+                it.hide(WindowInsetsCompat.Type.statusBars() or WindowInsetsCompat.Type.navigationBars())
                 it.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
         } else {
@@ -74,18 +96,39 @@ class MainActivity : AppCompatActivity() {
                             or View.SYSTEM_UI_FLAG_FULLSCREEN
                     )
         }
-    }//END OF HIDE SYSTEM NAVIGATION AND STATUS BAR
+    }
 
+    private fun replaceFragment(fragment: Fragment) {
+        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, fragment)
+        transaction.commit()
+    }
 
+//    override fun onBackPressed() {
+//        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//            drawerLayout.closeDrawer(GravityCompat.START)
+//        } else {
+//            super.onBackPressed()
+//        }
+//    }
 
-
-
-
-
-
-
-
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_home -> {
+                replaceFragment(HomeFragment())
+            }
+            R.id.nav_history-> {
+                replaceFragment(HistoryFragment())
+            }
+            R.id.nav_guide -> {
+                replaceFragment(GuideFragment())
+            }
+            R.id.nav_aboutus -> {
+                replaceFragment(AboutUsFragment())
+            }
+            // Add more cases for other menu items to navigate to different fragments
+        }
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
 }
-
-
-
