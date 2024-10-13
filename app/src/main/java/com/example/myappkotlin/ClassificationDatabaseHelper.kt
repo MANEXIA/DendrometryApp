@@ -65,5 +65,13 @@ class ClassificationDatabaseHelper(Context: Context) : SQLiteOpenHelper(Context,
         return classificationlist
     }
 
+    fun deleteClassificationItem(itemId: Int){
+        val db = writableDatabase
+        val whereClause = "$COLUMN_ID = ?"
+        val whereArgs = arrayOf(itemId.toString())
+        db.delete(TABLE_NAME, whereClause, whereArgs)
+        db.close()
+    }
+
 
 }

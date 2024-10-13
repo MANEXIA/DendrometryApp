@@ -249,7 +249,6 @@ import kotlin.math.sqrt
 
 
 
-
         }
 
         private fun checkDistance(distanceText: String): Float? {

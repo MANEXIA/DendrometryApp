@@ -4,16 +4,22 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class classificationAdapter(private var classificationList: List<DataClassification>, context: Context) : RecyclerView.Adapter<classificationAdapter.classificationViewHolder>(){
-      class classificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+
+    private val db : ClassificationDatabaseHelper = ClassificationDatabaseHelper(context)
+
+    class classificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
           val heightResult: TextView = itemView.findViewById(R.id.heightResult)
           val diameterResult: TextView = itemView.findViewById(R.id.diameterResult)
           val volumeResult: TextView = itemView.findViewById(R.id.volumeResult)
           val diameterClass: TextView = itemView.findViewById(R.id.diameterClass)
           val dateVolumeClass: TextView = itemView.findViewById(R.id.dateVolumeClass)
+          val deleteBtn: ImageView = itemView.findViewById(R.id.delBtnData)
       }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): classificationViewHolder {
@@ -30,6 +36,12 @@ class classificationAdapter(private var classificationList: List<DataClassificat
         holder.volumeResult.text = "Volume: ${String.format("%.1f", classification.volume)}"
         holder.diameterClass.text = "Size: ${classification.diameterClass}"
         holder.dateVolumeClass.text = classification.date
+
+        holder.deleteBtn.setOnClickListener{
+            db.deleteClassificationItem(classification.id)
+            refreshData(db.getClassifications())
+            Toast.makeText(holder.itemView.context, "Item Deleted", Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun refreshData(newData: List<DataClassification>){
