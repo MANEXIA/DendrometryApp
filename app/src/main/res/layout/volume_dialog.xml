@@ -31,6 +31,19 @@
             app:tint="#FFFEFE" />
 
         <TextView
+            android:id="@+id/Classific"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Classification"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/closeDialog" />
+
+
+        <TextView
             android:id="@+id/heightResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,19 +81,6 @@
             app:layout_constraintTop_toBottomOf="@+id/diameterResult" />
 
         <TextView
-            android:id="@+id/Classific"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Classification"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/closeDialog" />
-
-
-        <TextView
             android:id="@+id/diameterClass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,6 +91,36 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/volumeResult"
             app:layout_constraintTop_toBottomOf="@+id/volumeResult" />
+
+        <TextView
+            android:id="@+id/dateVolumeClass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="17dp"
+            android:text="@string/date"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+
+        <Button
+            android:id="@+id/addClassification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/SaveData"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

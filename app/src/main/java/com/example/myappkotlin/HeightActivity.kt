@@ -1,7 +1,6 @@
-    package com.example.myappkotlin
+package com.example.myappkotlin
 
-
-    import android.annotation.SuppressLint
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -11,19 +10,20 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
-    import android.view.View
-    import android.widget.TextView
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-    import androidx.appcompat.app.AlertDialog
-    import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.myappkotlin.databinding.ActivityHeightBinding
-    import com.google.android.material.dialog.MaterialAlertDialogBuilder
-    import kotlin.math.atan2
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.time.LocalDate
+import kotlin.math.atan2
 import kotlin.math.sqrt
 
     //typealias LumaListener = (luma: Double) -> Unit
@@ -53,6 +53,10 @@ import kotlin.math.sqrt
         private var treeHeightValue = 0.0
         private var diameterValue = 0.0
         private var volumeValue = 0.0
+
+
+        //DATABASE
+        private lateinit var db: ClassificationDatabaseHelper
 
         //STARTING FUNCTION ON CREATE/DISPLAYING APPLICATION AND RUNNING FUNCTIONS
         @SuppressLint("SetTextI18n")
@@ -197,6 +201,10 @@ import kotlin.math.sqrt
                 resultLauncher.launch(intent3rdAct)
             }
 
+
+            db = ClassificationDatabaseHelper(this)
+
+
         }//END OF ONCREATE FUNCTIONS
 
         //SHOW CALCULATION FOR VOLUME
@@ -204,22 +212,45 @@ import kotlin.math.sqrt
          val dialog: AlertDialog = MaterialAlertDialogBuilder(this, R.style.RoundedMaterialDialog)
              .setView(R.layout.volume_dialog).show()
 
+             //DATA TO SAVE IN SQLITE DATABASE
+             //HEIGHT, DIAMETER, VOLUME, DIAMETER CLASS, DATE
 
+         var diameterClass : String = ""
          if(diameterValue in 1.0..30.0){
              dialog.findViewById<TextView>(R.id.diameterClass)?.text = "Diameter Class\n-Small Tree"
+             diameterClass = "Small Tree"
          }else if(diameterValue in 30.0..60.0){
              dialog.findViewById<TextView>(R.id.diameterClass)?.text = "Diameter Class\n-Medium-sized Tree"
+             diameterClass = "Medium-sized Tree"
          }else if(diameterValue > 60.0){
              dialog.findViewById<TextView>(R.id.diameterClass)?.text = "Diameter Class\n-Large Tree"
+             diameterClass = "Large Tree"
          }
 
          dialog.findViewById<TextView>(R.id.heightResult)?.text = "Height: ${String.format("%.1f", treeHeightValue)}m"
          dialog.findViewById<TextView>(R.id.diameterResult)?.text = "Diameter: ${String.format("%.1f", diameterValue)}cm"
          dialog.findViewById<TextView>(R.id.volumeResult)?.text = "V: ${String.format("%.1f", volumeValue)}"
+         dialog.findViewById<TextView>(R.id.dateVolumeClass)?.text = LocalDate.now().toString()
 
          dialog.findViewById<View>(R.id.closeDialog)?.setOnClickListener{
              dialog.dismiss()
          }
+
+         dialog.findViewById<View>(R.id.addClassification)?.setOnClickListener{
+               val height = treeHeightValue
+               val diameter = diameterValue
+               val volume = volumeValue
+               val diametersize = diameterClass
+               val date = LocalDate.now().toString()
+               val data = DataClassification(0, height, diameter, volume, diametersize, date)
+               db.insertClassification(data)
+                //dialog.dismiss()
+               Toast.makeText(this, "Classification Added", Toast.LENGTH_SHORT).show()
+         }
+
+
+
+
         }
 
         private fun checkDistance(distanceText: String): Float? {
@@ -393,7 +424,7 @@ import kotlin.math.sqrt
             resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°"
         }
 
-    fun calculateTreeHeight(distance: Float, bottomAngle: Float, topAngle: Float): Double {
+    private fun calculateTreeHeight(distance: Float, bottomAngle: Float, topAngle: Float): Double {
             // Convert angles from degrees to radians
             val bottomAngleRad = Math.toRadians(bottomAngle.toDouble())
             val topAngleRad = Math.toRadians(topAngle.toDouble())
