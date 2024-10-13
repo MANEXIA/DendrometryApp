@@ -44,6 +44,7 @@ class classificationAdapter(private var classificationList: List<DataClassificat
         }
     }
 
+
     fun refreshData(newData: List<DataClassification>){
         classificationList = newData
         notifyDataSetChanged()

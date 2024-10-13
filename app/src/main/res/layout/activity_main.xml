@@ -16,24 +16,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:fitsSystemWindows="true"
-            >
-
+            android:fitsSystemWindows="true" >
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolBar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="60dp"
                 android:background="#548D78"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:title="TreeRule"
+                app:titleTextColor="#00FFFFFF" />
 
             <FrameLayout
                 android:id="@+id/fragment_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
-
 
     <com.google.android.material.navigation.NavigationView
         android:fitsSystemWindows="true"
@@ -45,6 +44,7 @@
         app:menu="@menu/nav_menu"
         app:itemIconTint="@color/darkgreencolor"
         app:itemTextColor="@color/darkgreencolor"
+        android:background="@color/white"
         />
 
 <!--    <ImageButton-->

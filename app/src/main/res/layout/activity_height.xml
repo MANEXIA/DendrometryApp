@@ -29,17 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <!--    <LinearLayout-->
-    <!--        android:id="@+id/toplinearLayout"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="70dp"-->
-    <!--        android:background="#2F5044"-->
-    <!--        android:orientation="vertical"-->
-    <!--        android:visibility="visible"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
+    
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -121,8 +111,8 @@
         android:id="@+id/backBtn"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
         android:background="#2F5044"
         android:contentDescription="@string/iconDesc"
         android:padding="0dp"
@@ -199,8 +189,8 @@
         android:id="@+id/crosshairSwitch"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
         android:text="@string/crosshair"
         app:layout_constraintEnd_toEndOf="@+id/materialToolbar"
         app:layout_constraintTop_toTopOf="@+id/materialToolbar" />
@@ -255,7 +245,7 @@
         android:contentDescription="@string/iconDesc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/angleTextView"
-        app:srcCompat="@drawable/baseline_arrow_circle_left_24"
+        app:srcCompat="@drawable/change_bt_left"
         app:tint="#387F39" />
 
     <ImageButton
@@ -268,7 +258,7 @@
         android:contentDescription="@string/iconDesc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/angleTextView"
-        app:srcCompat="@drawable/baseline_arrow_circle_right_24"
+        app:srcCompat="@drawable/change_bt_right"
         app:tint="#387F39" />
 
 

@@ -5,32 +5,32 @@
 
     <group
         android:checkableBehavior="single"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        >
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/baseline_home_24"
             android:title="@string/home"
-            />
+            android:background="@drawable/nav_item_background"
+        />
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/baseline_history_24"
             android:title="@string/History"
-            />
-
-
+            android:background="@drawable/nav_item_background"
+        />
         <item
             android:id="@+id/nav_guide"
             android:icon="@drawable/baseline_rule_24"
             android:title="@string/Guide"
-            />
-
-
+            android:background="@drawable/nav_item_background"
+        />
         <item
             android:id="@+id/nav_aboutus"
             android:icon="@drawable/baseline_info_outline_24"
             android:title="@string/Aboutus"
-            />
-
+            android:background="@drawable/nav_item_background"
+        />
 
     </group>
 

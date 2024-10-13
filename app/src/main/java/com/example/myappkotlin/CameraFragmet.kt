@@ -72,7 +72,7 @@ class CameraFragmet : Fragment() {
         }
     }
 
-    // Request camera permissions
+    // Request camera and storage permissions
     private fun requestPermissions() {
         activityResultLauncher.launch(REQUIRED_PERMISSIONS)
     }
@@ -138,10 +138,11 @@ class CameraFragmet : Fragment() {
     companion object {
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private val REQUIRED_PERMISSIONS = mutableListOf(
-            Manifest.permission.CAMERA
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE // Add permission for reading external storage
         ).apply {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                add(Manifest.permission.WRITE_EXTERNAL_STORAGE) // Only for versions <= P
             }
         }.toTypedArray()
     }
