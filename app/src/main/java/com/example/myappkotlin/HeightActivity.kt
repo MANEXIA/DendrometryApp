@@ -201,9 +201,7 @@ import kotlin.math.sqrt
                 resultLauncher.launch(intent3rdAct)
             }
 
-
             db = ClassificationDatabaseHelper(this)
-
 
         }//END OF ONCREATE FUNCTIONS
 
@@ -214,6 +212,7 @@ import kotlin.math.sqrt
 
              //DATA TO SAVE IN SQLITE DATABASE
              //HEIGHT, DIAMETER, VOLUME, DIAMETER CLASS, DATE
+
 
          var diameterClass : String = ""
          if(diameterValue in 1.0..30.0){
@@ -244,7 +243,7 @@ import kotlin.math.sqrt
                val date = LocalDate.now().toString()
                val data = DataClassification(0, height, diameter, volume, diametersize, date)
                db.insertClassification(data)
-                //dialog.dismiss()
+               dialog.dismiss()
                Toast.makeText(this, "Classification Added", Toast.LENGTH_SHORT).show()
          }
 

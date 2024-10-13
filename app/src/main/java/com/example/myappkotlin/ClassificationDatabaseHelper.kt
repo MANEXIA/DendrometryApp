@@ -42,5 +42,28 @@ class ClassificationDatabaseHelper(Context: Context) : SQLiteOpenHelper(Context,
         db.insert(TABLE_NAME, null, values)
     }
 
+    fun getClassifications(): List<DataClassification> {
+        val classificationlist = mutableListOf<DataClassification>()
+        val db = readableDatabase
+        val query = "SELECT * FROM $TABLE_NAME"
+        val cursor = db.rawQuery(query, null)
+
+        while (cursor.moveToNext()){
+            val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
+            val height = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_HEIGHT))
+            val diameter = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_DIAMETER))
+            val volume = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_VOLUME))
+            val diameterClass = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DIAMETER_CLASS))
+            val date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
+
+            val classification = DataClassification(id, height, diameter, volume, diameterClass, date)
+            classificationlist.add(classification)
+        }
+
+        cursor.close()
+        db.close()
+        return classificationlist
+    }
+
 
 }
