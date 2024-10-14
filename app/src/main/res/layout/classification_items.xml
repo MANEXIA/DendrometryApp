@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/HeightResult"
-                android:textColor="@color/darkgreencolor"
+                android:textColor="#5D5E22"
                 android:layout_marginTop="5dp"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="@string/DiameterResult"
-            android:textColor="@color/darkgreencolor"
+            android:textColor="#5D5E22"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="@string/VolumeResult"
-            android:textColor="@color/darkgreencolor"
+            android:textColor="#5D5E22"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="@string/DiameterClassData"
-            android:textColor="@color/darkgreencolor"
+            android:textColor="#5D5E22"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -78,7 +78,7 @@
             android:layout_marginTop="5dp"
             android:textAlignment="textEnd"
             android:text="@string/date"
-            android:textColor="@color/darkgreencolor"
+            android:textColor="#5D5E22"
             android:textSize="10sp"
             android:textStyle="bold" />
 

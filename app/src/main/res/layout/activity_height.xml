@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2F5044"
+    android:background="@color/darkgreencolor"
     tools:context=".HeightActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -61,6 +61,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:background="@drawable/button_backgroud"
+        android:textColor="#F2F3AB"
         android:text="@string/diameter"
         android:textSize="14sp"
         app:cornerRadius="5dp"
@@ -73,6 +75,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="@string/ViewClass"
+        android:visibility="gone"
+        android:background="@drawable/button_backgroud"
+        android:textColor="#F2F3AB"
+        android:padding="10dp"
         android:textSize="14sp"
         app:cornerRadius="5dp"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout"
@@ -113,7 +119,7 @@
         android:layout_height="48dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:background="#2F5044"
+        android:background="@color/darkgreencolor"
         android:contentDescription="@string/iconDesc"
         android:padding="0dp"
         android:scaleType="fitCenter"
@@ -130,6 +136,8 @@
         android:layout_marginTop="100dp"
         android:text="@string/bottomBtn"
         android:textSize="20sp"
+        android:background="@drawable/button_backgroud"
+        android:textColor="#F2F3AB"
         android:visibility="visible"
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
@@ -143,6 +151,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:text="@string/topBtn"
+        android:background="@drawable/button_backgroud"
+        android:textColor="#F2F3AB"
         android:textSize="20sp"
         android:visibility="gone"
         app:cornerRadius="20dp"
@@ -172,6 +182,9 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="15dp"
         android:text="@string/CalcutateVolume"
+        android:background="@drawable/button_backgroud"
+        android:textColor="#F2F3AB"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -182,16 +195,19 @@
         android:layout_marginStart="10dp"
         android:layout_marginBottom="15dp"
         android:text="@string/clear"
+        android:background="@drawable/button_backgroud"
+        android:textColor="#F2F3AB"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/crosshairSwitch"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:text="@string/crosshair"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/materialToolbar"
         app:layout_constraintTop_toTopOf="@+id/materialToolbar" />
 
@@ -246,7 +262,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/angleTextView"
         app:srcCompat="@drawable/change_bt_left"
-        app:tint="#387F39" />
+        app:tint="#436850" />
 
     <ImageButton
         android:id="@+id/arrowButtonRight"
@@ -259,7 +275,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/angleTextView"
         app:srcCompat="@drawable/change_bt_right"
-        app:tint="#387F39" />
+        app:tint="#436850" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

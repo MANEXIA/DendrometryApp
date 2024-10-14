@@ -20,30 +20,18 @@
             android:id="@+id/hBtn"
             android:layout_width="159dp"
             android:layout_height="53dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/start"
-            android:textSize="25sp"
-            android:visibility="visible"
-            app:cornerRadius="10sp"
-            app:iconPadding="5dp"
-            app:layout_constraintEnd_toEndOf="@+id/textView"
-            app:layout_constraintStart_toStartOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-
-        <Button
-            android:id="@+id/viewClassification"
-            android:layout_width="wrap_content"
-            android:layout_height="53dp"
             android:layout_marginTop="15dp"
-            android:text="@string/Classification"
+            android:text="@string/start"
+            android:background="@drawable/button_backgroud"
+            android:textColor="#BDBE86"
             android:textSize="25sp"
             android:visibility="visible"
-            app:cornerRadius="10sp"
+            app:cornerRadius="30dp"
             app:iconPadding="5dp"
-            app:layout_constraintEnd_toEndOf="@+id/hBtn"
-            app:layout_constraintStart_toStartOf="@+id/hBtn"
-            app:layout_constraintTop_toBottomOf="@+id/hBtn" />
+            app:layout_constraintEnd_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
 
         <ImageView
             android:id="@+id/imageView"
@@ -57,20 +45,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/icon" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:text="@string/titleMain"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

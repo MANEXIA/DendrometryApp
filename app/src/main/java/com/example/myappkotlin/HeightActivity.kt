@@ -128,6 +128,7 @@ import kotlin.math.sqrt
                         volumeValue = 0.7854 * (treeHeightValue / 2) * (diameterValue * diameterValue)
                         // Display the calculated volume in a TextView
                         binding.volumeResult.text = "V: ${String.format("%.1f", volumeValue)}"
+                        binding.ViewClass.visibility = View.VISIBLE
                     } else {
                         // Handle invalid or zero values
                         Toast.makeText(this, "Please enter valid non-zero height and diameter", Toast.LENGTH_SHORT).show()
@@ -138,6 +139,8 @@ import kotlin.math.sqrt
                 }
 
             }
+
+
 
             binding.ViewClass.setOnClickListener(){
                 // Check if holdDiameter is still 0.0
@@ -216,13 +219,13 @@ import kotlin.math.sqrt
 
          var diameterClass : String = ""
          if(diameterValue in 1.0..30.0){
-             dialog.findViewById<TextView>(R.id.diameterClass)?.text = "Diameter Class\n-Small Tree"
+             dialog.findViewById<TextView>(R.id.diameterClass)?.text = "Diameter Class: Small Tree"
              diameterClass = "Small Tree"
          }else if(diameterValue in 30.0..60.0){
-             dialog.findViewById<TextView>(R.id.diameterClass)?.text = "Diameter Class\n-Medium-sized Tree"
+             dialog.findViewById<TextView>(R.id.diameterClass)?.text = "Diameter Class: Medium-sized Tree"
              diameterClass = "Medium-sized Tree"
          }else if(diameterValue > 60.0){
-             dialog.findViewById<TextView>(R.id.diameterClass)?.text = "Diameter Class\n-Large Tree"
+             dialog.findViewById<TextView>(R.id.diameterClass)?.text = "Diameter Class: Large Tree"
              diameterClass = "Large Tree"
          }
 

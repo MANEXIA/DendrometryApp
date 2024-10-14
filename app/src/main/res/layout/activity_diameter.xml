@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2F5044"
+    android:background="@color/darkgreencolor"
     tools:context=".DiameterActivity">
 
 
@@ -138,7 +138,7 @@
         android:layout_height="48dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:background="#2F5044"
+        android:background="@color/darkgreencolor"
         android:contentDescription="@string/iconDesc"
         android:padding="0dp"
         android:scaleType="fitCenter"
@@ -155,6 +155,8 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:text="@string/right"
+        android:background="@drawable/button_backgroud"
+        android:textColor="#F2F3AB"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -166,19 +168,20 @@
         android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
         android:text="@string/left"
+        android:background="@drawable/button_backgroud"
+        android:textColor="#F2F3AB"
         android:textSize="20sp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/calculateDiameter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="@string/CalculateDiameter"
-        app:layout_constraintBottom_toTopOf="@+id/rightWbutton"
-        app:layout_constraintEnd_toEndOf="@+id/rightWbutton" />
+<!--    <Button-->
+<!--        android:id="@+id/calculateDiameter"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="20dp"-->
+<!--        android:text="@string/CalculateDiameter"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/rightWbutton"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/rightWbutton" />-->
 
     <Button
         android:id="@+id/resetDiameter"
@@ -186,6 +189,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="@string/clear"
+        android:background="@drawable/button_backgroud"
+        android:textColor="#F2F3AB"
         app:layout_constraintBottom_toTopOf="@+id/leftWbutton"
         app:layout_constraintStart_toStartOf="@+id/leftWbutton" />
 
@@ -194,15 +199,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/apply"
+        android:background="@drawable/button_backgroud"
+        android:textColor="#F2F3AB"
         app:layout_constraintEnd_toEndOf="@+id/distanceValue"
         app:layout_constraintTop_toBottomOf="@+id/distanceValue" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/crosshairSwitch"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
+        android:textColor="@color/white"
         android:text="@string/crosshair"
         app:layout_constraintEnd_toEndOf="@+id/materialToolbar"
         app:layout_constraintTop_toTopOf="@+id/materialToolbar" />

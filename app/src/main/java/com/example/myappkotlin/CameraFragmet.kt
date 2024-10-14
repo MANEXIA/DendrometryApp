@@ -95,7 +95,7 @@ class CameraFragmet : Fragment() {
                 .build()
                 .also {
                     Log.d("BackDebug", "Attaching surfaceProvider to viewFinder")
-                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+                    it.surfaceProvider = binding.viewFinder.surfaceProvider
                 }
 
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
@@ -139,7 +139,6 @@ class CameraFragmet : Fragment() {
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private val REQUIRED_PERMISSIONS = mutableListOf(
             Manifest.permission.CAMERA,
-            Manifest.permission.READ_EXTERNAL_STORAGE // Add permission for reading external storage
         ).apply {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
                 add(Manifest.permission.WRITE_EXTERNAL_STORAGE) // Only for versions <= P

@@ -41,7 +41,7 @@
     <string name="Classification">Classification</string>
     <string name="VolumeResult">Volume:</string>
     <string name="CalcutateVolume">Calculate Volume</string>
-    <string name="DiameterClass">Diameter Class\n-</string>
+    <string name="DiameterClass">Diameter Class:</string>
     <string name="DiameterClassData">Diameter Class:</string>
     <string name="SaveData">Save</string>
     <string name="date">date:</string>

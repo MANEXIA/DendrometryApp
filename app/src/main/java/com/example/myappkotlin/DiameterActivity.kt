@@ -64,13 +64,6 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         angleView = binding.textView2
         leftRightvaltxt = binding.leftrightValuetxt
 
-        binding.leftWbutton.setOnClickListener(){
-            setLeftAngleValue()
-        }
-        binding.rightWbutton.setOnClickListener(){
-            setRigtAngleValue()
-        }
-
         //GET FOV OF PHONE
         val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         val cameraId = cameraManager.cameraIdList[0] // Use the appropriate camera ID
@@ -83,22 +76,17 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             Toast.makeText(this, "Unable to get camera characteristics", Toast.LENGTH_SHORT).show()
             return // Exit early if we can't retrieve necessary data
         }
-        binding.calculateDiameter.setOnClickListener(){
-            try {
-                val distanceText = binding.distanceValue.text.toString().trim()
 
-                if (distanceText.isEmpty()) {
-                    Toast.makeText(this, "Please enter a distance value", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
-                val distanceValue = distanceText.toFloatOrNull()
-
-                if (distanceValue == null || distanceValue <= 0) {
-                    Toast.makeText(this, "Invalid distance value", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
+        binding.leftWbutton.setOnClickListener(){
+            val distanceText = binding.distanceValue.text.toString()
+            // Validate distance input using checkDistance
+            val distanceValue = checkDistance(distanceText) ?: return@setOnClickListener
+            // If distance is valid, call setValueTOP
+            setLeftAngleValue()
+            if(rightAngle == 0f){
+                //Toast.makeText(this, "Please Set Bottom Angle", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }else{
                 if (abs(leftAngle - rightAngle) < yawNoiseThreshold) {
                     Toast.makeText(this, "Please ensure the left and right angles are different", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
@@ -115,11 +103,38 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 binding.diameterRES.text = "Diameter: ${String.format("%.1f", diaMtoCm)}cm"
                 holdDiameter = diaMtoCm
                 Log.d("DiameterDebug", "Calculated Diameter: $diameterValue")
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(this, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+        binding.rightWbutton.setOnClickListener(){
+            val distanceText = binding.distanceValue.text.toString()
+            // Validate distance input using checkDistance
+            val distanceValue = checkDistance(distanceText) ?: return@setOnClickListener
+            // If distance is valid, call setValueTOP
+            setRigtAngleValue()
+            if(leftAngle == 0f){
+                //Toast.makeText(this, "Please Set Bottom Angle", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }else{
+                if (abs(leftAngle - rightAngle) < yawNoiseThreshold) {
+                    Toast.makeText(this, "Please ensure the left and right angles are different", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                // Calculate the FOV in degrees (for simplicity, assuming focalLengths[0] is the current focal length)
+                val fov = Math.toDegrees(2 * Math.atan((sensorSize.width / (2 * focalLengths[0].toDouble())))).toFloat()
+
+                Log.d("myFOV", "Calculated FOV: $fov degrees")
+
+                val diameterValue = calculateTreeDiameter(leftAngle, rightAngle, distanceValue, fov)
+                val diaMtoCm = diameterValue * 100 // Convert meters to cm
+                //"Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}° DIAMETER: ${String.format("%.1f", diaMtoCm)}cm"
+                binding.diameterRES.text = "Diameter: ${String.format("%.1f", diaMtoCm)}cm"
+                holdDiameter = diaMtoCm
+                Log.d("DiameterDebug", "Calculated Diameter: $diameterValue")
             }
         }
+
         //CROSSHAIR CHANGE
         binding.crosshairSwitch.setOnCheckedChangeListener{ _, isChecked ->
 
@@ -191,6 +206,26 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             sensorM.unregisterListener(this)
             areSensorsRegistered = false
         }
+    }
+
+
+    private fun checkDistance(distanceText: String): Float? {
+        // Check if distance input is empty
+        if (distanceText.isEmpty()) {
+            Toast.makeText(this, "Please enter a distance value", Toast.LENGTH_SHORT).show()
+            return null
+        }
+
+        // Convert distance input to float
+        val distanceValue = distanceText.toFloatOrNull()
+
+        // Validate if the converted value is not null and greater than 0
+        if (distanceValue == null || distanceValue <= 0) {
+            Toast.makeText(this, "Invalid distance value", Toast.LENGTH_SHORT).show()
+            return null
+        }
+        // Return the valid distance value
+        return distanceValue
     }
 
 
