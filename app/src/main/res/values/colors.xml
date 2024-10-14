@@ -8,5 +8,8 @@
     <color name="nocolor">#10626262</color>
     <color name="red">#FFFF0000</color>
     <color name="appcolor">#FF4CAF50</color>
-    <color name="darkgreencolor">#165C42</color>
+<!--    <color name="darkgreencolor">#165C42</color>-->
+<!--    <color name="textColorMAIN">#BDBE86</color>-->
+    <color name="textColorMAIN">#B8860B</color>
+    <color name="darkgreencolor">#013220</color>
 </resources>

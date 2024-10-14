@@ -20,17 +20,18 @@
             android:id="@+id/hBtn"
             android:layout_width="159dp"
             android:layout_height="53dp"
-            android:layout_marginTop="15dp"
-            android:text="@string/start"
+            android:layout_marginTop="10dp"
             android:background="@drawable/button_backgroud"
+            android:text="@string/start"
             android:textColor="#BDBE86"
             android:textSize="25sp"
+            android:textStyle="bold"
             android:visibility="visible"
             app:cornerRadius="30dp"
             app:iconPadding="5dp"
-            app:layout_constraintEnd_toEndOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintEnd_toEndOf="@+id/titleApp"
+            app:layout_constraintStart_toStartOf="@+id/titleApp"
+            app:layout_constraintTop_toBottomOf="@+id/titleApp" />
 
 
         <ImageView
@@ -44,6 +45,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/icon" />
+
+        <TextView
+            android:id="@+id/titleApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/titleMain"
+
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

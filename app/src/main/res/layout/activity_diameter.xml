@@ -51,6 +51,7 @@
         android:layout_marginEnd="10dp"
         android:autofillHints="@string/Distance"
         android:hint="@string/Distance"
+        android:textColor="#FFFFFF"
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
         app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
@@ -154,10 +155,11 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:text="@string/right"
         android:background="@drawable/button_backgroud"
+        android:text="@string/right"
         android:textColor="#F2F3AB"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -167,10 +169,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
-        android:text="@string/left"
         android:background="@drawable/button_backgroud"
+        android:text="@string/left"
         android:textColor="#F2F3AB"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -188,9 +191,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:background="@drawable/button_clear_background"
         android:text="@string/clear"
-        android:background="@drawable/button_backgroud"
-        android:textColor="#F2F3AB"
+        android:textColor="@color/white"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/leftWbutton"
         app:layout_constraintStart_toStartOf="@+id/leftWbutton" />
 
@@ -198,9 +202,10 @@
         android:id="@+id/applyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/apply"
         android:background="@drawable/button_backgroud"
+        android:text="@string/apply"
         android:textColor="#F2F3AB"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/distanceValue"
         app:layout_constraintTop_toBottomOf="@+id/distanceValue" />
 
