@@ -127,7 +127,7 @@ import kotlin.math.sqrt
                         // Proceed to calculation using the formula
                         volumeValue = 0.7854 * (treeHeightValue / 2) * (diameterValue * diameterValue)
                         // Display the calculated volume in a TextView
-                        binding.volumeResult.text = "V: ${String.format("%.1f", volumeValue)}"
+                        binding.volumeResult.text = "Volume: ${String.format("%.1f", volumeValue)}"
                         binding.ViewClass.visibility = View.VISIBLE
                     } else {
                         // Handle invalid or zero values
@@ -231,7 +231,7 @@ import kotlin.math.sqrt
 
          dialog.findViewById<TextView>(R.id.heightResult)?.text = "Height: ${String.format("%.1f", treeHeightValue)}m"
          dialog.findViewById<TextView>(R.id.diameterResult)?.text = "Diameter: ${String.format("%.1f", diameterValue)}cm"
-         dialog.findViewById<TextView>(R.id.volumeResult)?.text = "V: ${String.format("%.1f", volumeValue)}"
+         dialog.findViewById<TextView>(R.id.volumeResult)?.text = "Volume: ${String.format("%.1f", volumeValue)}"
          dialog.findViewById<TextView>(R.id.dateVolumeClass)?.text = LocalDate.now().toString()
 
          dialog.findViewById<View>(R.id.closeDialog)?.setOnClickListener{

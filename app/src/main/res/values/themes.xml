@@ -10,12 +10,6 @@
 
     <style name="Theme.MyAppKotlin" parent="Base.Theme.MyAppKotlin" />
 
-
-
-
-
-
-
     <style name="RoundedMaterialDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
          <item name="shapeAppearanceOverlay">@style/CustomDialog</item>
          <item name="colorSurface">@color/white</item>

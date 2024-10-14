@@ -65,6 +65,7 @@
         android:lineSpacingExtra="10sp"
         android:padding="5dp"
         android:text="@string/LeftRightValue"
+        android:fontFamily="@font/bree_serif"
         android:textAlignment="viewStart"
         android:textColor="#FCF9F9"
         android:textSize="14sp"
@@ -80,6 +81,7 @@
         android:layout_marginTop="5dp"
         android:text="@string/DiameterResult"
         android:textColor="#FCF9F9"
+        android:fontFamily="@font/bree_serif"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/leftrightValuetxt"
@@ -157,8 +159,10 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_backgroud"
         android:text="@string/right"
+        android:fontFamily="@font/bree_serif"
         android:textColor="#F2F3AB"
         android:textSize="20sp"
+        android:textAllCaps="false"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -171,6 +175,8 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_backgroud"
         android:text="@string/left"
+        android:fontFamily="@font/bree_serif"
+        android:textAllCaps="false"
         android:textColor="#F2F3AB"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -188,11 +194,13 @@
 
     <Button
         android:id="@+id/resetDiameter"
+        android:fontFamily="@font/bree_serif"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_clear_background"
         android:text="@string/clear"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/leftWbutton"
@@ -200,10 +208,12 @@
 
     <Button
         android:id="@+id/applyButton"
+        android:fontFamily="@font/bree_serif"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_backgroud"
         android:text="@string/apply"
+        android:textAllCaps="false"
         android:textColor="#F2F3AB"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/distanceValue"
@@ -211,12 +221,15 @@
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/crosshairSwitch"
+        android:fontFamily="@font/bree_serif"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
-        android:textColor="@color/white"
         android:text="@string/crosshair"
+        android:textColor="#FFF1CA"
+
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/materialToolbar"
         app:layout_constraintTop_toTopOf="@+id/materialToolbar" />
 
