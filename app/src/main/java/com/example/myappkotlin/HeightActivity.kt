@@ -22,11 +22,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.myappkotlin.databinding.ActivityHeightBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
-    //typealias LumaListener = (luma: Double) -> Unit
+//typealias LumaListener = (luma: Double) -> Unit
 
     class HeightActivity : AppCompatActivity(), SensorEventListener{
         //BINDING ID/THIS IS THE SECOND ACTIVITY XML
@@ -215,7 +216,10 @@ import kotlin.math.sqrt
 
              //DATA TO SAVE IN SQLITE DATABASE
              //HEIGHT, DIAMETER, VOLUME, DIAMETER CLASS, DATE
-
+            // Get current date and time
+            val currentDateTime = LocalDateTime.now()
+            // Define a date-time formatter to format the output
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss") // Customize the format as needed
 
          var diameterClass : String = ""
          if(diameterValue in 1.0..30.0){
@@ -232,7 +236,7 @@ import kotlin.math.sqrt
          dialog.findViewById<TextView>(R.id.heightResult)?.text = "Height: ${String.format("%.1f", treeHeightValue)}m"
          dialog.findViewById<TextView>(R.id.diameterResult)?.text = "Diameter: ${String.format("%.1f", diameterValue)}cm"
          dialog.findViewById<TextView>(R.id.volumeResult)?.text = "Volume: ${String.format("%.1f", volumeValue)}"
-         dialog.findViewById<TextView>(R.id.dateVolumeClass)?.text = LocalDate.now().toString()
+         dialog.findViewById<TextView>(R.id.dateVolumeClass)?.text = currentDateTime.format(formatter)
 
          dialog.findViewById<View>(R.id.closeDialog)?.setOnClickListener{
              dialog.dismiss()
@@ -243,7 +247,7 @@ import kotlin.math.sqrt
                val diameter = diameterValue
                val volume = volumeValue
                val diametersize = diameterClass
-               val date = LocalDate.now().toString()
+               val date = currentDateTime.format(formatter)
                val data = DataClassification(0, height, diameter, volume, diametersize, date)
                db.insertClassification(data)
                dialog.dismiss()
