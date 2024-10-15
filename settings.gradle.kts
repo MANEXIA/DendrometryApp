@@ -1,4 +1,3 @@
-include(":openCV")
 pluginManagement {
     repositories {
         google {

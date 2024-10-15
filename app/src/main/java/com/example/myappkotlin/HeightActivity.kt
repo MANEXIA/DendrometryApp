@@ -77,6 +77,7 @@ import kotlin.math.sqrt
             binding.backBtn.setOnClickListener{
                 finish()
             }
+
             // Check if savedInstanceState is null to avoid adding the fragment multiple times
             if (savedInstanceState == null) {
                 val cameraFragment = CameraFragmet() // Replace with your actual Fragment class
@@ -105,6 +106,7 @@ import kotlin.math.sqrt
                     treeHeight.text = "Height: ${String.format("%.1f", treeHeightValue)}m"
                 }
             }
+
             binding.topBtn.setOnClickListener{
                 val distanceText = binding.distanceValue.text.toString()
                 // Validate distance input using checkDistance
@@ -140,7 +142,6 @@ import kotlin.math.sqrt
                 }
 
             }
-
 
 
             binding.ViewClass.setOnClickListener(){
@@ -313,7 +314,7 @@ import kotlin.math.sqrt
 
 
     private var isActivityFinishing = false
-        override fun onResume() {
+    override fun onResume() {
             super.onResume()
             if (isActivityFinishing) {
                 Log.d("BackDebug", "Activity is finishing, skipping setup")
