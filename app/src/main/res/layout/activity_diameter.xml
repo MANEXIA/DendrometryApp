@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_camera_fragmet" />
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/materialToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,63 +29,120 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/darkgreencolor"
+            android:contentDescription="@string/iconDesc"
+            android:padding="0dp"
+            android:scaleType="fitCenter"
+            android:text="@string/backButton"
+            app:cornerRadius="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/materialToolbar"
+            app:srcCompat="@drawable/back_icon" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/crosshairSwitch"
+            android:fontFamily="@font/bree_serif"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/crosshair"
+            android:textColor="#FFF1CA"
+
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/materialToolbar"
+            app:layout_constraintTop_toTopOf="@+id/materialToolbar" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="0dp"
-        android:layout_height="110dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/crosshairSwitch"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/backBtn"
-        app:layout_constraintTop_toBottomOf="@+id/materialToolbar"></androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <EditText
-        android:id="@+id/distanceValue"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
-        android:autofillHints="@string/Distance"
-        android:hint="@string/Distance"
-        android:textColor="#FFFFFF"
-        android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
-
-    <TextView
-        android:id="@+id/leftrightValuetxt"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
-        android:lineSpacingExtra="10sp"
+        android:layout_marginTop="5dp"
         android:padding="5dp"
-        android:text="@string/LeftRightValue"
-        android:fontFamily="@font/bree_serif"
-        android:textAlignment="viewStart"
-        android:textColor="#FCF9F9"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialToolbar">
 
-    <TextView
-        android:id="@+id/diameterRES"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="@string/DiameterResult"
-        android:textColor="#FCF9F9"
-        android:fontFamily="@font/bree_serif"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/leftrightValuetxt"
-        app:layout_constraintTop_toBottomOf="@+id/leftrightValuetxt" />
+        <TextView
+            android:id="@+id/leftrightValuetxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:lineSpacingExtra="10sp"
+            android:padding="5dp"
+            android:text="@string/LeftRightValue"
+            android:fontFamily="@font/bree_serif"
+            android:textAlignment="viewStart"
+            android:textColor="#FCF9F9"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+
+        <TextView
+            android:id="@+id/diameterRES"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/DiameterResult"
+            android:textColor="#FCF9F9"
+            android:fontFamily="@font/bree_serif"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/leftrightValuetxt"
+            app:layout_constraintTop_toBottomOf="@+id/leftrightValuetxt" />
+
+
+
+
+        <EditText
+            android:id="@+id/distanceValue"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:autofillHints="@string/Distance"
+            android:hint="@string/Distance"
+            android:textColor="#FFFFFF"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+
+
+        <Button
+            android:id="@+id/applyButton"
+            android:fontFamily="@font/bree_serif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_backgroud"
+            android:text="@string/apply"
+            android:textAllCaps="false"
+            android:textColor="#F2F3AB"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/distanceValue"
+            app:layout_constraintTop_toBottomOf="@+id/distanceValue" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
 
         <ImageView
@@ -135,21 +192,7 @@
     <!--        app:layout_constraintTop_toBottomOf="@+id/textWidth" />-->
 
 
-    <ImageButton
-        android:id="@+id/backBtn"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/darkgreencolor"
-        android:contentDescription="@string/iconDesc"
-        android:padding="0dp"
-        android:scaleType="fitCenter"
-        android:text="@string/backButton"
-        app:cornerRadius="5dp"
-        app:layout_constraintStart_toStartOf="@+id/materialToolbar"
-        app:layout_constraintTop_toTopOf="@+id/materialToolbar"
-        app:srcCompat="@drawable/back_icon" />
+
 
     <Button
         android:id="@+id/rightWbutton"
@@ -206,32 +249,9 @@
         app:layout_constraintBottom_toTopOf="@+id/leftWbutton"
         app:layout_constraintStart_toStartOf="@+id/leftWbutton" />
 
-    <Button
-        android:id="@+id/applyButton"
-        android:fontFamily="@font/bree_serif"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_backgroud"
-        android:text="@string/apply"
-        android:textAllCaps="false"
-        android:textColor="#F2F3AB"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/distanceValue"
-        app:layout_constraintTop_toBottomOf="@+id/distanceValue" />
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/crosshairSwitch"
-        android:fontFamily="@font/bree_serif"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
-        android:text="@string/crosshair"
-        android:textColor="#FFF1CA"
 
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/materialToolbar"
-        app:layout_constraintTop_toTopOf="@+id/materialToolbar" />
+
 
 <!--    <androidx.appcompat.widget.Toolbar-->
 <!--        android:id="@+id/toolbar"-->

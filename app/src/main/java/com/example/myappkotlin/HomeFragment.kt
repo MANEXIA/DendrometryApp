@@ -43,6 +43,12 @@ class HomeFragment : Fragment() {
             startActivity(intentHeight)
         }
 
+        binding.distanceBtn.setOnClickListener {
+            val intentDistanceActivity = Intent(requireContext(), DistanceActivity::class.java)
+            startActivity(intentDistanceActivity)
+        }
+
+
 
     }
 

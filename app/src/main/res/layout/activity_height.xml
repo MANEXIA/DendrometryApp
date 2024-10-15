@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_camera_fragmet" />
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/materialToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,14 +27,46 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/darkgreencolor"
+            android:contentDescription="@string/iconDesc"
+            android:padding="0dp"
+            android:scaleType="fitCenter"
+            android:text="@string/backButton"
+            app:cornerRadius="5dp"
+            app:layout_constraintStart_toStartOf="@+id/materialToolbar"
+            app:layout_constraintTop_toTopOf="@+id/materialToolbar"
+            app:srcCompat="@drawable/back_icon" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/crosshairSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/bree_serif"
+            android:layout_marginEnd="10dp"
+            android:text="@string/crosshair"
+            android:textColor="#FFF1CA"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/materialToolbar"
+            app:layout_constraintTop_toTopOf="@+id/materialToolbar" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
@@ -42,20 +74,82 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialToolbar">
 
+
+        <TextView
+            android:id="@+id/heightResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="@string/HeightResult"
+            android:fontFamily="@font/bree_serif"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+
+        <TextView
+            android:id="@+id/DiamterValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/DiameterResult"
+            android:fontFamily="@font/bree_serif"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/heightResult"
+            app:layout_constraintTop_toBottomOf="@+id/heightResult" />
+
+        <TextView
+            android:id="@+id/volumeResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/VolumeResult"
+            android:fontFamily="@font/bree_serif"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/DiamterValue"
+            app:layout_constraintTop_toBottomOf="@+id/DiamterValue" />
+
+
+
+        <TextView
+            android:id="@+id/resultTextview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="10sp"
+            android:fontFamily="@font/bree_serif"
+            android:text="@string/topbottom"
+            android:textAlignment="viewStart"
+            android:textColor="#FCF9F9"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/distanceValue"
+            app:layout_constraintStart_toStartOf="@+id/distanceValue" />
+
+        <EditText
+            android:id="@+id/distanceValue"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:autofillHints="@string/Distance"
+            android:hint="@string/Distance"
+            android:inputType="numberDecimal"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <EditText
-        android:id="@+id/distanceValue"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:autofillHints="@string/Distance"
-        android:hint="@string/Distance"
-        android:inputType="numberDecimal"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toEndOf="@+id/constraintLayout" />
+
 
     <Button
         android:id="@+id/diameterStartBtn"
@@ -120,21 +214,7 @@
         app:srcCompat="@drawable/whitecrosshair" />
 
 
-    <ImageButton
-        android:id="@+id/backBtn"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/darkgreencolor"
-        android:contentDescription="@string/iconDesc"
-        android:padding="0dp"
-        android:scaleType="fitCenter"
-        android:text="@string/backButton"
-        app:cornerRadius="5dp"
-        app:layout_constraintStart_toStartOf="@+id/materialToolbar"
-        app:layout_constraintTop_toTopOf="@+id/materialToolbar"
-        app:srcCompat="@drawable/back_icon" />
+
 
     <Button
         android:id="@+id/bottomBtn"
@@ -173,21 +253,7 @@
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/angleTextView" />
 
-    <TextView
-        android:id="@+id/heightResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:text="@string/HeightResult"
-        android:fontFamily="@font/bree_serif"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+
 
     <Button
         android:id="@+id/calBtn"
@@ -220,61 +286,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/crosshairSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="5dp"
-        android:fontFamily="@font/bree_serif"
-        android:layout_marginEnd="10dp"
-        android:text="@string/crosshair"
-        android:textColor="#FFF1CA"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/materialToolbar"
-        app:layout_constraintTop_toTopOf="@+id/materialToolbar" />
 
-
-    <TextView
-        android:id="@+id/resultTextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:lineSpacingExtra="10sp"
-        android:padding="5dp"
-        android:fontFamily="@font/bree_serif"
-        android:text="@string/topbottom"
-        android:textAlignment="viewStart"
-        android:textColor="#FCF9F9"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/distanceValue"
-        app:layout_constraintStart_toStartOf="@+id/distanceValue" />
-
-    <TextView
-        android:id="@+id/DiamterValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/DiameterResult"
-        android:fontFamily="@font/bree_serif"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/heightResult"
-        app:layout_constraintTop_toBottomOf="@+id/heightResult" />
-
-    <TextView
-        android:id="@+id/volumeResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/VolumeResult"
-        android:fontFamily="@font/bree_serif"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/DiamterValue"
-        app:layout_constraintTop_toBottomOf="@+id/DiamterValue" />
 
     <ImageButton
         android:id="@+id/arrowButtonLeft"

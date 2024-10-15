@@ -254,8 +254,6 @@ import kotlin.math.sqrt
                Toast.makeText(this, "Classification Added", Toast.LENGTH_SHORT).show()
          }
 
-
-
         }
 
         private fun checkDistance(distanceText: String): Float? {
