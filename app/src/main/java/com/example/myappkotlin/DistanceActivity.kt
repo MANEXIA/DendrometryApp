@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.myappkotlin.databinding.ActivityDistanceBinding
 import com.google.android.material.snackbar.Snackbar
+import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
@@ -176,8 +177,9 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
         pitchAngle = alpha * (pitchAngle + pitchGyro) + (1 - alpha) * pitchAcc
 
         // Adjust inclination to be 0 when the phone is held upright in portrait mode
-        inclination = pitchAngle - 90
+        inclination = abs(pitchAngle - 90) // Ensures inclination is always positive
     }
+
 
 
     private fun handleGyroscope(event: SensorEvent, timestamp: Long) {
@@ -191,6 +193,7 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
         }
         this@DistanceActivity.timestamp = event.timestamp
     }
+
 
 //    private fun calculateDistance() {
 //        // Calculate distance based on inclination and height of the device
@@ -218,25 +221,21 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
 
     private fun calculateDistance() {
         if (heightOfDevice > 0) {
-            val distance = heightOfDevice / Math.sin(Math.toRadians(inclination.toDouble()))
-//            binding.distanceTextView.text = "Distance: ${String.format("%.1f", distance)} m"
-
             // Check if the inclination is too close to 0 or 90 degrees
-            if (distance < 1.0) {
-                val distancePositive = kotlin.math.abs(distance)
-                if(distancePositive in 1.0..85.0){
-                    binding.distanceTextView.text = "Distance: ${String.format("%.1f", distancePositive)}m"
-                }
+            if (inclination in 5.0..85.0) { // Only calculate for angles between 5° and 85°
+                // Calculate distance based on inclination and height of the device
+                val distance = heightOfDevice / Math.sin(Math.toRadians(inclination.toDouble()))
+                binding.distanceTextView.text = "Distance: ${String.format("%.1f", distance)} m"
             } else {
                 // Notify user to adjust the angle
                 binding.distanceTextView.text = "Please adjust your phone angle"
-                // Show an alert or notification to the user
-                showAngleWarning()
+                showAngleWarning()  // Show an alert or notification to the user
             }
         } else {
             binding.distanceTextView.text = "Invalid height"
         }
     }
+
 
     private fun showAngleWarning() {
         Snackbar.make(binding.root, "Angle too extreme! Please adjust.", Snackbar.LENGTH_SHORT).show()
