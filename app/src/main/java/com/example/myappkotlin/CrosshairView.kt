@@ -32,8 +32,10 @@ class CrosshairView @JvmOverloads constructor(
         val width = width.toFloat()
         val height = height.toFloat()
 
-        // Draw crosshair
-        canvas.drawLine(centerX - 20, centerY, centerX + 20, centerY, paint) // Horizontal line
-        canvas.drawLine(centerX, centerY - 20, centerX, centerY + 20, paint) // Vertical line
+        val crosshairSize = 100 // Adjust this value to change the size of the crosshair
+
+        // Draw crosshair with a larger size
+        canvas.drawLine(centerX - crosshairSize, centerY, centerX + crosshairSize, centerY, paint) // Horizontal line
+        canvas.drawLine(centerX, centerY - crosshairSize, centerX, centerY + crosshairSize, paint) // Vertical line
     }
 }
