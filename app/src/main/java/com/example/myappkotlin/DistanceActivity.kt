@@ -1,5 +1,6 @@
 package com.example.myappkotlin
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -15,6 +16,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.myappkotlin.databinding.ActivityDistanceBinding
 import com.google.android.material.snackbar.Snackbar
+import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.sin
@@ -98,10 +100,8 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
     override fun onResume() {
         super.onResume()
         if (isActivityFinishing) {
-            Log.d("BackDebug", "Activity is finishing, skipping setup")
             return
         }
-        Log.d("BackDebug", "onResume called, setting up sensors and starting camera")
         setupSensorStuff()
     }
 
@@ -111,21 +111,10 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
             sensorM.unregisterListener(this)
             areSensorsRegistered = false
         }
-        Log.d("BackDebug", "onPause called, unbinding camera in DistanceActivity")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        // Unregister sensor listeners in both onPause() and onStop() for redundancy
-        if (areSensorsRegistered) {
-            sensorM.unregisterListener(this)
-            areSensorsRegistered = false
-        }
     }
 
     // START FOR BODY SENSORS ACTIVITY
     private fun setupSensorStuff() {
-        Log.d("BackDebug", "setupSensorStuff called in DistanceActivity")
         if (!areSensorsRegistered) {
             sensorM = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
@@ -194,8 +183,9 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
         this@DistanceActivity.timestamp = event.timestamp
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateHeightDisplay() {
-        heightValueText.text = "Height: ${String.format("%.2f", heightOfDevice)} m"
+        heightValueText.text = "Height: ${String.format(Locale.US, "%.2f", heightOfDevice)} m"
     }
 
     private fun updateCrosshairPosition() {
@@ -213,6 +203,7 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun calculateDistance() {
         if (heightOfDevice > 0) {
             if (inclination in 5.0..85.0) { // Valid angle range for calculation
@@ -223,7 +214,7 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
                 // Fine-tuning and threshold handling
                 if (distance >= 0) {
                     val adjustedDistance = adjustDistanceForErrors(distance)
-                    binding.distanceTextView.text = "Distance: ${String.format("%.2f", adjustedDistance)} m"
+                    binding.distanceTextView.text = "Distance: ${String.format(Locale.US,"%.2f", adjustedDistance)} m"
                 }
             } else {
                 // Notify user to adjust the phone angle
