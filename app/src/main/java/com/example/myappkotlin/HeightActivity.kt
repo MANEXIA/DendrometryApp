@@ -24,8 +24,10 @@ import com.example.myappkotlin.databinding.ActivityHeightBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 import kotlin.math.atan2
 import kotlin.math.sqrt
+import kotlin.math.tan
 
 //typealias LumaListener = (luma: Double) -> Unit
 
@@ -103,7 +105,7 @@ import kotlin.math.sqrt
                     return@setOnClickListener
                 }else{
                     treeHeightValue = calculateTreeHeight(distanceValue, bottomAngle, topAngle)
-                    treeHeight.text = "Height: ${String.format("%.1f", treeHeightValue)}m"
+                    treeHeight.text = "Height: ${String.format(Locale.US,"%.1f", treeHeightValue)}m"
                 }
             }
 
@@ -118,7 +120,7 @@ import kotlin.math.sqrt
                     return@setOnClickListener
                 }else{
                     treeHeightValue = calculateTreeHeight(distanceValue, bottomAngle, topAngle)
-                    treeHeight.text = "Height: ${String.format("%.1f", treeHeightValue)}m"
+                    treeHeight.text = "Height: ${String.format(Locale.US,"%.1f", treeHeightValue)}m"
                 }
 
             }
@@ -130,7 +132,7 @@ import kotlin.math.sqrt
                         // Proceed to calculation using the formula
                         volumeValue = 0.7854 * (treeHeightValue / 2) * (diameterValue * diameterValue)
                         // Display the calculated volume in a TextView
-                        binding.volumeResult.text = "Volume: ${String.format("%.1f", volumeValue)}"
+                        binding.volumeResult.text = "Volume: ${String.format(Locale.US,"%.1f", volumeValue)}"
                         binding.ViewClass.visibility = View.VISIBLE
                     } else {
                         // Handle invalid or zero values
@@ -196,7 +198,7 @@ import kotlin.math.sqrt
                     val diameterTxt = result.data?.getStringExtra("diameterValue")
                     Log.d("ETORESULT", "Received diameter value: $diameterTxt")
                     diameterValue = diameterTxt?.toDouble() ?: 0.0
-                    binding.DiamterValue.text = "Diameter: ${String.format("%.1f", diameterValue)}cm"
+                    binding.DiamterValue.text = "Diameter: ${String.format(Locale.US,"%.1f", diameterValue)}cm"
                 }
             }
 
@@ -211,6 +213,7 @@ import kotlin.math.sqrt
         }//END OF ONCREATE FUNCTIONS
 
         //SHOW CALCULATION FOR VOLUME
+        @SuppressLint("SetTextI18n")
         private fun showCurvedAlertDialog(){
          val dialog: AlertDialog = MaterialAlertDialogBuilder(this, R.style.RoundedMaterialDialog)
              .setView(R.layout.volume_dialog).show()
@@ -224,19 +227,19 @@ import kotlin.math.sqrt
 
          var diameterClass : String = ""
          if(diameterValue in 1.0..30.0){
-             dialog.findViewById<TextView>(R.id.diameterClass)?.text = "Diameter Class: Small Tree"
+             dialog.findViewById<TextView>(R.id.diameterClass)?.text = getString(R.string.dclass_small_tree)
              diameterClass = "Small Tree"
          }else if(diameterValue in 30.0..60.0){
-             dialog.findViewById<TextView>(R.id.diameterClass)?.text = "Diameter Class: Medium-sized Tree"
+             dialog.findViewById<TextView>(R.id.diameterClass)?.text = getString(R.string.dclass_medium_sized_tree)
              diameterClass = "Medium-sized Tree"
          }else if(diameterValue > 60.0){
-             dialog.findViewById<TextView>(R.id.diameterClass)?.text = "Diameter Class: Large Tree"
+             dialog.findViewById<TextView>(R.id.diameterClass)?.text = getString(R.string.dclass_large_tree)
              diameterClass = "Large Tree"
          }
 
-         dialog.findViewById<TextView>(R.id.heightResult)?.text = "Height: ${String.format("%.1f", treeHeightValue)}m"
-         dialog.findViewById<TextView>(R.id.diameterResult)?.text = "Diameter: ${String.format("%.1f", diameterValue)}cm"
-         dialog.findViewById<TextView>(R.id.volumeResult)?.text = "Volume: ${String.format("%.1f", volumeValue)}"
+         dialog.findViewById<TextView>(R.id.heightResult)?.text = "Height: ${String.format(Locale.US,"%.1f", treeHeightValue)}m"
+         dialog.findViewById<TextView>(R.id.diameterResult)?.text = "Diameter: ${String.format(Locale.US,"%.1f", diameterValue)}cm"
+         dialog.findViewById<TextView>(R.id.volumeResult)?.text = "Volume: ${String.format(Locale.US,"%.1f", volumeValue)}"
          dialog.findViewById<TextView>(R.id.dateVolumeClass)?.text = currentDateTime.format(formatter)
 
          dialog.findViewById<View>(R.id.closeDialog)?.setOnClickListener{
@@ -277,6 +280,7 @@ import kotlin.math.sqrt
             return distanceValue
         }
 
+        @SuppressLint("SetTextI18n")
         private fun resetsValue() {
             topAngle = 0f
             bottomAngle = 0f
@@ -296,6 +300,7 @@ import kotlin.math.sqrt
         }
 
         // Handle the result when HeightActivity finishes
+        @SuppressLint("SetTextI18n")
         @Deprecated("This method has been deprecated in favor of using the Activity Result API\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt\n      contracts for common intents available in\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for\n      testing, and allow receiving results in separate, testable classes independent from your\n      activity. Use\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}\n      with the appropriate {@link ActivityResultContract} and handling the result in the\n      {@link ActivityResultCallback#onActivityResult(Object) callback}.")
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
             super.onActivityResult(requestCode, resultCode, data)
@@ -304,7 +309,7 @@ import kotlin.math.sqrt
                     val diameterTxt = it.getStringExtra("diameterValue")
                     if (diameterTxt != null) {
                         diameterValue = diameterTxt.toDouble()
-                        binding.DiamterValue.text = "Diameter: ${String.format("%.1f", diameterValue)} cm"
+                        binding.DiamterValue.text = "Diameter: ${String.format(Locale.US,"%.1f", diameterValue)} cm"
                     } else {
                         Log.e("Error", "Diameter value is null")
                     }
@@ -414,18 +419,21 @@ import kotlin.math.sqrt
 
         }
 
+    @SuppressLint("SetTextI18n")
     private fun updateUI(){
-            angleView.text = "${String.format("%.1f", inclination)}°"
+            angleView.text = "${String.format(Locale.US,"%.1f", inclination)}°"
         }
 
         //CALCULATION FOR TREE HEIGHT
+    @SuppressLint("SetTextI18n")
     private fun setValueTOP() {
             topAngle = inclination
-            resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°"
+            resText.text = "Top: ${String.format(Locale.US,"%.1f", topAngle)}°\nBottom: ${String.format(Locale.US,"%.1f", bottomAngle)}°"
         }
+    @SuppressLint("SetTextI18n")
     private fun setValueBOTTOM() {
             bottomAngle = inclination
-            resText.text = "Top: ${String.format("%.1f", topAngle)}°\nBottom: ${String.format("%.1f", bottomAngle)}°"
+            resText.text = "Top: ${String.format(Locale.US,"%.1f", topAngle)}°\nBottom: ${String.format(Locale.US,"%.1f", bottomAngle)}°"
         }
 
     private fun calculateTreeHeight(distance: Float, bottomAngle: Float, topAngle: Float): Double {
@@ -434,8 +442,8 @@ import kotlin.math.sqrt
             val topAngleRad = Math.toRadians(topAngle.toDouble())
 
             // Calculate heights
-            val heightBottom = distance * Math.tan(bottomAngleRad)
-            val heightTop = distance * Math.tan(topAngleRad)
+            val heightBottom = distance * tan(bottomAngleRad)
+            val heightTop = distance * tan(topAngleRad)
 
             // Calculate tree height
             return heightTop - heightBottom

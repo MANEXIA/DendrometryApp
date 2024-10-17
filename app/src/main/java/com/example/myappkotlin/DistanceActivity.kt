@@ -17,6 +17,7 @@ import com.example.myappkotlin.databinding.ActivityDistanceBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlin.math.abs
 import kotlin.math.atan2
+import kotlin.math.sin
 import kotlin.math.sqrt
 
 class DistanceActivity : AppCompatActivity(), SensorEventListener {
@@ -31,7 +32,6 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
     private var heightOfDevice:Double = 1.0 // Replace with actual height in meters
     private lateinit var heightSeekBar: SeekBar
     private lateinit var heightValueText: TextView
-
     private lateinit var crosshairView: CrosshairView
 
 
@@ -194,19 +194,10 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
         this@DistanceActivity.timestamp = event.timestamp
     }
 
-
-//    private fun calculateDistance() {
-//        // Calculate distance based on inclination and height of the device
-//        // Assuming heightOfDevice is in meters and inclination is in degrees
-////        val heightValuetext = binding.heightValue.text.toString().toDouble()
-////        heightOfDevice = binding.heightValue.text.toString().toDouble()
-//        val distance = heightOfDevice / Math.sin(Math.toRadians(inclination.toDouble()))
-//        distanceView.text = "Distance:${String.format("%.1f", distance)}m"
-//    }
-
     private fun updateHeightDisplay() {
         heightValueText.text = "Height: ${String.format("%.2f", heightOfDevice)} m"
     }
+
     private fun updateCrosshairPosition() {
         val width = crosshairView.width
         val height = crosshairView.height
@@ -227,7 +218,7 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
             if (inclination in 5.0..85.0) { // Valid angle range for calculation
                 // Convert inclination to radians for trigonometric functions
                 val radInclination = Math.toRadians(inclination.toDouble())
-                val distance = heightOfDevice / Math.sin(radInclination)
+                val distance = heightOfDevice / sin(radInclination)
 
                 // Fine-tuning and threshold handling
                 if (distance >= 0) {

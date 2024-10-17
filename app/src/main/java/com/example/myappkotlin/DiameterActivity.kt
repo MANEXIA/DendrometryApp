@@ -1,5 +1,6 @@
 package com.example.myappkotlin
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.myappkotlin.databinding.ActivityDiameterBinding
+import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.tan
 
@@ -41,6 +43,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
     // Yaw threshold to filter out noise (small angle differences)
     private val yawNoiseThreshold = 1.0f // You can adjust this value as needed
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDiameterBinding.inflate(layoutInflater)
@@ -100,7 +103,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 val diameterValue = calculateTreeDiameter(leftAngle, rightAngle, distanceValue, fov)
                 val diaMtoCm = diameterValue * 100 // Convert meters to cm
                 //"Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}° DIAMETER: ${String.format("%.1f", diaMtoCm)}cm"
-                binding.diameterRES.text = "Diameter: ${String.format("%.1f", diaMtoCm)}cm"
+                binding.diameterRES.text = "Diameter: ${String.format(Locale.US,"%.1f", diaMtoCm)}cm"
                 holdDiameter = diaMtoCm
                 Log.d("DiameterDebug", "Calculated Diameter: $diameterValue")
             }
@@ -129,7 +132,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 val diameterValue = calculateTreeDiameter(leftAngle, rightAngle, distanceValue, fov)
                 val diaMtoCm = diameterValue * 100 // Convert meters to cm
                 //"Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}° DIAMETER: ${String.format("%.1f", diaMtoCm)}cm"
-                binding.diameterRES.text = "Diameter: ${String.format("%.1f", diaMtoCm)}cm"
+                binding.diameterRES.text = "Diameter: ${String.format(Locale.US,"%.1f", diaMtoCm)}cm"
                 holdDiameter = diaMtoCm
                 Log.d("DiameterDebug", "Calculated Diameter: $diameterValue")
             }
@@ -149,7 +152,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             Log.d("resetClick", "wow")
             leftAngle = 0f
             rightAngle = 0f
-            leftRightvaltxt.text = "Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}°"
+            leftRightvaltxt.text = "Left: ${String.format(Locale.US,"%.1f", leftAngle)}°\nRight: ${String.format(Locale.US,"%.1f", rightAngle)}°"
             binding.diameterRES.text = "Diameter:"
             binding.distanceValue.text.clear()
 
@@ -321,11 +324,13 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         return normalizedAngle
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setLeftAngleValue(){
         leftAngle = normalizeAngle(yaw)
         leftRightvaltxt.text = "Left: ${leftAngle}°\nRight: ${rightAngle}°"
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setRigtAngleValue(){
         rightAngle = normalizeAngle(yaw)
         leftRightvaltxt.text = "Left: ${leftAngle}°\nRight: ${rightAngle}°"
@@ -371,6 +376,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun updateUI(){
         //angleView.text = "${String.format("%.1f", inclination)}°"
         angleView.text = "${normalizeAngle(yaw)}°"

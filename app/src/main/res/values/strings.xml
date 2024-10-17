@@ -46,6 +46,11 @@
     <string name="SaveData">Save</string>
     <string name="date">date:</string>
 
+    <string name="dclass_small_tree">Diameter Class: Small Tree</string>
+    <string name="dclass_medium_sized_tree">Diameter Class: Medium-sized Tree</string>
+    <string name="dclass_large_tree">Diameter Class: Large Tree</string>
+
+
     <!--    //NAVIGATION DRAVER-->
     <string name="History">History</string>
     <string name="Guide">Guide</string>
@@ -94,6 +99,8 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+
+
 
 
 </resources>
