@@ -171,9 +171,9 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
 
 
     private fun handleGyroscope(event: SensorEvent, timestamp: Long) {
-        val wx = event.values[0]
+//        val wx = event.values[0]
         val wy = event.values[1]
-        val wz = event.values[2]
+//        val wz = event.values[2]
 
         if (timestamp != 0L) {
             val dt = (event.timestamp - timestamp) * 1.0f / 1_000_000_000.0f
