@@ -57,7 +57,7 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
 
         // Check if savedInstanceState is null to avoid adding the fragment multiple times
         if (savedInstanceState == null) {
-            val cameraFragment = CameraFragmentDistance() // Replace with your actual Fragment class
+            val cameraFragment = CameraFragmet() // Replace with your actual Fragment class
             supportFragmentManager.beginTransaction()
                 .replace(R.id.cam_fragment_distance, cameraFragment)
                 .commitNow() // Use commitNow to add it synchronously
@@ -211,30 +211,45 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
         val width = crosshairView.width
         val height = crosshairView.height
 
-        // Calculate crosshair position based on inclination
-        // Assuming a simple mapping of tilt to screen coordinates
+        // Calculate the center of the screen
         val x = (width / 2).toFloat() // Center horizontally
-        val y = (height / 2 + (inclination * 5)).coerceIn(0f, height.toFloat()) // Adjust vertical position
+
+        // Refine the vertical position calculation based on inclination
+        val adjustedInclination = inclination.coerceIn(0f, 90f) // Clamp inclination between 0 and 90 degrees
+        val y = (height / 2 + (adjustedInclination * 5)).coerceIn(0f, height.toFloat()) // Adjust vertical position smoothly
 
         crosshairView.updatePosition(x, y)
     }
 
+
     private fun calculateDistance() {
         if (heightOfDevice > 0) {
-            // Check if the inclination is too close to 0 or 90 degrees
-            if (inclination in 5.0..85.0) { // Only calculate for angles between 5° and 85°
-                // Calculate distance based on inclination and height of the device
-                val distance = heightOfDevice / Math.sin(Math.toRadians(inclination.toDouble()))
-                binding.distanceTextView.text = "Distance: ${String.format("%.1f", distance)} m"
+            if (inclination in 5.0..85.0) { // Valid angle range for calculation
+                // Convert inclination to radians for trigonometric functions
+                val radInclination = Math.toRadians(inclination.toDouble())
+                val distance = heightOfDevice / Math.sin(radInclination)
+
+                // Fine-tuning and threshold handling
+                if (distance >= 0) {
+                    val adjustedDistance = adjustDistanceForErrors(distance)
+                    binding.distanceTextView.text = "Distance: ${String.format("%.2f", adjustedDistance)} m"
+                }
             } else {
-                // Notify user to adjust the angle
+                // Notify user to adjust the phone angle
                 binding.distanceTextView.text = "Please adjust your phone angle"
-                showAngleWarning()  // Show an alert or notification to the user
+                showAngleWarning()
             }
         } else {
             binding.distanceTextView.text = "Invalid height"
         }
     }
+
+    private fun adjustDistanceForErrors(distance: Double): Double {
+        // You can fine-tune the error correction based on real-world tests
+        val correctionFactor = 0.6 // Adjust this factor based on testing
+        return distance - correctionFactor
+    }
+
 
 
     private fun showAngleWarning() {
