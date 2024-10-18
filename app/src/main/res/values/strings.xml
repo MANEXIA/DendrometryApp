@@ -103,4 +103,13 @@
 
 
 
+    <!--  GUIDE  -->
+
+    <string name="startapp">1. Start the App</string>
+    <string name="startappguide">Tap on START to begin the Dendrometry Process</string>
+
+
+
+
+
 </resources>

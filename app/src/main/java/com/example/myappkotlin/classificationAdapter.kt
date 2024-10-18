@@ -33,7 +33,7 @@ class classificationAdapter(private var classificationList: List<DataClassificat
         val classification = classificationList[position]
         holder.heightResult.text = "Height: ${String.format("%.1f", classification.height)}m"
         holder.diameterResult.text = "Diameter: ${String.format("%.1f", classification.diameter)}cm"
-        holder.volumeResult.text = "Volume: ${String.format("%.1f", classification.volume)}"
+        holder.volumeResult.text = "Volume: ${String.format("%.1f", classification.volume)}m3"
         holder.diameterClass.text = "Size: ${classification.diameterClass}"
         holder.dateVolumeClass.text = classification.date
 

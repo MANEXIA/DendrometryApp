@@ -12,4 +12,5 @@
 <!--    <color name="textColorMAIN">#BDBE86</color>-->
     <color name="textColorMAIN">#B8860B</color>
     <color name="darkgreencolor">#013220</color>
+    <color name="guidecolortxt">#F2F3AB</color>
 </resources>

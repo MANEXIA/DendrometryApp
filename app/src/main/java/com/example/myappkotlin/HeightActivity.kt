@@ -132,7 +132,7 @@ import kotlin.math.tan
                         // Proceed to calculation using the formula
                         volumeValue = 0.7854 * (treeHeightValue / 2) * (diameterValue * diameterValue)
                         // Display the calculated volume in a TextView
-                        binding.volumeResult.text = "Volume: ${String.format(Locale.US,"%.1f", volumeValue)}"
+                        binding.volumeResult.text = "Volume: ${String.format(Locale.US,"%.1f", volumeValue)}m3"
                         binding.ViewClass.visibility = View.VISIBLE
                     } else {
                         // Handle invalid or zero values
@@ -239,7 +239,7 @@ import kotlin.math.tan
 
          dialog.findViewById<TextView>(R.id.heightResult)?.text = "Height: ${String.format(Locale.US,"%.1f", treeHeightValue)}m"
          dialog.findViewById<TextView>(R.id.diameterResult)?.text = "Diameter: ${String.format(Locale.US,"%.1f", diameterValue)}cm"
-         dialog.findViewById<TextView>(R.id.volumeResult)?.text = "Volume: ${String.format(Locale.US,"%.1f", volumeValue)}"
+         dialog.findViewById<TextView>(R.id.volumeResult)?.text = "Volume: ${String.format(Locale.US,"%.1f", volumeValue)}m3"
          dialog.findViewById<TextView>(R.id.dateVolumeClass)?.text = currentDateTime.format(formatter)
 
          dialog.findViewById<View>(R.id.closeDialog)?.setOnClickListener{
@@ -290,7 +290,7 @@ import kotlin.math.tan
             treeHeightValue = 0.0
             volumeValue = 0.0
             binding.DiamterValue.text = "Diameter:"
-            binding.volumeResult.text = "V:"
+            binding.volumeResult.text = "Volume:"
             binding.distanceValue.text.clear()
         }
 
