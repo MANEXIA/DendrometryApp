@@ -220,7 +220,7 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
                 }
             } else {
                 // Notify user to adjust the phone angle
-                binding.distanceTextView.text = "Please adjust your phone angle"
+                binding.distanceTextView.text = "Please adjust your phone Angle/Height"
                 showAngleWarning()
             }
         } else {

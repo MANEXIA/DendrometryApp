@@ -29,7 +29,7 @@ class CrosshairView @JvmOverloads constructor(
     private var lastUpdateTime: Long = 0
 
     // Minimum time between updates (in milliseconds)
-    private val updateDelay: Long = 50 // Adjust this value as needed (50ms = 20 frames per second)
+    private val updateDelay: Long = 10 // Adjust this value as needed (50ms = 20 frames per second)
 
     // Update position method with throttling
     fun updatePosition(x: Float, y: Float) {
@@ -58,7 +58,7 @@ class CrosshairView @JvmOverloads constructor(
         val width = width.toFloat()
         val height = height.toFloat()
 
-        val crosshairSize = 50 // Adjust this value to change the size of the crosshair
+        val crosshairSize = 25 // Adjust this value to change the size of the crosshair
 
         // Draw crosshair
         canvas.drawLine(centerX - crosshairSize, centerY, centerX + crosshairSize, centerY, paint) // Horizontal line
