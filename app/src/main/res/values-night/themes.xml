@@ -4,5 +4,6 @@
     <style name="Base.Theme.MyAppKotlin" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="android:windowBackground">@color/darkgreencolor</item>
     </style>
 </resources>

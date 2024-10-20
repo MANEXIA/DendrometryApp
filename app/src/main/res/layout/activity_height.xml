@@ -145,6 +145,7 @@
             android:inputType="numberDecimal"
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
+            android:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="@+id/constraintLayout" />
 

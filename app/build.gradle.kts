@@ -73,6 +73,8 @@ dependencies {
     // If you want to additionally use the CameraX Extensions library
     implementation("androidx.camera:camera-extensions:${camerax_version}")
 
+    implementation("androidx.core:core-splashscreen:1.0.0")
+
 
 
 }
