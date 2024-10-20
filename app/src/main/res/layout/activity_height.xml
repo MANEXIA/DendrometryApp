@@ -144,6 +144,7 @@
             android:hint="@string/Distance"
             android:inputType="numberDecimal"
             android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="@+id/constraintLayout" />
 
