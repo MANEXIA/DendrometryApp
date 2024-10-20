@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/distance_main"
@@ -74,7 +75,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginBottom="15dp"
         android:fontFamily="@font/bree_serif"
-        android:text="Height: 0.0 m"
+        android:text="Height: 0.0m"
         android:textColor="@color/white"
         android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/heightSeekBar"
@@ -101,6 +102,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.5"
         app:layout_constraintHorizontal_bias="0.5"/>
+
+<!-- Ensure you have a crosshair drawable -->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

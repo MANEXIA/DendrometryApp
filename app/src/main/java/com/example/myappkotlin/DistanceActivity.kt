@@ -34,6 +34,7 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var heightSeekBar: SeekBar
     private lateinit var heightValueText: TextView
     private lateinit var crosshairView: CrosshairView
+//    private lateinit var crosshairView: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -121,11 +122,11 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
             gyroscope = sensorM.getDefaultSensor(Sensor.TYPE_GYROSCOPE)  // GET TYPE SENSOR GYRO
 
             accelerometer?.also { acc ->
-                sensorM.registerListener(this, acc, SensorManager.SENSOR_DELAY_FASTEST)
+                sensorM.registerListener(this, acc, SensorManager.SENSOR_DELAY_UI)
             }
 
             gyroscope?.also { gyro ->
-                sensorM.registerListener(this, gyro, SensorManager.SENSOR_DELAY_FASTEST)
+                sensorM.registerListener(this, gyro, SensorManager.SENSOR_DELAY_UI)
             }
             areSensorsRegistered = true
         }
@@ -184,9 +185,9 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
 
     @SuppressLint("SetTextI18n")
     private fun updateHeightDisplay() {
-        heightValueText.text = "Height: ${String.format(Locale.US, "%.2f", heightOfDevice)} m"
+        heightValueText.text = "Height: ${String.format(Locale.US, "%.1f", heightOfDevice)}m"
     }
-
+//
     private fun updateCrosshairPosition() {
         val width = crosshairView.width
         val height = crosshairView.height
@@ -202,6 +203,8 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
     }
 
 
+
+
     @SuppressLint("SetTextI18n")
     private fun calculateDistance() {
         if (heightOfDevice > 0) {
@@ -213,7 +216,7 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
                 // Fine-tuning and threshold handling
                 if (distance >= 0) {
                     val adjustedDistance = adjustDistanceForErrors(distance)
-                    binding.distanceTextView.text = "Distance: ${String.format(Locale.US,"%.2f", adjustedDistance)} m"
+                    binding.distanceTextView.text = "Distance: ${String.format(Locale.US,"%.1f", adjustedDistance)} m"
                 }
             } else {
                 // Notify user to adjust the phone angle
