@@ -234,8 +234,6 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
         return distance - correctionFactor
     }
 
-
-
     private fun showAngleWarning() {
         Snackbar.make(binding.root, "Angle too extreme! Please adjust.", Snackbar.LENGTH_SHORT).show()
     }

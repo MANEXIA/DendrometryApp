@@ -17,7 +17,7 @@ class CrosshairView @JvmOverloads constructor(
 
     private val paint = Paint().apply {
         color = Color.RED
-        strokeWidth = 10f
+        strokeWidth = 5f
     }
 
     private var centerX: Float = 0f
@@ -29,7 +29,7 @@ class CrosshairView @JvmOverloads constructor(
     private var lastUpdateTime: Long = 0
 
     // Minimum time between updates (in milliseconds)
-    private val updateDelay: Long = 10 // Adjust this value as needed (50ms = 20 frames per second)
+    private val updateDelay: Long = 30 // Adjust this value as needed (50ms = 20 frames per second)
 
     // Update position method with throttling
     fun updatePosition(x: Float, y: Float) {
