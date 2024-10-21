@@ -56,10 +56,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/adlam_display"
+        android:fontFamily="@font/inter_medium"
         android:gravity="center"
         android:textColor="#FFFFFF"
-        android:textSize="35sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +74,7 @@
         android:layout_gravity="center"
         android:layout_marginStart="15dp"
         android:layout_marginBottom="15dp"
-        android:fontFamily="@font/bree_serif"
+        android:fontFamily="@font/inter_medium"
         android:text="Height: 0.0m"
         android:textColor="@color/white"
         android:textSize="22sp"
@@ -91,6 +91,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" /> <!-- Adjust max height (in cm) -->
+
 
     <com.example.myappkotlin.CrosshairView
         android:id="@+id/crosshairView"

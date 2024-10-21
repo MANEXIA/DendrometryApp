@@ -49,7 +49,7 @@
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/crosshairSwitch"
-            android:fontFamily="@font/bree_serif"
+            android:fontFamily="@font/inter_medium"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginTop="5dp"
@@ -87,7 +87,7 @@
             android:lineSpacingExtra="10sp"
             android:padding="5dp"
             android:text="@string/LeftRightValue"
-            android:fontFamily="@font/bree_serif"
+            android:fontFamily="@font/inter_medium"
             android:textAlignment="viewStart"
             android:textColor="#FCF9F9"
             android:textSize="14sp"
@@ -103,7 +103,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/DiameterResult"
             android:textColor="#FCF9F9"
-            android:fontFamily="@font/bree_serif"
+            android:fontFamily="@font/inter_medium"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/leftrightValuetxt"
@@ -128,7 +128,7 @@
 
         <Button
             android:id="@+id/applyButton"
-            android:fontFamily="@font/bree_serif"
+            android:fontFamily="@font/inter_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_backgroud"
@@ -202,7 +202,7 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_backgroud"
         android:text="@string/right"
-        android:fontFamily="@font/bree_serif"
+        android:fontFamily="@font/inter_medium"
         android:textColor="#F2F3AB"
         android:textSize="20sp"
         android:textAllCaps="false"
@@ -218,7 +218,7 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_backgroud"
         android:text="@string/left"
-        android:fontFamily="@font/bree_serif"
+        android:fontFamily="@font/inter_medium"
         android:textAllCaps="false"
         android:textColor="#F2F3AB"
         android:textSize="20sp"
@@ -237,7 +237,7 @@
 
     <Button
         android:id="@+id/resetDiameter"
-        android:fontFamily="@font/bree_serif"
+        android:fontFamily="@font/inter_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"

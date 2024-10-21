@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginTop="5dp"
-            android:fontFamily="@font/bree_serif"
+            android:fontFamily="@font/inter_medium"
             android:layout_marginEnd="10dp"
             android:text="@string/crosshair"
             android:textColor="#FFF1CA"
@@ -60,16 +60,15 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
+        android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialToolbar">
@@ -81,9 +80,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
+            android:fontFamily="@font/inter_medium"
             android:gravity="center"
             android:text="@string/HeightResult"
-            android:fontFamily="@font/bree_serif"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -95,8 +94,8 @@
             android:id="@+id/DiamterValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
             android:text="@string/DiameterResult"
-            android:fontFamily="@font/bree_serif"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -108,8 +107,8 @@
             android:id="@+id/volumeResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
             android:text="@string/VolumeResult"
-            android:fontFamily="@font/bree_serif"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -118,13 +117,12 @@
             app:layout_constraintTop_toBottomOf="@+id/DiamterValue" />
 
 
-
         <TextView
             android:id="@+id/resultTextview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
             android:lineSpacingExtra="10sp"
-            android:fontFamily="@font/bree_serif"
             android:text="@string/topbottom"
             android:textAlignment="viewStart"
             android:textColor="#FCF9F9"
@@ -135,17 +133,18 @@
             app:layout_constraintStart_toStartOf="@+id/distanceValue" />
 
         <EditText
+
             android:id="@+id/distanceValue"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:autofillHints="@string/Distance"
+            android:backgroundTint="@color/white"
             android:hint="@string/Distance"
             android:inputType="numberDecimal"
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
-            android:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="@+id/constraintLayout" />
 
@@ -161,7 +160,7 @@
         android:background="@drawable/button_backgroud"
         android:text="@string/diameter"
         android:textColor="#F2F3AB"
-        android:fontFamily="@font/bree_serif"
+        android:fontFamily="@font/inter_medium"
         android:textSize="14sp"
         android:textStyle="bold"
         app:cornerRadius="5dp"
@@ -227,7 +226,7 @@
         android:text="@string/bottomBtn"
         android:textColor="#F2F3AB"
         android:textSize="20sp"
-        android:fontFamily="@font/bree_serif"
+        android:fontFamily="@font/inter_medium"
         android:textStyle="bold"
         android:textAllCaps="false"
         android:visibility="visible"
@@ -246,7 +245,7 @@
         android:text="@string/topBtn"
         android:textColor="#F2F3AB"
         android:textSize="20sp"
-        android:fontFamily="@font/bree_serif"
+        android:fontFamily="@font/inter_medium"
         android:textAllCaps="false"
         android:textStyle="bold"
         android:visibility="gone"
@@ -264,7 +263,7 @@
         android:layout_marginEnd="10dp"
         android:textAllCaps="false"
         android:layout_marginBottom="15dp"
-        android:fontFamily="@font/bree_serif"
+        android:fontFamily="@font/inter_medium"
         android:background="@drawable/button_backgroud"
         android:padding="10dp"
         android:text="@string/CalcutateVolume"
@@ -275,7 +274,7 @@
 
     <Button
         android:id="@+id/resetBtn"
-        android:fontFamily="@font/bree_serif"
+        android:fontFamily="@font/inter_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAllCaps="false"

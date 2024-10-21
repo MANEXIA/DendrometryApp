@@ -185,7 +185,7 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
 
     @SuppressLint("SetTextI18n")
     private fun updateHeightDisplay() {
-        heightValueText.text = "Height: ${String.format(Locale.US, "%.1f", heightOfDevice)}m"
+        heightValueText.text = "Height: ${String.format(Locale.US, "%.2f", heightOfDevice)}m"
     }
 //
     private fun updateCrosshairPosition() {
@@ -216,7 +216,7 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
                 // Fine-tuning and threshold handling
                 if (distance >= 0) {
                     val adjustedDistance = adjustDistanceForErrors(distance)
-                    binding.distanceTextView.text = "Distance: ${String.format(Locale.US,"%.1f", adjustedDistance)} m"
+                    binding.distanceTextView.text = "Distance: ${String.format(Locale.US,"%.1f", adjustedDistance)}m"
                 }
             } else {
                 // Notify user to adjust the phone angle
