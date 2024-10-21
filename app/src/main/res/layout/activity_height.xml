@@ -173,7 +173,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:fontFamily="@font/bree_serif"
+        android:fontFamily="@font/inter_medium"
         android:background="@drawable/button_backgroud"
         android:padding="10dp"
         android:text="@string/ViewClass"
