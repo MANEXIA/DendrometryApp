@@ -138,15 +138,6 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             }
         }
 
-        //CROSSHAIR CHANGE
-        binding.crosshairSwitch.setOnCheckedChangeListener{ _, isChecked ->
-
-            if (isChecked){
-                binding.imageView.setImageResource(R.drawable.blackcrosshair)
-            }else{
-                binding.imageView.setImageResource(R.drawable.whitecrosshair)
-            }
-        }
 
         binding.resetDiameter.setOnClickListener(){
             Log.d("resetClick", "wow")
@@ -299,13 +290,10 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 SensorManager.getOrientation(rotationMatrixAdjusted, orientationAngles)
 
                 // Yaw (azimuth) is the angle you're interested in
-//                yaw = Math.toDegrees(orientationAngles[0].toDouble()).toFloat()
-//                yaw = Math.toDegrees(orientationAngles[0].toDouble()).toInt().toFloat()
+                //yaw = Math.toDegrees(orientationAngles[0].toDouble()).toInt().toFloat()
+               //yaw = Math.round(Math.toDegrees(orientationAngles[0].toDouble())).toFloat()
 
-                yaw = Math.round(Math.toDegrees(orientationAngles[0].toDouble())).toFloat()
-
-
-
+                yaw = Math.toDegrees(orientationAngles[0].toDouble()).toFloat()
                 // Update UI with yaw
                 updateUI()
             }
@@ -327,13 +315,14 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
     @SuppressLint("SetTextI18n")
     private fun setLeftAngleValue(){
         leftAngle = normalizeAngle(yaw)
-        leftRightvaltxt.text = "Left: ${leftAngle}°\nRight: ${rightAngle}°"
+        leftRightvaltxt.text = "Left: ${String.format(Locale.US,"%.1f", leftAngle)}°\nRight: ${String.format(Locale.US,"%.1f", rightAngle)}°"
     }
 
     @SuppressLint("SetTextI18n")
     private fun setRigtAngleValue(){
         rightAngle = normalizeAngle(yaw)
-        leftRightvaltxt.text = "Left: ${leftAngle}°\nRight: ${rightAngle}°"
+        leftRightvaltxt.text = "Left: ${String.format(Locale.US,"%.1f", leftAngle)}°\nRight: ${String.format(Locale.US,"%.1f", rightAngle)}°"
+
     }
 
 
@@ -379,7 +368,8 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
     @SuppressLint("SetTextI18n")
     private fun updateUI(){
         //angleView.text = "${String.format("%.1f", inclination)}°"
-        angleView.text = "${normalizeAngle(yaw)}°"
+        angleView.text = "${String.format(Locale.US,"%.1f", normalizeAngle(yaw))}°"
+
     }
 
 

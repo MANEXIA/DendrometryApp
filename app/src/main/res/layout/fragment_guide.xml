@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         tools:context=".GuideFragment">
 
-
         <TextView
             android:fontFamily="@font/inter_medium"
             android:id="@+id/textView3"

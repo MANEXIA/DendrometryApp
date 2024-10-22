@@ -161,14 +161,6 @@ import kotlin.math.tan
                resetsValue()
             }
 
-            //CROSSHAIR CHANGE
-            binding.crosshairSwitch.setOnCheckedChangeListener{ _, isChecked ->
-                if (isChecked){
-                    binding.imageView.setImageResource(R.drawable.blackcrosshair)
-                }else{
-                    binding.imageView.setImageResource(R.drawable.whitecrosshair)
-                }
-            }
 
             //SWITCH BUTTONS VISIBILITY
             val visibilityBottomBtn = binding.bottomBtn

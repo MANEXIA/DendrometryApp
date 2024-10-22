@@ -47,19 +47,6 @@
             app:layout_constraintTop_toTopOf="@+id/materialToolbar"
             app:srcCompat="@drawable/back_icon" />
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/crosshairSwitch"
-            android:fontFamily="@font/inter_medium"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/crosshair"
-            android:textColor="#FFF1CA"
-
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/materialToolbar"
-            app:layout_constraintTop_toTopOf="@+id/materialToolbar" />
 
 
 
@@ -128,10 +115,10 @@
 
         <Button
             android:id="@+id/applyButton"
-            android:fontFamily="@font/inter_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_backgroud"
+            android:fontFamily="@font/inter_medium"
             android:text="@string/apply"
             android:textAllCaps="false"
             android:textColor="#F2F3AB"
@@ -151,13 +138,13 @@
             android:layout_height="120dp"
             android:layout_marginStart="90dp"
             android:layout_marginEnd="90dp"
-            android:alpha="0.5"
+            app:srcCompat="@drawable/cyancrosshair"
             android:contentDescription="@string/iconDesc"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/whitecrosshair" />
+             />
 
     <TextView
         android:id="@+id/textView2"
@@ -168,28 +155,6 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-        <!--    <TextView-->
-    <!--        android:id="@+id/textWidth"-->
-    <!--        android:layout_width="20dp"-->
-    <!--        android:layout_height="100dp"-->
-    <!--        android:background="@drawable/lnr_width_border"-->
-    <!--        android:gravity="center"-->
-    <!--        android:textColor="#FFFFFF"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/diameterText"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="50dp"-->
-    <!--        android:textColor="#FFFFFF"-->
-    <!--        app:layout_constraintEnd_toEndOf="@+id/textWidth"-->
-    <!--        app:layout_constraintStart_toStartOf="@+id/textWidth"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/textWidth" />-->
 
 
 
