@@ -30,12 +30,10 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
     private var gyroscope: Sensor? = null
     private lateinit var distanceView: TextView
     private var inclination: Float = 0f
-    private var heightOfDevice:Double = 1.0 // Replace with actual height in meters
+    private var heightOfDevice: Double = 1.0 // Replace with actual height in meters
     private lateinit var heightSeekBar: SeekBar
     private lateinit var heightValueText: TextView
     private lateinit var crosshairView: CrosshairView
-//    private lateinit var crosshairView: ImageView
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +42,7 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
         setContentView(binding.root)
 
         // Set up UI elements
-        distanceView = binding.distanceTextView // Assuming you have a TextView for displaying distance
+        distanceView = binding.distanceTextView
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.distance_main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -52,21 +50,50 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
             insets
         }
 
-        // ONCLICK BTN FOR ACTIVITIES
+        // OnClick Button for activities
         binding.backBtn.setOnClickListener {
             finish()
         }
 
-        // Check if savedInstanceState is null to avoid adding the fragment multiple times
+        // Add CameraFragment once if savedInstanceState is null
         if (savedInstanceState == null) {
             val cameraFragment = CameraFragmet() // Replace with your actual Fragment class
             supportFragmentManager.beginTransaction()
                 .replace(R.id.cam_fragment_distance, cameraFragment)
-                .commitNow() // Use commitNow to add it synchronously
+                .commitNow()
         }
-        setupSensorStuff()
 
+        setupSeekBar()
 
+        crosshairView = binding.crosshairView
+    }
+
+    private var areSensorsRegistered = false
+    private var isActivityFinishing = false
+
+    override fun onResume() {
+        super.onResume()
+        if (!isActivityFinishing && !areSensorsRegistered) {
+            sensorM = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            accelerometer = sensorM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+            gyroscope = sensorM.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+
+            accelerometer?.let { sensorM.registerListener(this, it, SensorManager.SENSOR_DELAY_UI) }
+            gyroscope?.let { sensorM.registerListener(this, it, SensorManager.SENSOR_DELAY_UI) }
+
+            areSensorsRegistered = true
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (areSensorsRegistered) {
+            sensorM.unregisterListener(this)
+            areSensorsRegistered = false
+        }
+    }
+
+    private fun setupSeekBar() {
         heightSeekBar = binding.heightSeekBar
         heightValueText = binding.heightValueText
 
@@ -86,67 +113,25 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
-
-
-        crosshairView = binding.crosshairView
-
-
-
-    }//END OF ONCREATE
-
-    private var areSensorsRegistered = false
-    private var isActivityFinishing = false
-
-    override fun onResume() {
-        super.onResume()
-        if (isActivityFinishing) {
-            return
-        }
-        setupSensorStuff()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (areSensorsRegistered) {
-            sensorM.unregisterListener(this)
-            areSensorsRegistered = false
-        }
-    }
-
-    // START FOR BODY SENSORS ACTIVITY
-    private fun setupSensorStuff() {
-        if (!areSensorsRegistered) {
-            sensorM = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-
-            accelerometer = sensorM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) // GET TYPE SENSOR ACC
-            gyroscope = sensorM.getDefaultSensor(Sensor.TYPE_GYROSCOPE)  // GET TYPE SENSOR GYRO
-
-            accelerometer?.also { acc ->
-                sensorM.registerListener(this, acc, SensorManager.SENSOR_DELAY_UI)
-            }
-
-            gyroscope?.also { gyro ->
-                sensorM.registerListener(this, gyro, SensorManager.SENSOR_DELAY_UI)
-            }
-            areSensorsRegistered = true
-        }
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
         event ?: return
         when (event.sensor.type) {
-            Sensor.TYPE_ACCELEROMETER -> handleAccelerometer(event)
+            Sensor.TYPE_ACCELEROMETER -> {
+                handleAccelerometer(event)
+                calculateDistance() // Only recalculate distance if accelerometer updates
+                updateCrosshairPosition()
+            }
             Sensor.TYPE_GYROSCOPE -> handleGyroscope(event, event.timestamp)
         }
-        calculateDistance()
-        updateCrosshairPosition()
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
         // Handle accuracy changes if needed...
     }
 
-    // VARIABLES FOR SENSOR ACCELEROMETER
+    // Variables for sensor data
     private var pitchAngle: Float = 0f
     private var timestamp: Long = 0
     private var pitchGyro: Float = 0f
@@ -169,25 +154,19 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
         inclination = abs(pitchAngle - 90) // Ensures inclination is always positive
     }
 
-
-
-    private fun handleGyroscope(event: SensorEvent, timestamp: Long) {
-//        val wx = event.values[0]
-        val wy = event.values[1]
-//        val wz = event.values[2]
-
+    private fun handleGyroscope(event: SensorEvent, currentTimestamp: Long) {
         if (timestamp != 0L) {
-            val dt = (event.timestamp - timestamp) * 1.0f / 1_000_000_000.0f
-            pitchGyro = wy * dt
+            val dt = (currentTimestamp - timestamp) * 1.0f / 1_000_000_000.0f
+            pitchGyro = event.values[1] * dt
         }
-        this@DistanceActivity.timestamp = event.timestamp
+        timestamp = currentTimestamp
     }
 
     @SuppressLint("SetTextI18n")
     private fun updateHeightDisplay() {
         heightValueText.text = "Height: ${String.format(Locale.US, "%.2f", heightOfDevice)}m"
     }
-//
+
     private fun updateCrosshairPosition() {
         val width = crosshairView.width
         val height = crosshairView.height
@@ -201,9 +180,6 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
 
         crosshairView.updatePosition(x, y)
     }
-
-
-
 
     @SuppressLint("SetTextI18n")
     private fun calculateDistance() {
@@ -229,7 +205,7 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun adjustDistanceForErrors(distance: Double): Double {
-        // You can fine-tune the error correction based on real-world tests
+        // Fine-tune error correction based on real-world tests
         val correctionFactor = 0.6 // Adjust this factor based on testing
         return distance - correctionFactor
     }

@@ -4,8 +4,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.os.Handler
-import android.os.Looper
 import android.util.AttributeSet
 import android.view.View
 
@@ -16,49 +14,33 @@ class CrosshairView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     private val paint = Paint().apply {
-        color = Color.RED
+        color = Color.CYAN
         strokeWidth = 5f
     }
 
     private var centerX: Float = 0f
     private var centerY: Float = 0f
 
-    // Handler to delay updates
-    private val handler = Handler(Looper.getMainLooper())
-    private var isUpdateScheduled = false
-    private var lastUpdateTime: Long = 0
-
     // Minimum time between updates (in milliseconds)
-    private val updateDelay: Long = 30 // Adjust this value as needed (50ms = 20 frames per second)
+    private val updateDelay: Long = 30 // 30ms delay, adjust for smoothness
+    private var lastUpdateTime: Long = 0
 
     // Update position method with throttling
     fun updatePosition(x: Float, y: Float) {
         val currentTime = System.currentTimeMillis()
 
-        // Only update if the delay period has passed
-        if (currentTime - lastUpdateTime >= updateDelay && !isUpdateScheduled) {
+        // Throttle updates based on time delay
+        if (currentTime - lastUpdateTime >= updateDelay) {
             centerX = x
             centerY = y
-            scheduleUpdate()
+            lastUpdateTime = currentTime
+            postInvalidateOnAnimation() // Sync with display refresh rate
         }
-    }
-
-    // Schedule the actual view invalidation with a delay
-    private fun scheduleUpdate() {
-        isUpdateScheduled = true
-        handler.postDelayed({
-            invalidate() // Redraw the view
-            lastUpdateTime = System.currentTimeMillis()
-            isUpdateScheduled = false
-        }, updateDelay)
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        val width = width.toFloat()
-        val height = height.toFloat()
-
-        val crosshairSize = 25 // Adjust this value to change the size of the crosshair
+        val crosshairSize = 25f // Crosshair size
 
         // Draw crosshair
         canvas.drawLine(centerX - crosshairSize, centerY, centerX + crosshairSize, centerY, paint) // Horizontal line
