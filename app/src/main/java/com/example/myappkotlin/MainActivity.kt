@@ -123,9 +123,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_guide -> {
                 replaceFragment(GuideFragment())
             }
-            R.id.nav_aboutus -> {
-                replaceFragment(AboutUsFragment())
-            }
+//            R.id.nav_aboutus -> {
+//                replaceFragment(AboutUsFragment())
+//            }
             // Add more cases for other menu items to navigate to different fragments
         }
         drawerLayout.closeDrawer(GravityCompat.START)
