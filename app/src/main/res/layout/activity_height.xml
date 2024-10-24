@@ -262,14 +262,14 @@
 
     <Button
         android:id="@+id/resetBtn"
-        android:fontFamily="@font/inter_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAllCaps="false"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="15dp"
         android:background="@drawable/button_clear_background"
+        android:fontFamily="@font/inter_medium"
         android:text="@string/clear"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
