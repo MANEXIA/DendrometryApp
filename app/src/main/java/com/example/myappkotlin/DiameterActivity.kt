@@ -21,8 +21,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.myappkotlin.databinding.ActivityDiameterBinding
+import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
 import kotlin.math.abs
+import kotlin.math.atan
 import kotlin.math.tan
 
 class DiameterActivity : AppCompatActivity(), SensorEventListener {
@@ -96,7 +98,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 }
 
                 // Calculate the FOV in degrees (for simplicity, assuming focalLengths[0] is the current focal length)
-                val fov = Math.toDegrees(2 * Math.atan((sensorSize.width / (2 * focalLengths[0].toDouble())))).toFloat()
+                val fov = Math.toDegrees(2 * atan((sensorSize.width / (2 * focalLengths[0].toDouble())))).toFloat()
 
                 Log.d("myFOV", "Calculated FOV: $fov degrees")
 
@@ -125,7 +127,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 }
 
                 // Calculate the FOV in degrees (for simplicity, assuming focalLengths[0] is the current focal length)
-                val fov = Math.toDegrees(2 * Math.atan((sensorSize.width / (2 * focalLengths[0].toDouble())))).toFloat()
+                val fov = Math.toDegrees(2 * atan((sensorSize.width / (2 * focalLengths[0].toDouble())))).toFloat()
 
                 Log.d("myFOV", "Calculated FOV: $fov degrees")
 
@@ -329,6 +331,9 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
     private fun calculateTreeDiameter(yawLeft: Float, yawRight: Float, distanceToTree: Float, cameraFOV: Float): Double {
         val yawDifference = getSmallestAngleDifference(yawLeft, yawRight)
 
+        // Notify user to adjust distance based on yaw difference
+        notifyUserToAdjustDistance(yawDifference)
+
         // Apply correction factor for very close distances
         val correctionFactor = if (distanceToTree < 1.5) {
             0.95  // Adjust this based on tests, reduce diameter slightly for close distances
@@ -338,7 +343,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
         // Adjust the yaw difference based on the camera's FOV
         val referenceFOV = 74.92703f // Set this to the FOV of the device you used for testing
-//        val referenceFOV = 65.0f // Set this to the FOV of the device you used for testing
+        //val referenceFOV = 65.0f // Set this to the FOV of the device you used for testing
         val fovAdjustedYawDifference = (yawDifference * cameraFOV) / referenceFOV
 
         // Apply the correction factor for non-linear effects at close distances
@@ -361,6 +366,21 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             360f - diff  // Ensure the difference is the smallest path on the circle
         } else {
             diff
+        }
+    }
+
+    private fun notifyUserToAdjustDistance(yawDifference: Float) {
+        // Define thresholds for adjusting distance
+        val wideThreshold = 30f // Example threshold for wide angles
+        val slimThreshold = 10f // Example threshold for slim angles
+
+        when {
+            yawDifference > wideThreshold -> {
+                Snackbar.make(binding.root, "Move closer and Adjust Distance Input to the tree for better measurement.", Snackbar.LENGTH_SHORT).show()
+            }
+            yawDifference < slimThreshold -> {
+                Snackbar.make(binding.root, "Step back and Adjust Distance Input for a clearer measurement.", Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 
