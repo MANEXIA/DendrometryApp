@@ -130,7 +130,8 @@ import kotlin.math.tan
                 if (treeHeightValue != 0.0 && diameterValue != 0.0) {
                     if (treeHeightValue > 0 && diameterValue > 0) {
                         // Proceed to calculation using the formula
-                        volumeValue = 0.7854 * (treeHeightValue / 2) * (diameterValue * diameterValue)
+                        val diameterInMeters = diameterValue / 100 // Convert diameter to meters
+                        volumeValue = 0.7854 * (treeHeightValue / 2) * (diameterInMeters * diameterInMeters)
                         // Display the calculated volume in a TextView
                         binding.volumeResult.text = "Volume: ${String.format(Locale.US,"%.1f", volumeValue)}m³"
                         binding.ViewClass.visibility = View.VISIBLE

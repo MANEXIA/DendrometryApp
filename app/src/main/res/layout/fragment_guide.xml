@@ -14,102 +14,181 @@
         android:layout_height="wrap_content"
         tools:context=".GuideFragment">
 
+
         <TextView
-            android:fontFamily="@font/inter_medium"
-            android:id="@+id/textView3"
+            android:id="@+id/guidetitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
+            android:fontFamily="@font/inter_medium"
             android:text="@string/Guide"
             android:textColor="@color/guidecolortxt"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageView3"
+
+        <TextView
+            android:id="@+id/Stepstxt"
             android:layout_width="wrap_content"
-            android:layout_height="365dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:contentDescription="@string/iconDesc"
-            android:src="@drawable/startheapp"
+            android:fontFamily="@font/inter_medium"
+            android:text="Steps"
+            android:textColor="@color/guidecolortxt"
+            android:textSize="25sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toBottomOf="@+id/guidetitle" />
 
-        <ImageView
-            android:id="@+id/imageView4"
+        <ImageButton
+            android:id="@+id/guideLeftBtn"
             android:layout_width="wrap_content"
-            android:layout_height="230dp"
-            android:layout_marginTop="24dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:background="#D43333"
+            android:backgroundTint="#00FFFFFF"
             android:contentDescription="@string/iconDesc"
-            android:src="@drawable/step2guide"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+            android:src="@drawable/change_bt_left"
+            app:layout_constraintBottom_toBottomOf="@+id/Stepstxt"
+            app:layout_constraintEnd_toStartOf="@+id/Stepstxt"
+            app:layout_constraintTop_toTopOf="@+id/Stepstxt"
+            app:tint="#ECEEA7" />
 
-        <ImageView
-            android:id="@+id/imageView5"
+        <ImageButton
+            android:id="@+id/guideRightBtn"
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:background="#D43333"
+            android:backgroundTint="#00FFFFFF"
+            android:contentDescription="@string/iconDesc"
+            android:src="@drawable/change_bt_right"
+            app:layout_constraintBottom_toBottomOf="@+id/Stepstxt"
+            app:layout_constraintStart_toEndOf="@+id/Stepstxt"
+            app:layout_constraintTop_toTopOf="@+id/Stepstxt"
+            app:tint="#F1F2AA" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/conditionscontainer"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:contentDescription="@string/iconDesc"
-            android:src="@drawable/step3guide"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+            app:layout_constraintTop_toBottomOf="@+id/Stepstxt">
 
-        <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="wrap_content"
-            android:layout_height="125dp"
+            <ImageView
+                android:id="@+id/conditions1"
+                android:layout_width="wrap_content"
+                android:layout_height="850dp"
+                android:contentDescription="@string/iconDesc"
+                android:src="@drawable/conditions"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stepscontainer"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:contentDescription="@string/iconDesc"
-            android:src="@drawable/step4guide"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+            app:layout_constraintTop_toBottomOf="@+id/Stepstxt">
 
-        <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="wrap_content"
-            android:layout_height="215dp"
-            android:layout_marginTop="20dp"
-            android:contentDescription="@string/iconDesc"
-            android:src="@drawable/step5guide"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
-        <ImageView
-            android:id="@+id/imageView9"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:layout_marginTop="20dp"
-            android:contentDescription="@string/iconDesc"
-            android:src="@drawable/step6guide"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+            <ImageView
+                android:id="@+id/step1"
+                android:layout_width="wrap_content"
+                android:layout_height="365dp"
+                android:contentDescription="@string/iconDesc"
+                android:src="@drawable/startheapp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageView10"
-            android:layout_width="wrap_content"
-            android:layout_height="370dp"
-            android:layout_marginTop="20dp"
-            android:contentDescription="@string/iconDesc"
-            android:src="@drawable/step7guide"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView9" />
+            <ImageView
+                android:id="@+id/step2"
+                android:layout_width="wrap_content"
+                android:layout_height="230dp"
+                android:layout_marginTop="24dp"
+                android:contentDescription="@string/iconDesc"
+                android:src="@drawable/step2guide"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/step1" />
 
+            <ImageView
+                android:id="@+id/step3"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp"
+                android:contentDescription="@string/iconDesc"
+                android:src="@drawable/step3guide"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/step2" />
+
+            <ImageView
+                android:id="@+id/step4"
+                android:layout_width="wrap_content"
+                android:layout_height="125dp"
+                android:layout_marginTop="20dp"
+                android:contentDescription="@string/iconDesc"
+                android:src="@drawable/step4guide"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/step3" />
+
+            <ImageView
+                android:id="@+id/step5"
+                android:layout_width="wrap_content"
+                android:layout_height="215dp"
+                android:layout_marginTop="20dp"
+                android:contentDescription="@string/iconDesc"
+                android:src="@drawable/step5guide"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/step4" />
+
+            <ImageView
+                android:id="@+id/step6"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp"
+                android:contentDescription="@string/iconDesc"
+                android:src="@drawable/step6guide"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/step5" />
+
+            <ImageView
+                android:id="@+id/step7"
+                android:layout_width="wrap_content"
+                android:layout_height="370dp"
+                android:layout_marginTop="20dp"
+                android:contentDescription="@string/iconDesc"
+                android:src="@drawable/step7guide"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/step6" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
