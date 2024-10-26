@@ -20,7 +20,7 @@
             android:id="@+id/hBtn"
             android:layout_width="159dp"
             android:layout_height="53dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="25dp"
             android:background="@drawable/button_backgroud"
             android:fontFamily="@font/inter_medium"
             android:text="@string/start"
@@ -31,9 +31,9 @@
             android:visibility="visible"
             app:cornerRadius="30dp"
             app:iconPadding="5dp"
-            app:layout_constraintEnd_toEndOf="@+id/titleApp"
-            app:layout_constraintStart_toStartOf="@+id/titleApp"
-            app:layout_constraintTop_toBottomOf="@+id/titleApp" />
+            app:layout_constraintEnd_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 
         <Button
@@ -57,8 +57,8 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="215dp"
-            android:layout_height="218dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
             android:layout_marginTop="-120dp"
             android:contentDescription="@string/iconDesc"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -67,19 +67,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/icon" />
 
-        <TextView
-            android:id="@+id/titleApp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/inter_medium"
-            android:text="@string/titleMain"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
