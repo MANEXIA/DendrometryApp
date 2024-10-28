@@ -106,6 +106,10 @@ class ClassificationDatabaseHelper(Context: Context) : SQLiteOpenHelper(Context,
             }
 
             outputStream?.use { os ->
+                // Write header row
+                val header = "ID,Height,Diameter,Volume,Diameter Class,Date\n"
+                os.write(header.toByteArray())
+                // Write data rows
                 while (cursor.moveToNext()) {
                     val data = "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ID))}," +
                             "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HEIGHT))}," +

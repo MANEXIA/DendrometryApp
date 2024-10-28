@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myappkotlin.databinding.FragmentHistoryBinding
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class HistoryFragment : Fragment() {
     private var _binding: FragmentHistoryBinding? = null
@@ -57,8 +59,12 @@ class HistoryFragment : Fragment() {
                 ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
 
             } else {
+                // Get current date and time
+                val currentDateTime = LocalDateTime.now()
+                // Define a date-time formatter to format the output
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd") // Customize the format as needed
                 // Call the export method directly if permission is granted or on Android 10+
-                db.exportToSQLiteFile(requireContext(), "exported_data${System.currentTimeMillis()}")
+                db.exportToSQLiteFile(requireContext(), "Classification_History (${currentDateTime.format(formatter)})")
             }
         }
 
