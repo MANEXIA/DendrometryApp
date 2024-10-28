@@ -1,9 +1,17 @@
 package com.example.myappkotlin
 
+
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
+import android.widget.Toast
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class ClassificationDatabaseHelper(Context: Context) : SQLiteOpenHelper(Context, DATABASE_NAME, null, DATABASE_VERSION){
     companion object{
@@ -65,6 +73,66 @@ class ClassificationDatabaseHelper(Context: Context) : SQLiteOpenHelper(Context,
         return classificationlist
     }
 
+    fun exportToSQLiteFile(context: Context, fileName: String) {
+        val db = writableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME", null)
+
+        try {
+            // Format the file name
+            val formattedFileName = if (!fileName.endsWith(".csv") && !fileName.endsWith(".db")) {
+                "$fileName.csv"
+            } else {
+                fileName
+            }
+
+            // Open output stream for API 29+ or fallback for older versions
+            val outputStream = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                // For Android Q and above
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, formattedFileName)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "text/csv")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOCUMENTS + "/dendrometry/exports")
+                }
+                val uri = context.contentResolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
+                uri?.let { context.contentResolver.openOutputStream(it) }
+            } else {
+                // Legacy storage path for older devices
+                val externalStorageDir = Environment.getExternalStorageDirectory()
+                val exportDirPath = File(externalStorageDir, "dendrometry/exports")
+                if (!exportDirPath.exists()) {
+                    exportDirPath.mkdirs() // Create the directory if it does not exist
+                }
+                FileOutputStream(File(exportDirPath, formattedFileName))
+            }
+
+            outputStream?.use { os ->
+                while (cursor.moveToNext()) {
+                    val data = "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ID))}," +
+                            "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HEIGHT))}," +
+                            "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DIAMETER))}," +
+                            "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_VOLUME))}," +
+                            "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DIAMETER_CLASS))}," +
+                            "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))}\n"
+                    os.write(data.toByteArray())
+                }
+                Toast.makeText(context, "Data exported successfully", Toast.LENGTH_SHORT).show()
+            } ?: run {
+                Toast.makeText(context, "Failed to open output stream", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(context, "Export failed", Toast.LENGTH_SHORT).show()
+        } finally {
+            cursor.close() // Ensure the cursor is closed
+        }
+    }
+
+
+
+
+
+
+
     fun deleteClassificationItem(itemId: Int){
         val db = writableDatabase
         val whereClause = "$COLUMN_ID = ?"
@@ -72,6 +140,8 @@ class ClassificationDatabaseHelper(Context: Context) : SQLiteOpenHelper(Context,
         db.delete(TABLE_NAME, whereClause, whereArgs)
         db.close()
     }
+
+
 
 
 }

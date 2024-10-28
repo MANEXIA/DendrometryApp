@@ -72,7 +72,7 @@
             android:fontFamily="@font/inter_medium"
             android:gravity="center"
             android:text="@string/HeightResult"
-            android:textColor="#FFFFFF"
+            android:textColor="#2AFCB5"
             android:textSize="18sp"
             android:textStyle="bold"
             android:visibility="visible"
@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_medium"
             android:text="@string/DiameterResult"
-            android:textColor="#FFFFFF"
+            android:textColor="#2AFCB5"
             android:textSize="18sp"
             android:textStyle="bold"
             android:visibility="visible"
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_medium"
             android:text="@string/VolumeResult"
-            android:textColor="#FFFFFF"
+            android:textColor="#2AFCB5"
             android:textSize="18sp"
             android:textStyle="bold"
             android:visibility="visible"
@@ -114,7 +114,7 @@
             android:lineSpacingExtra="10sp"
             android:text="@string/topbottom"
             android:textAlignment="viewStart"
-            android:textColor="#FCF9F9"
+            android:textColor="#2AFCB5"
             android:textSize="14sp"
             android:textStyle="bold"
             android:visibility="visible"
@@ -132,8 +132,8 @@
             android:backgroundTint="@color/white"
             android:hint="@string/Distance"
             android:inputType="numberDecimal"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#FFFFFF"
+            android:textColor="#2AFCB5"
+            android:textColorHint="#2AFCB5"
             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="@+id/constraintLayout" />
 
@@ -206,45 +206,6 @@
 
 
     <Button
-        android:id="@+id/bottomBtn"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/button_backgroud"
-        android:text="@string/bottomBtn"
-        android:textColor="#F2F3AB"
-        android:textSize="20sp"
-        android:fontFamily="@font/inter_medium"
-        android:textStyle="bold"
-        android:textAllCaps="false"
-        android:visibility="visible"
-        app:cornerRadius="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/angleTextView" />
-
-    <Button
-        android:id="@+id/topBtn"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/button_backgroud"
-        android:text="@string/topBtn"
-        android:textColor="#F2F3AB"
-        android:textSize="20sp"
-        android:fontFamily="@font/inter_medium"
-        android:textAllCaps="false"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:cornerRadius="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/angleTextView" />
-
-
-
-    <Button
         android:id="@+id/calBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -275,33 +236,81 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-
-
-    <ImageButton
-        android:id="@+id/arrowButtonLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="100dp"
-        android:background="#00783737"
-        android:contentDescription="@string/iconDesc"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/angleTextView"
-        app:srcCompat="@drawable/change_bt_left"
-        app:tint="#436850" />
-
-    <ImageButton
-        android:id="@+id/arrowButtonRight"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:layout_marginEnd="50dp"
-        android:background="#00FFFFFF"
-        android:contentDescription="@string/iconDesc"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/angleTextView"
-        app:srcCompat="@drawable/change_bt_right"
-        app:tint="#436850" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/angleTextView">
+
+        <Button
+            android:id="@+id/bottomBtn"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/button_backgroud"
+            android:fontFamily="@font/inter_medium"
+            android:text="@string/bottomBtn"
+            android:textAllCaps="false"
+            android:textColor="#F2F3AB"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/topBtn"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_backgroud"
+            android:fontFamily="@font/inter_medium"
+            android:text="@string/topBtn"
+            android:textAllCaps="false"
+            android:textColor="#F2F3AB"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/arrowButtonLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00783737"
+            android:contentDescription="@string/iconDesc"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/change_bt_left"
+            app:tint="#2AFDB6" />
+
+        <ImageButton
+            android:id="@+id/arrowButtonRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/iconDesc"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/change_bt_right"
+            app:tint="#2AFCB5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
