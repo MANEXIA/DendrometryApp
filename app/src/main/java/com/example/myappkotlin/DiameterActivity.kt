@@ -347,7 +347,8 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         val fovAdjustedYawDifference = (yawDifference * cameraFOV) / referenceFOV
 
         // Apply the correction factor for non-linear effects at close distances
-        val adjustedYawDifference = fovAdjustedYawDifference * correctionFactor
+//        val adjustedYawDifference = fovAdjustedYawDifference * correctionFactor
+        val adjustedYawDifference = "%.1f".format(fovAdjustedYawDifference * correctionFactor).toDouble()
 
         // Calculate diameter using trigonometry
         Log.d("DiameterDebug", "Left Angle: $leftAngle, Right Angle: $rightAngle")
@@ -371,8 +372,8 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
     private fun notifyUserToAdjustDistance(yawDifference: Float) {
         // Define thresholds for adjusting distance
-        val wideThreshold = 30f // Example threshold for wide angles
-        val slimThreshold = 10f // Example threshold for slim angles
+        val wideThreshold = 65f // Example threshold for wide angles
+        val slimThreshold = 5f // Example threshold for slim angles
 
         when {
             yawDifference > wideThreshold -> {
