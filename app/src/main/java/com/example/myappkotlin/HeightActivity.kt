@@ -191,7 +191,7 @@ import kotlin.math.tan
                     val diameterTxt = result.data?.getStringExtra("diameterValue")
                     Log.d("ETORESULT", "Received diameter value: $diameterTxt")
                     diameterValue = diameterTxt?.toDouble() ?: 0.0
-                    binding.DiamterValue.text = "Diameter: ${String.format(Locale.US,"%.1f", diameterValue)}cm"
+                    binding.DiamterValue.text = "Diameter: ${String.format(Locale.US,"%.2f", diameterValue)}cm"
                 }
             }
 
@@ -231,7 +231,7 @@ import kotlin.math.tan
          }
 
          dialog.findViewById<TextView>(R.id.heightResult)?.text = "Height: ${String.format(Locale.US,"%.1f", treeHeightValue)}m"
-         dialog.findViewById<TextView>(R.id.diameterResult)?.text = "Diameter: ${String.format(Locale.US,"%.1f", diameterValue)}cm"
+         dialog.findViewById<TextView>(R.id.diameterResult)?.text = "Diameter: ${String.format(Locale.US,"%.2f", diameterValue)}cm"
          dialog.findViewById<TextView>(R.id.volumeResult)?.text = "Volume: ${String.format(Locale.US,"%.1f", volumeValue)}m³"
          dialog.findViewById<TextView>(R.id.dateVolumeClass)?.text = currentDateTime.format(formatter)
 
@@ -239,13 +239,16 @@ import kotlin.math.tan
              dialog.dismiss()
          }
 
+
+
          dialog.findViewById<View>(R.id.addClassification)?.setOnClickListener{
-               val height = treeHeightValue
-               val diameter = diameterValue
+               val height = "${String.format(Locale.US,"%.1f", treeHeightValue)}m"
+               val diameter = "${String.format(Locale.US,"%.2f", diameterValue)}cm"
                val volume = volumeValue
-               val diametersize = diameterClass
+               val diameterSize = diameterClass
                val date = currentDateTime.format(formatter)
-               val data = DataClassification(0, height, diameter, volume, diametersize, date)
+               val data =
+                   DataClassification(0, height, diameter, volume, diameterSize, date)
                db.insertClassification(data)
                dialog.dismiss()
                Toast.makeText(this, "Classification Added", Toast.LENGTH_SHORT).show()
@@ -302,7 +305,7 @@ import kotlin.math.tan
                     val diameterTxt = it.getStringExtra("diameterValue")
                     if (diameterTxt != null) {
                         diameterValue = diameterTxt.toDouble()
-                        binding.DiamterValue.text = "Diameter: ${String.format(Locale.US,"%.1f", diameterValue)} cm"
+                        binding.DiamterValue.text = "Diameter: ${String.format(Locale.US,"%.2f", diameterValue)} cm"
                     } else {
                         Log.e("Error", "Diameter value is null")
                     }

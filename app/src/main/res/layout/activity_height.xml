@@ -111,7 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_medium"
-            android:lineSpacingExtra="10sp"
+            android:lineSpacingExtra="3sp"
             android:text="@string/topbottom"
             android:textAlignment="viewStart"
             android:textColor="#2AFCB5"

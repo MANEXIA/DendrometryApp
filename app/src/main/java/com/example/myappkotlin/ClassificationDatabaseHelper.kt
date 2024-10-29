@@ -13,7 +13,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-class ClassificationDatabaseHelper(Context: Context) : SQLiteOpenHelper(Context, DATABASE_NAME, null, DATABASE_VERSION){
+class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
     companion object{
         private const val DATABASE_NAME = "classification.db"
         private const val DATABASE_VERSION = 1
@@ -58,8 +58,8 @@ class ClassificationDatabaseHelper(Context: Context) : SQLiteOpenHelper(Context,
 
         while (cursor.moveToNext()){
             val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
-            val height = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_HEIGHT))
-            val diameter = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_DIAMETER))
+            val height = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HEIGHT))
+            val diameter = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DIAMETER))
             val volume = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_VOLUME))
             val diameterClass = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DIAMETER_CLASS))
             val date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
@@ -107,7 +107,7 @@ class ClassificationDatabaseHelper(Context: Context) : SQLiteOpenHelper(Context,
 
             outputStream?.use { os ->
                 // Write header row
-                val header = "ID,Height,Diameter,Volume,Diameter Class,Date\n"
+                val header = "ID,Height,Diameter,Volume(m³),Diameter Class,Date\n"
                 os.write(header.toByteArray())
                 // Write data rows
                 while (cursor.moveToNext()) {

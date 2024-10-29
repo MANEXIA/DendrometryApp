@@ -105,7 +105,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 val diameterValue = calculateTreeDiameter(leftAngle, rightAngle, distanceValue, fov)
                 val diaMtoCm = diameterValue * 100 // Convert meters to cm
                 //"Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}° DIAMETER: ${String.format("%.1f", diaMtoCm)}cm"
-                binding.diameterRES.text = "Diameter: ${String.format(Locale.US,"%.1f", diaMtoCm)}cm"
+                binding.diameterRES.text = "Diameter: ${String.format(Locale.US,"%.2f", diaMtoCm)}cm"
                 holdDiameter = diaMtoCm
                 Log.d("DiameterDebug", "Calculated Diameter: $diameterValue")
             }
@@ -134,7 +134,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 val diameterValue = calculateTreeDiameter(leftAngle, rightAngle, distanceValue, fov)
                 val diaMtoCm = diameterValue * 100 // Convert meters to cm
                 //"Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}° DIAMETER: ${String.format("%.1f", diaMtoCm)}cm"
-                binding.diameterRES.text = "Diameter: ${String.format(Locale.US,"%.1f", diaMtoCm)}cm"
+                binding.diameterRES.text = "Diameter: ${String.format(Locale.US,"%.2f", diaMtoCm)}cm"
                 holdDiameter = diaMtoCm
                 Log.d("DiameterDebug", "Calculated Diameter: $diameterValue")
             }

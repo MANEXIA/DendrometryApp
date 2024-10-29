@@ -31,8 +31,8 @@ class classificationAdapter(private var classificationList: List<DataClassificat
 
     override fun onBindViewHolder(holder: classificationViewHolder, position: Int) {
         val classification = classificationList[position]
-        holder.heightResult.text = "Height: ${String.format("%.1f", classification.height)}m"
-        holder.diameterResult.text = "Diameter: ${String.format("%.1f", classification.diameter)}cm"
+        holder.heightResult.text = "Height: ${classification.height}"
+        holder.diameterResult.text = "Diameter: ${classification.diameter}"
         holder.volumeResult.text = "Volume: ${String.format("%.1f", classification.volume)}m³"
         holder.diameterClass.text = "Size: ${classification.diameterClass}"
         holder.dateVolumeClass.text = classification.date
