@@ -184,13 +184,14 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             Log.d("BackDebug", "Activity is finishing, skipping setup")
             return
         }
-        Log.d("BackDebug", "onResume called, setting up sensors and starting camera")
+        Log.d("BackDebug", "onResume called, setting up sensors and starting camera in DiameterKT")
         setupSensorStuff()
     }
 
     override fun onPause() {
         super.onPause()
         if (areSensorsRegistered) {
+            Log.d("BackDebug", "onPause called, unregistering sensors")
             sensorM.unregisterListener(this)
             areSensorsRegistered = false
         }
@@ -237,7 +238,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             rotationVectorSensor = sensorM.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
 
             rotationVectorSensor?.also { rotationVector ->
-                sensorM.registerListener(this, rotationVector, SensorManager.SENSOR_DELAY_UI)
+                sensorM.registerListener(this, rotationVector, SensorManager.SENSOR_DELAY_FASTEST)
             }
             areSensorsRegistered = true
         }
