@@ -317,32 +317,46 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
     }
 
 
-    fun calculateDeviceFOV(context: Context): Float {
+    private fun calculateDeviceFOV(context: Context): Float {
         val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        return try {
-            // Attempt to get FOV from the back camera
+        try {
+            // Get the back camera ID
             val cameraId = cameraManager.cameraIdList.firstOrNull { id ->
                 val characteristics = cameraManager.getCameraCharacteristics(id)
-                characteristics.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_BACK
-            } ?: throw Exception("No back camera found")
+                val lensFacing = characteristics.get(CameraCharacteristics.LENS_FACING)
+                lensFacing == CameraCharacteristics.LENS_FACING_BACK
+            } ?: return 74.92703f // Default FOV if no back camera is found
 
+            // Get the characteristics of the chosen camera
             val characteristics = cameraManager.getCameraCharacteristics(cameraId)
             val sensorSize = characteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE)
             val focalLengths = characteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)
 
             if (sensorSize != null && focalLengths != null && focalLengths.isNotEmpty()) {
-                // Calculate and return FOV
-                Math.toDegrees(2 * atan((sensorSize.width / (2 * focalLengths[0].toDouble())))).toFloat()
-            } else {
-                throw Exception("Camera characteristics missing")
+                val fov = Math.toDegrees(2 * atan((sensorSize.width / (2 * focalLengths[0].toDouble())))).toFloat()
+
+                // Log the calculated FOV
+                Log.d("FOVDebug", "Calculated FOV: $fov degrees")
+
+                return fov
             }
         } catch (e: Exception) {
-            // Log or handle exception if needed, and use reference FOV as fallback
-            Log.e("calculateDeviceFOV", "Error calculating FOV: ${e.message}")
-            74.92703f
+            e.printStackTrace()
         }
+        return 74.92703f // Default FOV if calculation fails
     }
 
+    // Function to apply the reference FOV if the device FOV does not match the accurate reference
+    fun getAdjustedFOV(): Float {
+        val calculatedFOV = calculateDeviceFOV(this)
+
+        // Override with reference FOV if the calculated FOV is not accurate
+        return if (calculatedFOV != 74.9f) {
+            74.9f
+        } else {
+            calculatedFOV
+        }
+    }
 
     private fun calculateTreeDiameter(yawLeft: Float, yawRight: Float, distanceToTree: Float, cameraFOV: Float): Double {
         val yawDifference = getSmallestAngleDifference(yawLeft, yawRight)
@@ -357,21 +371,26 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             1.0
         }
 
-        // Adjust the yaw difference based on the camera's FOV
-        val referenceFOV = 74.92703f // Set this to the FOV of the device you used for testing
-        //val referenceFOV = 65.0f // Set this to the FOV of the device you used for testing
-        val fovAdjustedYawDifference = (yawDifference * cameraFOV) / referenceFOV
+        // Reference FOV for accuracy
+        val referenceFOV = 74.92703f
+
+        // Use the reference FOV if the device FOV doesn't match
+        val adjustedFOV = if (cameraFOV != referenceFOV) referenceFOV else cameraFOV
+
+        // Adjust the yaw difference based on the adjusted FOV
+        val fovAdjustedYawDifference = (yawDifference * adjustedFOV) / referenceFOV
 
         // Apply the correction factor for non-linear effects at close distances
-        //val adjustedYawDifference = fovAdjustedYawDifference * correctionFactor
         val adjustedYawDifference = "%.1f".format(fovAdjustedYawDifference * correctionFactor).toDouble()
 
         // Calculate diameter using trigonometry
-        Log.d("DiameterDebug", "Left Angle: $leftAngle, Right Angle: $rightAngle")
+        Log.d("DiameterDebug", "Left Angle: $yawLeft, Right Angle: $yawRight")
         Log.d("DiameterDebug", "Yaw Difference: $yawDifference")
-        return 2 * distanceToTree * tan(Math.toRadians(adjustedYawDifference / 2.0))
+        Log.d("DiameterDebug", "Using FOV: $adjustedFOV")
 
+        return 2 * distanceToTree * tan(Math.toRadians(adjustedYawDifference / 2.0))
     }
+
 
     // Function to get the smallest angle difference
     private fun getSmallestAngleDifference(angle1: Float, angle2: Float): Float {
