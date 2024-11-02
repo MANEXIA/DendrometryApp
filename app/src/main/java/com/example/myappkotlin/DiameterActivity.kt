@@ -363,7 +363,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         val fovAdjustedYawDifference = (yawDifference * cameraFOV) / referenceFOV
 
         // Apply the correction factor for non-linear effects at close distances
-//        val adjustedYawDifference = fovAdjustedYawDifference * correctionFactor
+        //val adjustedYawDifference = fovAdjustedYawDifference * correctionFactor
         val adjustedYawDifference = "%.1f".format(fovAdjustedYawDifference * correctionFactor).toDouble()
 
         // Calculate diameter using trigonometry
