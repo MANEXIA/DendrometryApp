@@ -139,7 +139,6 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             }
         }
 
-
         binding.resetDiameter.setOnClickListener(){
             leftAngle = 0.0
             rightAngle = 0.0
@@ -161,10 +160,8 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 val resultIntent = Intent().apply {
                     putExtra("diameterValue", holdDiameter.toString())
                 }
-
                 // Set the result for the previous activity
                 setResult(Activity.RESULT_OK, resultIntent)
-
                 // Close the current activity and return to the previous one
                 finish()
             }
@@ -239,12 +236,10 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             }
             areSensorsRegistered = true
         }
-
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
         event ?: return
-
         when (event.sensor.type) {
             Sensor.TYPE_ROTATION_VECTOR -> {
                 // Get rotation matrix from the rotation vector
@@ -288,11 +283,9 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
                 // Get orientation angles from adjusted rotation matrix
                 SensorManager.getOrientation(rotationMatrixAdjusted, orientationAngles)
-
                 // Yaw (azimuth) is the angle you're interested in
                 //yaw = Math.toDegrees(orientationAngles[0].toDouble()).toInt().toFloat()
                //yaw = Math.round(Math.toDegrees(orientationAngles[0].toDouble())).toFloat()
-
                 val yawInDegrees = Math.toDegrees(orientationAngles[0].toDouble()) // Intermediate calculation as Double
                 yaw = yawInDegrees.toFloat() // Convert to Float if you need to maintain yaw as Float
                 // Update UI with yaw
@@ -371,19 +364,24 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         } else {
             cameraFOV / referenceFOV
         }
+        //val calibrationFactor = referenceFOV / cameraFOV
 
-        // Directly calculate adjusted yaw difference
-        val adjustedYawDifference = yawDifference * calibrationFactor * correctionFactor
+
+        // Normalize the yaw difference based on the reference FOV
+        val fovAdjustedYawDifference = yawDifference * calibrationFactor
+
+        // Apply correction factor for close distances
+//        val adjustedYawDifference = fovAdjustedYawDifference * correctionFactor
 
         // Log debug information
         Log.d("DiameterDebug", "Left Angle: $normalizedYawLeft,\nRight Angle: $normalizedYawRight")
         Log.d("DiameterDebug", "Correction Factor: $correctionFactor")
         Log.d("DiameterDebug", "Yaw Difference: $yawDifference")
         Log.d("DiameterDebug", "Device FOV: $cameraFOV")
-        Log.d("DiameterDebug", "Adjusted Yaw Difference: $adjustedYawDifference")
+//        Log.d("DiameterDebug", "Adjusted Yaw Difference: $adjustedYawDifference")
 
         // Calculate diameter using trigonometry
-        return 2 * distanceToTree * tan(Math.toRadians(adjustedYawDifference / 2.0))
+        return 2 * distanceToTree * tan(Math.toRadians(fovAdjustedYawDifference / 2.0))
     }
 
 
