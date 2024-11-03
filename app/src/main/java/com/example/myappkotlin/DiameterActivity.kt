@@ -69,6 +69,18 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         angleView = binding.textView2
         leftRightvaltxt = binding.leftrightValuetxt
 
+        //GET FOV OF PHONE
+        val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        val cameraId = cameraManager.cameraIdList[0] // Use the appropriate camera ID
+        val characteristics = cameraManager.getCameraCharacteristics(cameraId)
+        val focalLengths = characteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)
+        val sensorSize = characteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE)
+
+        // Check if focal lengths and sensor size are available
+        if (focalLengths == null || focalLengths.isEmpty() || sensorSize == null) {
+            Toast.makeText(this, "Unable to get camera characteristics", Toast.LENGTH_SHORT).show()
+            return // Exit early if we can't retrieve necessary data
+        }
 
         binding.leftWbutton.setOnClickListener(){
             val distanceText = binding.distanceValue.text.toString()
@@ -86,7 +98,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 }
 
                 // Calculate the FOV in degrees (for simplicity, assuming focalLengths[0] is the current focal length)
-                val fov = calculateDeviceFOV(this)
+                val fov = Math.toDegrees(2 * atan((sensorSize.width / (2 * focalLengths[0].toDouble())))).toFloat()
 
                 Log.d("myFOV", "Calculated FOV: $fov degrees")
 
@@ -115,7 +127,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 }
 
                 // Calculate the FOV in degrees (for simplicity, assuming focalLengths[0] is the current focal length)
-                val fov = calculateDeviceFOV(this)
+                val fov = Math.toDegrees(2 * atan((sensorSize.width / (2 * focalLengths[0].toDouble())))).toFloat()
 
                 Log.d("myFOV", "Calculated FOV: $fov degrees")
 
@@ -314,33 +326,6 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         rightAngle = normalizeAngle(yaw)
         leftRightvaltxt.text = "Left: ${String.format(Locale.US,"%.1f", leftAngle)}°\nRight: ${String.format(Locale.US,"%.1f", rightAngle)}°"
 
-    }
-
-
-    fun calculateDeviceFOV(context: Context): Float {
-        val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        return try {
-            // Attempt to get FOV from the back camera
-            val cameraId = cameraManager.cameraIdList.firstOrNull { id ->
-                val characteristics = cameraManager.getCameraCharacteristics(id)
-                characteristics.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_BACK
-            } ?: throw Exception("No back camera found")
-
-            val characteristics = cameraManager.getCameraCharacteristics(cameraId)
-            val sensorSize = characteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE)
-            val focalLengths = characteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)
-
-            if (sensorSize != null && focalLengths != null && focalLengths.isNotEmpty()) {
-                // Calculate and return FOV
-                Math.toDegrees(2 * atan((sensorSize.width / (2 * focalLengths[0].toDouble())))).toFloat()
-            } else {
-                throw Exception("Camera characteristics missing")
-            }
-        } catch (e: Exception) {
-            // Log or handle exception if needed, and use reference FOV as fallback
-            Log.e("calculateDeviceFOV", "Error calculating FOV: ${e.message}")
-            74.92703f
-        }
     }
 
 
