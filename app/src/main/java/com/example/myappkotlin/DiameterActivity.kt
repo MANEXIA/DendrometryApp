@@ -128,7 +128,6 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
                 // Calculate the FOV in degrees (for simplicity, assuming focalLengths[0] is the current focal length)
                 val fov = Math.toDegrees(2 * atan((sensorSize.width / (2 * focalLengths[0].toDouble())))).toFloat()
-
                 Log.d("myFOV", "Calculated FOV: $fov degrees")
 
                 val diameterValue = calculateTreeDiameter(leftAngle, rightAngle, distanceValue, fov.toDouble())
