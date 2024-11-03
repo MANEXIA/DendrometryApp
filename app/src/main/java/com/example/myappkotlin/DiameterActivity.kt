@@ -38,8 +38,8 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
     //ROTATION VERCTOR
     private var rotationVectorSensor: Sensor? = null
-    private var leftAngle: Float = 0f
-    private var rightAngle: Float = 0f
+    private var leftAngle: Double = 0.0
+    private var rightAngle: Double = 0.0
     private var holdDiameter: Double = 0.0
 
     // Yaw threshold to filter out noise (small angle differences)
@@ -65,7 +65,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 .commitNow() // Use commitNow to add it synchronously
         }
 
-       //START ANGLE SETUP
+        //START ANGLE SETUP
         angleView = binding.textView2
         leftRightvaltxt = binding.leftrightValuetxt
 
@@ -88,7 +88,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             val distanceValue = checkDistance(distanceText) ?: return@setOnClickListener
             // If distance is valid, call setValueTOP
             setLeftAngleValue()
-            if(rightAngle == 0f){
+            if(rightAngle == 0.0){
                 //Toast.makeText(this, "Please Set Bottom Angle", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }else{
@@ -102,7 +102,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
                 Log.d("myFOV", "Calculated FOV: $fov degrees")
 
-                val diameterValue = calculateTreeDiameter(leftAngle, rightAngle, distanceValue, fov)
+                val diameterValue = calculateTreeDiameter(leftAngle, rightAngle, distanceValue, fov.toDouble())
                 val diaMtoCm = diameterValue * 100 // Convert meters to cm
                 //"Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}° DIAMETER: ${String.format("%.1f", diaMtoCm)}cm"
                 binding.diameterRES.text = "Diameter: ${String.format(Locale.US,"%.2f", diaMtoCm)}cm"
@@ -116,8 +116,8 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             // Validate distance input using checkDistance
             val distanceValue = checkDistance(distanceText) ?: return@setOnClickListener
             // If distance is valid, call setValueTOP
-            setRigtAngleValue()
-            if(leftAngle == 0f){
+            setRightAngleValue()
+            if(leftAngle == 0.0){
                 //Toast.makeText(this, "Please Set Bottom Angle", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }else{
@@ -131,7 +131,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
                 Log.d("myFOV", "Calculated FOV: $fov degrees")
 
-                val diameterValue = calculateTreeDiameter(leftAngle, rightAngle, distanceValue, fov)
+                val diameterValue = calculateTreeDiameter(leftAngle, rightAngle, distanceValue, fov.toDouble())
                 val diaMtoCm = diameterValue * 100 // Convert meters to cm
                 //"Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}° DIAMETER: ${String.format("%.1f", diaMtoCm)}cm"
                 binding.diameterRES.text = "Diameter: ${String.format(Locale.US,"%.2f", diaMtoCm)}cm"
@@ -143,8 +143,8 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
         binding.resetDiameter.setOnClickListener(){
             Log.d("resetClick", "wow")
-            leftAngle = 0f
-            rightAngle = 0f
+            leftAngle = 0.0
+            rightAngle = 0.0
             leftRightvaltxt.text = "Left: ${String.format(Locale.US,"%.1f", leftAngle)}°\nRight: ${String.format(Locale.US,"%.1f", rightAngle)}°"
             binding.diameterRES.text = "Diameter:"
             binding.distanceValue.text.clear()
@@ -206,7 +206,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
     }
 
 
-    private fun checkDistance(distanceText: String): Float? {
+    private fun checkDistance(distanceText: String): Double? {
         // Check if distance input is empty
         if (distanceText.isEmpty()) {
             Toast.makeText(this, "Please enter a distance value", Toast.LENGTH_SHORT).show()
@@ -214,7 +214,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         }
 
         // Convert distance input to float
-        val distanceValue = distanceText.toFloatOrNull()
+        val distanceValue = distanceText.toDoubleOrNull()
 
         // Validate if the converted value is not null and greater than 0
         if (distanceValue == null || distanceValue <= 0) {
@@ -296,7 +296,8 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 //yaw = Math.toDegrees(orientationAngles[0].toDouble()).toInt().toFloat()
                //yaw = Math.round(Math.toDegrees(orientationAngles[0].toDouble())).toFloat()
 
-                yaw = Math.toDegrees(orientationAngles[0].toDouble()).toFloat()
+                val yawInDegrees = Math.toDegrees(orientationAngles[0].toDouble()) // Intermediate calculation as Double
+                yaw = yawInDegrees.toFloat() // Convert to Float if you need to maintain yaw as Float
                 // Update UI with yaw
                 updateUI()
             }
@@ -307,7 +308,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         //ALWAYS REMOVE T0DO IN A NEEDED FUNCTION
     }
     // Function to normalize the yaw angles to 0° - 360°
-    private fun normalizeAngle(angle: Float): Float {
+    private fun normalizeAngle(angle: Double): Double {
         var normalizedAngle = angle % 360f  // Get the angle within the 360° range
         if (normalizedAngle < 0) {
             normalizedAngle += 360f  // If it's negative, bring it into the positive range
@@ -317,49 +318,62 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
     @SuppressLint("SetTextI18n")
     private fun setLeftAngleValue(){
-        leftAngle = normalizeAngle(yaw)
+        leftAngle = normalizeAngle(yaw.toDouble())
         leftRightvaltxt.text = "Left: ${String.format(Locale.US,"%.1f", leftAngle)}°\nRight: ${String.format(Locale.US,"%.1f", rightAngle)}°"
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setRigtAngleValue(){
-        rightAngle = normalizeAngle(yaw)
+    private fun setRightAngleValue(){
+        rightAngle = normalizeAngle(yaw.toDouble())
         leftRightvaltxt.text = "Left: ${String.format(Locale.US,"%.1f", leftAngle)}°\nRight: ${String.format(Locale.US,"%.1f", rightAngle)}°"
 
     }
 
 
-    private fun calculateTreeDiameter(yawLeft: Float, yawRight: Float, distanceToTree: Float, cameraFOV: Float): Double {
-        val yawDifference = getSmallestAngleDifference(yawLeft, yawRight)
+    private fun calculateTreeDiameter(
+        yawLeft: Double,
+        yawRight: Double,
+        distanceToTree: Double,
+        cameraFOV: Double
+    ): Double {
+        // Calculate absolute yaw difference to ensure consistency
+        val yawDifference = abs(getSmallestAngleDifference(yawLeft, yawRight))
 
         // Notify user to adjust distance based on yaw difference
         notifyUserToAdjustDistance(yawDifference)
 
-        // Apply correction factor for very close distances
+        // Apply a dynamic correction factor based on distance
         val correctionFactor = if (distanceToTree < 1.5) {
-            0.95  // Adjust this based on tests, reduce diameter slightly for close distances
+            0.95 + (distanceToTree / 3.0)  // Dynamic adjustment
         } else {
             1.0
         }
 
-        // Adjust the yaw difference based on the camera's FOV
-        val referenceFOV = 74.92703f // Set this to the FOV of the device you used for testing
-        //val referenceFOV = 65.0f // Set this to the FOV of the device you used for testing
-        val fovAdjustedYawDifference = (yawDifference * cameraFOV) / referenceFOV
+        // Calculate calibration factor to normalize the FOV, adjusting for reference FOV
+        val referenceFOV = 74.92703
+        val calibrationFactor = referenceFOV / cameraFOV
 
-        // Apply the correction factor for non-linear effects at close distances
-//val adjustedYawDifference = fovAdjustedYawDifference * correctionFactor
-        val adjustedYawDifference = "%.1f".format(fovAdjustedYawDifference * correctionFactor).toDouble()
+        // Normalize the yaw difference based on the reference FOV
+        val fovAdjustedYawDifference = yawDifference * calibrationFactor
+
+        // Apply correction factor for close distances
+        val adjustedYawDifference = fovAdjustedYawDifference * correctionFactor
 
         // Calculate diameter using trigonometry
-        Log.d("DiameterDebug", "Left Angle: $leftAngle, Right Angle: $rightAngle")
+        Log.d("DiameterDebug", "Left Angle: $leftAngle,\nRight Angle: $rightAngle")
+        Log.d("DiameterDebug", "correctionFactor: $correctionFactor")
         Log.d("DiameterDebug", "Yaw Difference: $yawDifference")
+        Log.d("DiameterDebug", "DEVICE FOV: $cameraFOV")
+        Log.d("DiameterDebug", "fovAdjustedYawDifference: $fovAdjustedYawDifference")
+        Log.d("DiameterDebug", "Adjusted Yaw Difference: $adjustedYawDifference")
         return 2 * distanceToTree * tan(Math.toRadians(adjustedYawDifference / 2.0))
-
     }
 
+
+
+
     // Function to get the smallest angle difference
-    private fun getSmallestAngleDifference(angle1: Float, angle2: Float): Float {
+    private fun getSmallestAngleDifference(angle1: Double, angle2: Double): Double {
         val normalizedAngle1 = normalizeAngle(angle1)
         val normalizedAngle2 = normalizeAngle(angle2)
 
@@ -371,7 +385,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
-    private fun notifyUserToAdjustDistance(yawDifference: Float) {
+    private fun notifyUserToAdjustDistance(yawDifference: Double) {
         // Define thresholds for adjusting distance
         val wideThreshold = 65f // Example threshold for wide angles
         val slimThreshold = 5f // Example threshold for slim angles
@@ -390,9 +404,10 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
     @SuppressLint("SetTextI18n")
     private fun updateUI(){
         //angleView.text = "${String.format("%.1f", inclination)}°"
-        angleView.text = "${String.format(Locale.US,"%.1f", normalizeAngle(yaw))}°"
+        angleView.text = "${String.format(Locale.US,"%.1f", normalizeAngle(yaw.toDouble()))}°"
 
     }
+
 
 
 }
