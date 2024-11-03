@@ -131,9 +131,12 @@ import kotlin.math.tan
                     if (treeHeightValue > 0 && diameterValue > 0) {
                         // Proceed to calculation using the formula
                         val diameterInMeters = diameterValue / 100 // Convert diameter to meters
-                        volumeValue = 0.7854 * (treeHeightValue / 2) * (diameterInMeters * diameterInMeters)
+                        volumeValue = 0.7854 * (diameterInMeters * diameterInMeters) * treeHeightValue
+                        Log.d("setHEIGHTndDIAMATER", "H: $treeHeightValue D: $diameterValue")
+                        Log.d("setHEIGHTndDIAMATER", "D to M: $diameterInMeters")
+                        Log.d("setHEIGHTndDIAMATER", "V: $volumeValue")
                         // Display the calculated volume in a TextView
-                        binding.volumeResult.text = "Volume: ${String.format(Locale.US,"%.1f", volumeValue)}m³"
+                        binding.volumeResult.text = "Volume: ${String.format(Locale.US,"%.4f", volumeValue)}m³"
                         binding.ViewClass.visibility = View.VISIBLE
                     } else {
                         // Handle invalid or zero values
@@ -232,7 +235,7 @@ import kotlin.math.tan
 
          dialog.findViewById<TextView>(R.id.heightResult)?.text = "Height: ${String.format(Locale.US,"%.1f", treeHeightValue)}m"
          dialog.findViewById<TextView>(R.id.diameterResult)?.text = "Diameter: ${String.format(Locale.US,"%.2f", diameterValue)}cm"
-         dialog.findViewById<TextView>(R.id.volumeResult)?.text = "Volume: ${String.format(Locale.US,"%.1f", volumeValue)}m³"
+         dialog.findViewById<TextView>(R.id.volumeResult)?.text = "Volume: ${String.format(Locale.US,"%.4f", volumeValue)}m³"
          dialog.findViewById<TextView>(R.id.dateVolumeClass)?.text = currentDateTime.format(formatter)
 
          dialog.findViewById<View>(R.id.closeDialog)?.setOnClickListener{
@@ -244,7 +247,7 @@ import kotlin.math.tan
          dialog.findViewById<View>(R.id.addClassification)?.setOnClickListener{
                val height = "${String.format(Locale.US,"%.1f", treeHeightValue)}m"
                val diameter = "${String.format(Locale.US,"%.2f", diameterValue)}cm"
-               val volume = volumeValue
+               val volume = String.format(Locale.US,"%.4f", volumeValue).toDouble()
                val diameterSize = diameterClass
                val date = currentDateTime.format(formatter)
                val data =

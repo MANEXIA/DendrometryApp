@@ -142,13 +142,11 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
 
         binding.resetDiameter.setOnClickListener(){
-            Log.d("resetClick", "wow")
             leftAngle = 0.0
             rightAngle = 0.0
             leftRightvaltxt.text = "Left: ${String.format(Locale.US,"%.1f", leftAngle)}°\nRight: ${String.format(Locale.US,"%.1f", rightAngle)}°"
             binding.diameterRES.text = "Diameter:"
             binding.distanceValue.text.clear()
-
         }
 
         binding.backBtn.setOnClickListener{
@@ -307,14 +305,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
         //ALWAYS REMOVE T0DO IN A NEEDED FUNCTION
     }
-    // Function to normalize the yaw angles to 0° - 360°
-    private fun normalizeAngle(angle: Double): Double {
-        var normalizedAngle = angle % 360f  // Get the angle within the 360° range
-        if (normalizedAngle < 0) {
-            normalizedAngle += 360f  // If it's negative, bring it into the positive range
-        }
-        return normalizedAngle
-    }
+
 
     @SuppressLint("SetTextI18n")
     private fun setLeftAngleValue(){
@@ -329,48 +320,14 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
     }
 
-
-    private fun calculateTreeDiameter(
-        yawLeft: Double,
-        yawRight: Double,
-        distanceToTree: Double,
-        cameraFOV: Double
-    ): Double {
-        // Calculate absolute yaw difference to ensure consistency
-        val yawDifference = abs(getSmallestAngleDifference(yawLeft, yawRight))
-
-        // Notify user to adjust distance based on yaw difference
-        notifyUserToAdjustDistance(yawDifference)
-
-        // Apply a dynamic correction factor based on distance
-        val correctionFactor = if (distanceToTree < 1.5) {
-            0.95 + (distanceToTree / 3.0)  // Dynamic adjustment
-        } else {
-            1.0
+    // Function to normalize the yaw angles to 0° - 360°
+    private fun normalizeAngle(angle: Double): Double {
+        var normalizedAngle = angle % 360.0  // Get the angle within the 360° range
+        if (normalizedAngle < 0) {
+            normalizedAngle += 360.0  // If it's negative, bring it into the positive range
         }
-
-        // Calculate calibration factor to normalize the FOV, adjusting for reference FOV
-        val referenceFOV = 74.92703
-        val calibrationFactor = referenceFOV / cameraFOV
-
-        // Normalize the yaw difference based on the reference FOV
-        val fovAdjustedYawDifference = yawDifference * calibrationFactor
-
-        // Apply correction factor for close distances
-        val adjustedYawDifference = fovAdjustedYawDifference * correctionFactor
-
-        // Calculate diameter using trigonometry
-        Log.d("DiameterDebug", "Left Angle: $leftAngle,\nRight Angle: $rightAngle")
-        Log.d("DiameterDebug", "correctionFactor: $correctionFactor")
-        Log.d("DiameterDebug", "Yaw Difference: $yawDifference")
-        Log.d("DiameterDebug", "DEVICE FOV: $cameraFOV")
-        Log.d("DiameterDebug", "fovAdjustedYawDifference: $fovAdjustedYawDifference")
-        Log.d("DiameterDebug", "Adjusted Yaw Difference: $adjustedYawDifference")
-        return 2 * distanceToTree * tan(Math.toRadians(adjustedYawDifference / 2.0))
+        return normalizedAngle
     }
-
-
-
 
     // Function to get the smallest angle difference
     private fun getSmallestAngleDifference(angle1: Double, angle2: Double): Double {
@@ -378,12 +335,58 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         val normalizedAngle2 = normalizeAngle(angle2)
 
         val diff = abs(normalizedAngle1 - normalizedAngle2)
-        return if (diff > 180f) {
-            360f - diff  // Ensure the difference is the smallest path on the circle
+        return if (diff > 180) {
+            360 - diff  // Ensure the difference is the smallest path on the circle
         } else {
             diff
         }
     }
+
+    private fun calculateTreeDiameter(
+        yawLeft: Double,
+        yawRight: Double,
+        distanceToTree: Double,
+        cameraFOV: Double
+    ): Double {
+        // Normalize the yaw angles to avoid overlap issues
+        val normalizedYawLeft = normalizeAngle(yawLeft)
+        val normalizedYawRight = normalizeAngle(yawRight)
+
+        // Calculate absolute yaw difference to ensure consistency
+        val yawDifference = abs(getSmallestAngleDifference(normalizedYawLeft, normalizedYawRight))
+
+        // Notify user to adjust distance based on yaw difference
+        notifyUserToAdjustDistance(yawDifference)
+
+        // Apply a dynamic correction factor based on distance
+        val correctionFactor = if (distanceToTree < 1.5) {
+            0.95
+        } else {
+            1.0
+        }
+
+        // Calculate calibration factor to normalize the FOV
+        val referenceFOV = 74.92703
+        val calibrationFactor = if (cameraFOV < referenceFOV) {
+            referenceFOV / cameraFOV
+        } else {
+            cameraFOV / referenceFOV
+        }
+
+        // Directly calculate adjusted yaw difference
+        val adjustedYawDifference = yawDifference * calibrationFactor * correctionFactor
+
+        // Log debug information
+        Log.d("DiameterDebug", "Left Angle: $normalizedYawLeft,\nRight Angle: $normalizedYawRight")
+        Log.d("DiameterDebug", "Correction Factor: $correctionFactor")
+        Log.d("DiameterDebug", "Yaw Difference: $yawDifference")
+        Log.d("DiameterDebug", "Device FOV: $cameraFOV")
+        Log.d("DiameterDebug", "Adjusted Yaw Difference: $adjustedYawDifference")
+
+        // Calculate diameter using trigonometry
+        return 2 * distanceToTree * tan(Math.toRadians(adjustedYawDifference / 2.0))
+    }
+
 
     private fun notifyUserToAdjustDistance(yawDifference: Double) {
         // Define thresholds for adjusting distance
