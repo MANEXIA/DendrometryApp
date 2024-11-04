@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.camera.core.CameraControl
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -26,7 +27,7 @@ class CameraFragmet : Fragment() {
 
     private var cameraProvider: ProcessCameraProvider? = null
     private lateinit var cameraExecutor: ExecutorService
-
+    private lateinit var camera: androidx.camera.core.Camera
     // Permission launcher
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -106,15 +107,22 @@ class CameraFragmet : Fragment() {
                 Log.d("BackDebug", "Unbind all previous use cases")
 
                 // Bind preview use case to lifecycle
-                cameraProvider?.bindToLifecycle(
+                camera = cameraProvider?.bindToLifecycle(
                     viewLifecycleOwner, cameraSelector, preview
-                )
+                )!!
+                // Reset zoom to ensure no zoom is applied
+                resetZoom(camera.cameraControl)
                 Log.d("BackDebug", "Camera use case bound successfully")
 
             } catch (exc: Exception) {
                 Log.e("BackDebug", "Use case binding failed", exc)
             }
         }, ContextCompat.getMainExecutor(requireContext()))
+    }
+
+    private fun resetZoom(cameraControl: CameraControl) {
+        cameraControl.setZoomRatio(1.0f) // Reset zoom to 1.0 (no zoom)
+        Log.d("ZoomAdjustedCamera", "Zoom reset to 1.0")
     }
 
     // Unbind camera use cases when fragment is paused

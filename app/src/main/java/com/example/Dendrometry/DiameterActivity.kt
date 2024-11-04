@@ -251,7 +251,6 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                     @Suppress("DEPRECATION")
                     windowManager.defaultDisplay.rotation
                 }
-
                 // Adjust rotation matrix for current display rotation
                 val rotationMatrixAdjusted = FloatArray(9)
                 when (currentRotation) {
@@ -369,17 +368,20 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         val fovAdjustedYawDifference = yawDifference * calibrationFactor
 
         // Apply correction factor for close distances
-//        val adjustedYawDifference = fovAdjustedYawDifference * correctionFactor
+        val adjustedYawDifference = fovAdjustedYawDifference * correctionFactor
 
         // Log debug information
         Log.d("DiameterDebug", "Left Angle: $normalizedYawLeft,\nRight Angle: $normalizedYawRight")
+        Log.d("DiameterDebug", "distanceToTree: $distanceToTree")
+        Log.d("DiameterDebug", "Reference FOV: $referenceFOV")
+        Log.d("DiameterDebug", "Device FOV: $cameraFOV")
+        Log.d("DiameterDebug", "CalibrationFactor: $calibrationFactor")
         Log.d("DiameterDebug", "Correction Factor: $correctionFactor")
         Log.d("DiameterDebug", "Yaw Difference: $yawDifference")
-        Log.d("DiameterDebug", "Device FOV: $cameraFOV")
-//        Log.d("DiameterDebug", "Adjusted Yaw Difference: $adjustedYawDifference")
+        Log.d("DiameterDebug", "Adjusted Yaw Difference: $adjustedYawDifference")
 
         // Calculate diameter using trigonometry
-        return 2 * distanceToTree * tan(Math.toRadians(fovAdjustedYawDifference / 2.0))
+        return 2 * distanceToTree * tan(Math.toRadians(adjustedYawDifference / 2.0))
     }
 
 
