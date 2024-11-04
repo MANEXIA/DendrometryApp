@@ -1,4 +1,4 @@
-package com.example.myappkotlin
+package com.example.Dendrometry
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -15,7 +15,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.example.myappkotlin.databinding.FragmentCameraFragmetBinding
+import com.example.Dendrometry.databinding.FragmentCameraFragmetBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 

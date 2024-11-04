@@ -1,4 +1,4 @@
-package com.example.myappkotlin
+package com.example.Dendrometry
 
 import android.os.Build
 import android.os.Bundle
@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.example.myappkotlin.databinding.ActivityMainBinding
+import com.example.Dendrometry.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.myappkotlin"
+    namespace = "com.example.Dendrometry"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.myappkotlin"
+        applicationId = "com.example.Dendrometry"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

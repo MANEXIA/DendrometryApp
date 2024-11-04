@@ -1,11 +1,11 @@
-package com.example.myappkotlin
+package com.example.Dendrometry
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.myappkotlin.databinding.FragmentAboutUsBinding
+import com.example.Dendrometry.databinding.FragmentAboutUsBinding
 
 class AboutUsFragment : Fragment() {
     private var _binding: FragmentAboutUsBinding? = null

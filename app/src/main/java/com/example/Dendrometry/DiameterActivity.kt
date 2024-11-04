@@ -1,4 +1,4 @@
-package com.example.myappkotlin
+package com.example.Dendrometry
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -20,7 +20,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.myappkotlin.databinding.ActivityDiameterBinding
+import com.example.Dendrometry.databinding.ActivityDiameterBinding
 import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
 import kotlin.math.abs
@@ -365,8 +365,6 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             cameraFOV / referenceFOV
         }
         //val calibrationFactor = referenceFOV / cameraFOV
-
-
         // Normalize the yaw difference based on the reference FOV
         val fovAdjustedYawDifference = yawDifference * calibrationFactor
 

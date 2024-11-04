@@ -1,4 +1,4 @@
-package com.example.myappkotlin
+package com.example.Dendrometry
 
 import android.content.Intent
 import android.os.Build
@@ -10,7 +10,7 @@ import android.view.WindowInsetsController
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import com.example.myappkotlin.databinding.FragmentHomeBinding
+import com.example.Dendrometry.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 

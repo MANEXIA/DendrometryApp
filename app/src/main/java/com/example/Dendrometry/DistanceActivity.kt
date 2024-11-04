@@ -1,4 +1,4 @@
-package com.example.myappkotlin
+package com.example.Dendrometry
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,7 +13,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.myappkotlin.databinding.ActivityDistanceBinding
+import com.example.Dendrometry.databinding.ActivityDistanceBinding
 import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
 import kotlin.math.abs

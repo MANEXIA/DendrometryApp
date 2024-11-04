@@ -1,4 +1,4 @@
-package com.example.myappkotlin
+package com.example.Dendrometry
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.myappkotlin.databinding.FragmentGuideBinding
+import com.example.Dendrometry.databinding.FragmentGuideBinding
 
 
 class GuideFragment : Fragment() {

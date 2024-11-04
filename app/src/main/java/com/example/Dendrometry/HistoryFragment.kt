@@ -1,4 +1,4 @@
-package com.example.myappkotlin
+package com.example.Dendrometry
 
 
 import android.Manifest
@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myappkotlin.databinding.FragmentHistoryBinding
+import com.example.Dendrometry.databinding.FragmentHistoryBinding
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
