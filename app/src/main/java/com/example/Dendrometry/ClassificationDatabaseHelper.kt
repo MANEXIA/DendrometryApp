@@ -78,7 +78,8 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
 
     fun exportToSQLiteFile(context: Context, fileName: String) {
         val db = writableDatabase
-        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME", null)
+        // Modify the query to sort by tree species alphabetically
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_TREE_SPECIES ASC", null)
 
         try {
             // Format the file name
