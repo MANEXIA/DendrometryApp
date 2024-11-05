@@ -43,20 +43,32 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/closeDialog" />
 
-
         <TextView
-            android:id="@+id/heightResult"
+            android:id="@+id/treeSpecies"
             android:fontFamily="@font/inter_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
-            android:text="@string/HeightResult"
+            android:text="@string/TreeSpeciesValueData"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Classific" />
+
+        <TextView
+            android:id="@+id/heightResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="@string/HeightResult"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/treeSpecies"
+            app:layout_constraintTop_toBottomOf="@+id/treeSpecies" />
 
         <TextView
             android:id="@+id/diameterResult"
@@ -86,13 +98,14 @@
 
         <TextView
             android:id="@+id/diameterClass"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="7dp"
+            android:fontFamily="@font/inter_medium"
             android:text="@string/DiameterClass"
             android:textColor="#FFFFFF"
             android:textSize="17sp"
-            android:fontFamily="@font/inter_medium"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/volumeResult"
             app:layout_constraintTop_toBottomOf="@+id/volumeResult" />

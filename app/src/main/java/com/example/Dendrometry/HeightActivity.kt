@@ -106,6 +106,7 @@ import kotlin.math.tan
                 }else{
                     treeHeightValue = calculateTreeHeight(distanceValue, bottomAngle, topAngle)
                     treeHeight.text = "Height: ${String.format(Locale.US,"%.1f", treeHeightValue)}m"
+                    binding.diameterStartBtn.visibility = View.VISIBLE
                 }
             }
 
@@ -121,6 +122,7 @@ import kotlin.math.tan
                 }else{
                     treeHeightValue = calculateTreeHeight(distanceValue, bottomAngle, topAngle)
                     treeHeight.text = "Height: ${String.format(Locale.US,"%.1f", treeHeightValue)}m"
+                    binding.diameterStartBtn.visibility = View.VISIBLE
                 }
 
             }
@@ -221,18 +223,21 @@ import kotlin.math.tan
             // Define a date-time formatter to format the output
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss") // Customize the format as needed
 
-         var diameterClass : String = ""
-         if(diameterValue in 1.0..30.0){
-             dialog.findViewById<TextView>(R.id.diameterClass)?.text = getString(R.string.dclass_small_tree)
-             diameterClass = "Small Tree"
-         }else if(diameterValue in 30.0..60.0){
-             dialog.findViewById<TextView>(R.id.diameterClass)?.text = getString(R.string.dclass_medium_sized_tree)
-             diameterClass = "Medium-sized Tree"
-         }else if(diameterValue > 60.0){
-             dialog.findViewById<TextView>(R.id.diameterClass)?.text = getString(R.string.dclass_large_tree)
-             diameterClass = "Large Tree"
-         }
+            var diameterClass : String = ""
+            if(diameterValue in 1.0..30.0){
+                dialog.findViewById<TextView>(R.id.diameterClass)?.text = getString(R.string.dclass_small_tree)
+                diameterClass = "Small Tree"
+            }else if(diameterValue in 30.0..60.0){
+                dialog.findViewById<TextView>(R.id.diameterClass)?.text = getString(R.string.dclass_medium_sized_tree)
+                diameterClass = "Medium-sized Tree"
+            }else if(diameterValue > 60.0){
+                dialog.findViewById<TextView>(R.id.diameterClass)?.text = getString(R.string.dclass_large_tree)
+                diameterClass = "Large Tree"
+            }
 
+         val treeSpeciesValue = binding.TreeSpeciesValue.text.toString()
+
+         dialog.findViewById<TextView>(R.id.treeSpecies)?.text = "Tree Species: $treeSpeciesValue"
          dialog.findViewById<TextView>(R.id.heightResult)?.text = "Height: ${String.format(Locale.US,"%.1f", treeHeightValue)}m"
          dialog.findViewById<TextView>(R.id.diameterResult)?.text = "Diameter: ${String.format(Locale.US,"%.2f", diameterValue)}cm"
          dialog.findViewById<TextView>(R.id.volumeResult)?.text = "Volume: ${String.format(Locale.US,"%.4f", volumeValue)}m³"
@@ -245,13 +250,14 @@ import kotlin.math.tan
 
 
          dialog.findViewById<View>(R.id.addClassification)?.setOnClickListener{
+               //ADD DATA TO DATABASE
+               val treeSpeciesValueData = binding.TreeSpeciesValue.text.toString()
                val height = "${String.format(Locale.US,"%.1f", treeHeightValue)}m"
                val diameter = "${String.format(Locale.US,"%.2f", diameterValue)}cm"
                val volume = String.format(Locale.US,"%.4f", volumeValue).toDouble()
                val diameterSize = diameterClass
                val date = currentDateTime.format(formatter)
-               val data =
-                   DataClassification(0, height, diameter, volume, diameterSize, date)
+               val data = DataClassification(0, treeSpeciesValueData, height, diameter, volume, diameterSize, date)
                db.insertClassification(data)
                dialog.dismiss()
                Toast.makeText(this, "Classification Added", Toast.LENGTH_SHORT).show()
@@ -291,6 +297,9 @@ import kotlin.math.tan
             binding.DiamterValue.text = "Diameter:"
             binding.volumeResult.text = "Volume:"
             binding.distanceValue.text.clear()
+            binding.TreeSpeciesValue.text.clear()
+            binding.ViewClass.visibility = View.GONE
+            binding.diameterStartBtn.visibility = View.GONE
         }
 
         fun toggleVisibility(btnToShow: View, btnToHide: View) {
@@ -326,6 +335,7 @@ import kotlin.math.tan
             }
             Log.d("BackDebug", "onResume called, setting up sensors and starting camera")
             setupSensorStuff()
+
         }
 
     private var areSensorsRegistered = false

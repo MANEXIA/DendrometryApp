@@ -19,6 +19,7 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
         private const val DATABASE_VERSION = 1
         private const val TABLE_NAME = "classifications"
         private const val COLUMN_ID = "id"
+        private const val COLUMN_TREE_SPECIES = "tree_species"
         private const val COLUMN_HEIGHT = "height"
         private const val COLUMN_DIAMETER = "diameter"
         private const val COLUMN_VOLUME = "volume"
@@ -28,7 +29,7 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val createTableQuery = "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_HEIGHT REAL, $COLUMN_DIAMETER REAL, $COLUMN_VOLUME REAL, $COLUMN_DIAMETER_CLASS TEXT, $COLUMN_DATE TEXT)"
+        val createTableQuery = "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_TREE_SPECIES TEXT, $COLUMN_HEIGHT REAL, $COLUMN_DIAMETER REAL, $COLUMN_VOLUME REAL, $COLUMN_DIAMETER_CLASS TEXT, $COLUMN_DATE TEXT)"
         db?.execSQL(createTableQuery)
     }
 
@@ -41,6 +42,7 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
     fun insertClassification(dataclass: DataClassification){
         val db = writableDatabase
         val values = ContentValues().apply {
+            put(COLUMN_TREE_SPECIES, dataclass.treeSpecies)
             put(COLUMN_HEIGHT, dataclass.height)
             put(COLUMN_DIAMETER, dataclass.diameter)
             put(COLUMN_VOLUME, dataclass.volume)
@@ -58,13 +60,14 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
 
         while (cursor.moveToNext()){
             val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
+            val treeSpecies = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TREE_SPECIES))
             val height = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HEIGHT))
             val diameter = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DIAMETER))
             val volume = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_VOLUME))
             val diameterClass = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DIAMETER_CLASS))
             val date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
 
-            val classification = DataClassification(id, height, diameter, volume, diameterClass, date)
+            val classification = DataClassification(id, treeSpecies, height, diameter, volume, diameterClass, date)
             classificationlist.add(classification)
         }
 
@@ -107,11 +110,11 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
 
             outputStream?.use { os ->
                 // Write header row
-                val header = "ID,Height,Diameter,Volume(m³),Diameter Class,Date\n"
+                val header = "Tree Species,Height,Diameter,Volume(m³),Diameter Class,Date\n"
                 os.write(header.toByteArray())
                 // Write data rows
                 while (cursor.moveToNext()) {
-                    val data = "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ID))}," +
+                    val data = "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TREE_SPECIES))}," +
                             "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HEIGHT))}," +
                             "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DIAMETER))}," +
                             "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_VOLUME))}," +

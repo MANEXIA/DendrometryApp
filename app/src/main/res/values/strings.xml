@@ -103,7 +103,8 @@
     </string>
 
 
-
+     <string name="TreeSpeciesValue">Tree Species</string>
+    <string name="TreeSpeciesValueData">Tree Species:</string>
 
     <!--  GUIDE  -->
 

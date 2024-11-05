@@ -23,14 +23,14 @@ class HistoryFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var db: ClassificationDatabaseHelper
-    private lateinit var adapter: classificationAdapter
+    private lateinit var adapter: ClassificationAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         db = ClassificationDatabaseHelper(requireContext())
-        adapter = classificationAdapter(db.getClassifications(), requireContext())
+        adapter = ClassificationAdapter(db.getClassifications(), requireContext())
 
     }
 

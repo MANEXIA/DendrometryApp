@@ -1,5 +1,6 @@
 package com.example.Dendrometry
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +9,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import java.util.Locale
 
-class classificationAdapter(private var classificationList: List<DataClassification>, context: Context) : RecyclerView.Adapter<classificationAdapter.classificationViewHolder>(){
+class ClassificationAdapter(private var classificationList: List<DataClassification>, context: Context) : RecyclerView.Adapter<ClassificationAdapter.ClassificationViewHolder>(){
 
     private val db : ClassificationDatabaseHelper = ClassificationDatabaseHelper(context)
 
-    class classificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class ClassificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+          val treeSpecies: TextView = itemView.findViewById(R.id.treeSpecies)
           val heightResult: TextView = itemView.findViewById(R.id.heightResult)
           val diameterResult: TextView = itemView.findViewById(R.id.diameterResult)
           val volumeResult: TextView = itemView.findViewById(R.id.volumeResult)
@@ -22,18 +25,20 @@ class classificationAdapter(private var classificationList: List<DataClassificat
           val deleteBtn: ImageView = itemView.findViewById(R.id.delBtnData)
       }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): classificationViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClassificationViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.classification_items, parent, false)
-        return classificationViewHolder(view)
+        return ClassificationViewHolder(view)
     }
 
     override fun getItemCount(): Int = classificationList.size
 
-    override fun onBindViewHolder(holder: classificationViewHolder, position: Int) {
+    @SuppressLint("SetTextI18n")
+    override fun onBindViewHolder(holder: ClassificationViewHolder, position: Int) {
         val classification = classificationList[position]
+        holder.treeSpecies.text = "Tree Species: ${classification.treeSpecies}"
         holder.heightResult.text = "Height: ${classification.height}"
         holder.diameterResult.text = "Diameter: ${classification.diameter}"
-        holder.volumeResult.text = "Volume: ${String.format("%.4f", classification.volume)}m³"
+        holder.volumeResult.text = "Volume: ${String.format(Locale.US, "%.4f", classification.volume)}m³"
         holder.diameterClass.text = "Size: ${classification.diameterClass}"
         holder.dateVolumeClass.text = classification.date
 
