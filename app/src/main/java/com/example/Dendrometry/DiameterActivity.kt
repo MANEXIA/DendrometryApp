@@ -30,34 +30,38 @@ import kotlin.math.tan
 class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var binding: ActivityDiameterBinding
-
+    // TextViews to display angles and calculated values
     private lateinit var angleView: TextView
     private lateinit var leftRightvaltxt: TextView
 
+    // Sensor manager and rotation vector sensor
     private lateinit var sensorM: SensorManager
-
-    //ROTATION VERCTOR
     private var rotationVectorSensor: Sensor? = null
+    // Variables to store left and right angles and calculated diameter
     private var leftAngle: Double = 0.0
     private var rightAngle: Double = 0.0
     private var holdDiameter: Double = 0.0
 
-    // Yaw threshold to filter out noise (small angle differences)
+    // Threshold to filter out small angle noise for yaw calculations
     private val yawNoiseThreshold = 1.0f // You can adjust this value as needed
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDiameterBinding.inflate(layoutInflater)
+
+        // Enable edge-to-edge UI and set the content view
         enableEdgeToEdge()
         setContentView(binding.root)
+
+        // Adjusts padding to account for system bars
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // Check if savedInstanceState is null to avoid adding the fragment multiple times
+        // Add CameraFragment only once to avoid duplicate instances
         if (savedInstanceState == null) {
             val cameraFragment = CameraFragmet() // Replace with your actual Fragment class
             supportFragmentManager.beginTransaction()
@@ -65,11 +69,11 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                 .commitNow() // Use commitNow to add it synchronously
         }
 
-        //START ANGLE SETUP
+        // Initialize TextViews for angle display
         angleView = binding.textView2
         leftRightvaltxt = binding.leftrightValuetxt
 
-        //GET FOV OF PHONE
+        // Retrieve camera characteristics for Field of View (FOV) calculations
         val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         val cameraId = cameraManager.cameraIdList[0] // Use the appropriate camera ID
         val characteristics = cameraManager.getCameraCharacteristics(cameraId)
@@ -81,7 +85,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             Toast.makeText(this, "Unable to get camera characteristics", Toast.LENGTH_SHORT).show()
             return // Exit early if we can't retrieve necessary data
         }
-
+        // Set up left angle button to calculate and display tree diameter
         binding.leftWbutton.setOnClickListener(){
             val distanceText = binding.distanceValue.text.toString()
             // Validate distance input using checkDistance
@@ -97,20 +101,20 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                     return@setOnClickListener
                 }
 
-                // Calculate the FOV in degrees (for simplicity, assuming focalLengths[0] is the current focal length)
+                // Calculate FOV
                 val fov = Math.toDegrees(2 * atan((sensorSize.width / (2 * focalLengths[0].toDouble())))).toFloat()
-
                 Log.d("myFOV", "Calculated FOV: $fov degrees")
-
+                // Calculate diameter
                 val diameterValue = calculateTreeDiameter(leftAngle, rightAngle, distanceValue, fov.toDouble())
                 val diaMtoCm = diameterValue * 100 // Convert meters to cm
-                //"Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}° DIAMETER: ${String.format("%.1f", diaMtoCm)}cm"
+                // Display calculated diameter
                 binding.diameterRES.text = "Diameter: ${String.format(Locale.US,"%.2f", diaMtoCm)}cm"
                 holdDiameter = diaMtoCm
                 Log.d("DiameterDebug", "Calculated Diameter: $diameterValue")
             }
 
         }
+        // Set up right angle button to calculate and display tree diameter
         binding.rightWbutton.setOnClickListener(){
             val distanceText = binding.distanceValue.text.toString()
             // Validate distance input using checkDistance
@@ -126,13 +130,13 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                     return@setOnClickListener
                 }
 
-                // Calculate the FOV in degrees (for simplicity, assuming focalLengths[0] is the current focal length)
+                // Calculate FOV
                 val fov = Math.toDegrees(2 * atan((sensorSize.width / (2 * focalLengths[0].toDouble())))).toFloat()
                 Log.d("myFOV", "Calculated FOV: $fov degrees")
-
+                // Calculate diameter
                 val diameterValue = calculateTreeDiameter(leftAngle, rightAngle, distanceValue, fov.toDouble())
                 val diaMtoCm = diameterValue * 100 // Convert meters to cm
-                //"Left: ${String.format("%.1f", leftAngle)}°\nRight: ${String.format("%.1f", rightAngle)}° DIAMETER: ${String.format("%.1f", diaMtoCm)}cm"
+                // Display calculated diameter
                 binding.diameterRES.text = "Diameter: ${String.format(Locale.US,"%.2f", diaMtoCm)}cm"
                 holdDiameter = diaMtoCm
                 Log.d("DiameterDebug", "Calculated Diameter: $diameterValue")
@@ -199,7 +203,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
-
+    // Validate distance input and return if valid
     private fun checkDistance(distanceText: String): Double? {
         // Check if distance input is empty
         if (distanceText.isEmpty()) {
@@ -221,11 +225,12 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
 
 
     //DIAMETER MEASURING STARTS HERE
-    //YAW VARIABLES FOR SENSOR
+    // Variables for sensor and yaw angle calculations
     private val rotationMatrix = FloatArray(9)
     private val orientationAngles = FloatArray(3)
     private var yaw: Float = 0f
 
+    //Register rotation vector sensor
     private fun setupSensorStuff() {
         if (!areSensorsRegistered) {
             sensorM = getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -237,7 +242,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
             areSensorsRegistered = true
         }
     }
-
+    // Handle sensor events to calculate yaw and update UI
     override fun onSensorChanged(event: SensorEvent?) {
         event ?: return
         when (event.sensor.type) {
@@ -279,12 +284,9 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
                         rotationMatrixAdjusted
                     )
                 }
-
                 // Get orientation angles from adjusted rotation matrix
                 SensorManager.getOrientation(rotationMatrixAdjusted, orientationAngles)
                 // Yaw (azimuth) is the angle you're interested in
-                //yaw = Math.toDegrees(orientationAngles[0].toDouble()).toInt().toFloat()
-               //yaw = Math.round(Math.toDegrees(orientationAngles[0].toDouble())).toFloat()
                 val yawInDegrees = Math.toDegrees(orientationAngles[0].toDouble()) // Intermediate calculation as Double
                 yaw = yawInDegrees.toFloat() // Convert to Float if you need to maintain yaw as Float
                 // Update UI with yaw
@@ -363,7 +365,7 @@ class DiameterActivity : AppCompatActivity(), SensorEventListener {
         } else {
             cameraFOV / referenceFOV
         }
-        //val calibrationFactor = referenceFOV / cameraFOV
+
         // Normalize the yaw difference based on the reference FOV
         val fovAdjustedYawDifference = yawDifference * calibrationFactor
 

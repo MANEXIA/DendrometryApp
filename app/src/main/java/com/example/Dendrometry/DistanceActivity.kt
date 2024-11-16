@@ -64,7 +64,6 @@ class DistanceActivity : AppCompatActivity(), SensorEventListener {
         }
 
         setupSeekBar()
-
         crosshairView = binding.crosshairView
     }
 

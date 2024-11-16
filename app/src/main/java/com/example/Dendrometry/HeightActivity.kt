@@ -29,19 +29,17 @@ import kotlin.math.atan2
 import kotlin.math.sqrt
 import kotlin.math.tan
 
-//typealias LumaListener = (luma: Double) -> Unit
-
     class HeightActivity : AppCompatActivity(), SensorEventListener{
-        //BINDING ID/THIS IS THE SECOND ACTIVITY XML
+
+        //BINDING ID/THIS IS THE HEIGHT ACTIVITY XML
         private lateinit var binding: ActivityHeightBinding
 
-        //VARIABLES FOR SENSOR THINGS
+        //VARIABLES FOR SENSOR
         private lateinit var sensorM: SensorManager
         private var accelerometer: Sensor? = null
         private var gyroscope: Sensor? = null
         private lateinit var angleView: TextView
         private lateinit var resText: TextView
-
 
        //VARIABLES FOR CALCULATIONS TREE HEIGHT
         private var inclination: Float = 0f
@@ -57,7 +55,6 @@ import kotlin.math.tan
         private var diameterValue = 0.0
         private var volumeValue = 0.0
 
-
         //DATABASE
         private lateinit var db: ClassificationDatabaseHelper
 
@@ -66,29 +63,29 @@ import kotlin.math.tan
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             binding = ActivityHeightBinding.inflate(layoutInflater)//BINDING XML COMPONENT
+            // Enable edge-to-edge UI and set the content view
             enableEdgeToEdge()
             setContentView(binding.root)
-
+            // Adjusts padding to account for system bars
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
                 val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
                 insets
             }
-
-            //ONCLICK BTN FOR ACTIVITIES
+            //ONCLICK BUTTON FOR ACTIVITIES
             binding.backBtn.setOnClickListener{
                 finish()
             }
 
             // Check if savedInstanceState is null to avoid adding the fragment multiple times
             if (savedInstanceState == null) {
-                val cameraFragment = CameraFragmet() // Replace with your actual Fragment class
+                val cameraFragment = CameraFragmet() //CAMERA PREVIEW FRAGMENT SETUP CLASS
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.cam_fragment_container, cameraFragment)
                     .commitNow() // Use commitNow to add it synchronously
             }
 
-            //CALL FOR SENSORS AND TEXTVIEWS
+            //CALL FOR SENSORS AND TEXT VIEWS
             setupSensorStuff()
             angleView = binding.angleTextView
             resText = binding.resultTextview
@@ -104,6 +101,7 @@ import kotlin.math.tan
                     //Toast.makeText(this, "Please Set Top Angle", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }else{
+                    //Call Calculate Height Function
                     treeHeightValue = calculateTreeHeight(distanceValue, bottomAngle, topAngle)
                     treeHeight.text = "Height: ${String.format(Locale.US,"%.1f", treeHeightValue)}m"
                     binding.diameterStartBtn.visibility = View.VISIBLE
@@ -120,6 +118,7 @@ import kotlin.math.tan
                     //Toast.makeText(this, "Please Set Bottom Angle", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }else{
+                    //Call Calculate Height Function
                     treeHeightValue = calculateTreeHeight(distanceValue, bottomAngle, topAngle)
                     treeHeight.text = "Height: ${String.format(Locale.US,"%.1f", treeHeightValue)}m"
                     binding.diameterStartBtn.visibility = View.VISIBLE
@@ -128,15 +127,14 @@ import kotlin.math.tan
             }
 
             binding.calBtn.setOnClickListener{
-                Log.d("setHEIGHTndDIAMATER", "H: $treeHeightValue D: $diameterValue")
                 if (treeHeightValue != 0.0 && diameterValue != 0.0) {
                     if (treeHeightValue > 0 && diameterValue > 0) {
                         // Proceed to calculation using the formula
                         val diameterInMeters = diameterValue / 100 // Convert diameter to meters
-                        volumeValue = 0.7854 * (diameterInMeters * diameterInMeters) * treeHeightValue
-                        Log.d("setHEIGHTndDIAMATER", "H: $treeHeightValue D: $diameterValue")
-                        Log.d("setHEIGHTndDIAMATER", "D to M: $diameterInMeters")
-                        Log.d("setHEIGHTndDIAMATER", "V: $volumeValue")
+                        volumeValue = 0.7854 * (diameterInMeters * diameterInMeters) * treeHeightValue // Formula for Wood Volume Calculation
+                        Log.d("set HEIGHT and DIAMETER", "H: $treeHeightValue D: $diameterValue")
+                        Log.d("set HEIGHT and DIAMETER", "D to M: $diameterInMeters")
+                        Log.d("set HEIGHT and DIAMETER", "V: $volumeValue")
                         // Display the calculated volume in a TextView
                         binding.volumeResult.text = "Volume: ${String.format(Locale.US,"%.4f", volumeValue)}m³"
                         binding.ViewClass.visibility = View.VISIBLE
@@ -158,6 +156,7 @@ import kotlin.math.tan
                     // Optional: Show a message to the user indicating that the value cannot be 0.0
                     Toast.makeText(this, "Please Calculate Volume First", Toast.LENGTH_SHORT).show()
                 } else {
+                    //SHOW SUMMARY OF CLASSIFICATION
                     showCurvedAlertDialog()
                 }
             }
@@ -178,7 +177,7 @@ import kotlin.math.tan
                     toggleVisibility(visibilityBottomBtn, visibilityTopBtn)
                 }
             }
-
+            //Change Button to BOTTOM/TOP
             binding.arrowButtonLeft.setOnClickListener {
                 if (visibilityTopBtn.visibility == View.VISIBLE) {
                     toggleVisibility(visibilityBottomBtn, visibilityTopBtn)
@@ -194,7 +193,7 @@ import kotlin.math.tan
             ) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val diameterTxt = result.data?.getStringExtra("diameterValue")
-                    Log.d("ETORESULT", "Received diameter value: $diameterTxt")
+                    Log.d("Passed Diameter", "Received diameter value: $diameterTxt")
                     diameterValue = diameterTxt?.toDouble() ?: 0.0
                     binding.DiamterValue.text = "Diameter: ${String.format(Locale.US,"%.2f", diameterValue)}cm"
                 }
@@ -236,7 +235,7 @@ import kotlin.math.tan
             }
 
          val treeSpeciesValue = binding.TreeSpeciesValue.text.toString()
-
+         //DISPLAY CLASSIFICATIONS
          dialog.findViewById<TextView>(R.id.treeSpecies)?.text = "Tree Species: $treeSpeciesValue"
          dialog.findViewById<TextView>(R.id.heightResult)?.text = "Height: ${String.format(Locale.US,"%.1f", treeHeightValue)}m"
          dialog.findViewById<TextView>(R.id.diameterResult)?.text = "Diameter: ${String.format(Locale.US,"%.2f", diameterValue)}cm"
@@ -248,7 +247,7 @@ import kotlin.math.tan
          }
 
 
-
+         //BUTTON FOR ADDING CLASSIFICATION TO DATABASE/HISTORY
          dialog.findViewById<View>(R.id.addClassification)?.setOnClickListener{
                //ADD DATA TO DATABASE
                val treeSpeciesValueData = binding.TreeSpeciesValue.text.toString()
@@ -264,7 +263,7 @@ import kotlin.math.tan
          }
 
         }
-
+        //CHECK DISTANCE INPUT
         private fun checkDistance(distanceText: String): Float? {
             // Check if distance input is empty
             if (distanceText.isEmpty()) {
@@ -391,42 +390,58 @@ import kotlin.math.tan
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
                  //ALWAYS REMOVE T0DO IN A NEEDED FUNCTION
         }
+
         //VARIABLES FOR SENSOR ACCELEMOTER
         private var pitchAngle: Float = 0f
         private var timestamp: Long = 0
         private var pitchGyro: Float = 0f
         private var alpha: Float = 0.98f  // Complementary filter coefficient
-        // private var isMeasuringTop: Boolean = true // Toggle to switch between measuring top and base
 
-    private fun handleAccelerometer(event: SensorEvent) {
+        private fun handleAccelerometer(event: SensorEvent) {
+            // Get accelerometer values for each axis
             val x = event.values[0]
             val y = event.values[1]
             val z = event.values[2]
 
+            // Calculate the gravity vector's magnitude
             val gravity = sqrt((x * x + y * y + z * z).toDouble()).toFloat()
+
+            // Normalize y and z to determine the tilt
             val tiltY = y / gravity
             val tiltZ = z / gravity
 
-            // Calculate the pitch angle/inclination angle from accelerometer data
+            // Calculate the pitch angle (or inclination angle) in degrees using the accelerometer data
             val pitchAcc = Math.toDegrees(atan2(tiltY.toDouble(), tiltZ.toDouble())).toFloat()
+
+            // Apply a complementary filter to combine accelerometer and gyroscope pitch data
             pitchAngle = alpha * (pitchAngle + pitchGyro) + (1 - alpha) * pitchAcc
 
-            // Adjust inclination to be 0 when the phone is held upright in portrait mode
+            // Adjust inclination so that it reads 0 when the phone is held upright in portrait mode
             inclination = pitchAngle - 90
         }
 
-    private fun handleGyroscope(event: SensorEvent, timestamp: Long) {
-            //val wx = event.values[0]
+
+        private fun handleGyroscope(event: SensorEvent, timestamp: Long) {
+            // Unused gyroscope values for x and z axes are commented out
+            // val wx = event.values[0]
             val wy = event.values[1]
-            //val wz = event.values[2]
+            // val wz = event.values[2]
+
+            // Check if this is not the first timestamp
             if (timestamp != 0L) {
+                // Calculate the time difference (dt) in seconds since the last sensor event
                 val dt = (event.timestamp - timestamp) * 1.0f / 1_000_000_000.0f
+
+                // Calculate the change in pitch angle from the y-axis angular velocity (wy)
                 pitchGyro = wy * dt
             }
-           this@HeightActivity.timestamp = event.timestamp
+
+            // Update the timestamp for the next gyroscope event
+            this@HeightActivity.timestamp = event.timestamp
         }
 
-    @SuppressLint("SetTextI18n")
+
+        @SuppressLint("SetTextI18n")
     private fun updateUI(){
             angleView.text = "${String.format(Locale.US,"%.1f", inclination)}°"
         }
