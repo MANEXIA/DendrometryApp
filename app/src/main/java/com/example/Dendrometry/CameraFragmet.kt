@@ -24,7 +24,7 @@ class CameraFragmet : Fragment() {
 
     private var _binding: FragmentCameraFragmetBinding? = null
     private val binding get() = _binding!!
-
+    //THIS IS A CHANGE
     private var cameraProvider: ProcessCameraProvider? = null
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var camera: androidx.camera.core.Camera
