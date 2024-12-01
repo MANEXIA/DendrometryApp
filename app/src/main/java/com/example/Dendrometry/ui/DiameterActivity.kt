@@ -1,4 +1,4 @@
-package com.example.Dendrometry
+package com.example.Dendrometry.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -20,6 +20,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.Dendrometry.R
 import com.example.Dendrometry.databinding.ActivityDiameterBinding
 import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
@@ -27,7 +28,7 @@ import kotlin.math.abs
 import kotlin.math.atan
 import kotlin.math.tan
 
-class DiameterActivity : AppCompatActivity(), SensorEventListener {
+class  DiameterActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var binding: ActivityDiameterBinding
     // TextViews to display angles and calculated values

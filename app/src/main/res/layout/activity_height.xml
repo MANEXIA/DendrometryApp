@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/darkgreencolor"
-    tools:context=".HeightActivity">
+    tools:context=".ui.HeightActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/cam_fragment_container"

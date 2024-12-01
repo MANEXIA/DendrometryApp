@@ -1,4 +1,4 @@
-package com.example.Dendrometry
+package com.example.Dendrometry.dbmshelpers
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.Dendrometry.R
 import java.util.Locale
 
 class ClassificationAdapter(private var classificationList: List<DataClassification>, context: Context) : RecyclerView.Adapter<ClassificationAdapter.ClassificationViewHolder>(){

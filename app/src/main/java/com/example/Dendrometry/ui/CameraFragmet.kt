@@ -1,4 +1,4 @@
-package com.example.Dendrometry
+package com.example.Dendrometry.ui
 
 import android.Manifest
 import android.content.pm.PackageManager

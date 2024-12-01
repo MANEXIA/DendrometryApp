@@ -1,4 +1,4 @@
-package com.example.Dendrometry
+package com.example.Dendrometry.ui
 
 import android.os.Build
 import android.os.Bundle
@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.example.Dendrometry.R
 import com.example.Dendrometry.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 
@@ -117,7 +118,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_home -> {
                 replaceFragment(HomeFragment())
             }
-            R.id.nav_history-> {
+            R.id.nav_history -> {
                 replaceFragment(HistoryFragment())
             }
             R.id.nav_guide -> {

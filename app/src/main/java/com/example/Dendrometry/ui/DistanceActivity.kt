@@ -1,4 +1,4 @@
-package com.example.Dendrometry
+package com.example.Dendrometry.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,6 +13,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.Dendrometry.R
 import com.example.Dendrometry.databinding.ActivityDistanceBinding
 import com.google.android.material.snackbar.Snackbar
 import java.util.Locale

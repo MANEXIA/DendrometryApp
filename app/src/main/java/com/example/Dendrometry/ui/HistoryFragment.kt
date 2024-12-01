@@ -1,4 +1,4 @@
-package com.example.Dendrometry
+package com.example.Dendrometry.ui
 
 
 import android.Manifest
@@ -13,6 +13,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.Dendrometry.dbmshelpers.ClassificationAdapter
+import com.example.Dendrometry.dbmshelpers.ClassificationDatabaseHelper
 import com.example.Dendrometry.databinding.FragmentHistoryBinding
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -64,7 +66,7 @@ class HistoryFragment : Fragment() {
                 // Define a date-time formatter to format the output
                 val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd") // Customize the format as needed
                 // Call the export method directly if permission is granted or on Android 10+
-                db.exportToSQLiteFile(requireContext(), "Classification_History (${currentDateTime.format(formatter)})")
+                db.exportToExcelFile(requireContext(), "Classification_History (${currentDateTime.format(formatter)})")
             }
         }
 

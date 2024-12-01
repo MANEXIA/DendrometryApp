@@ -103,7 +103,7 @@
     </string>
 
 
-     <string name="TreeSpeciesValue">Tree Species</string>
+    <string name="TreeSpeciesValue">Tree Species</string>
     <string name="TreeSpeciesValueData">Tree Species:</string>
 
     <!--  GUIDE  -->
@@ -111,8 +111,15 @@
     <string name="startapp">1. Start the App</string>
     <string name="startappguide">Tap on START to begin the Dendrometry Process</string>
 
+<!--    LOGIN AND SIGNUP-->
+
+    <string name="login">Login</string>
+    <string name="signup">Sign-up</string>
 
 
+<!--    SIGNUP CREDEN-->
 
-
+    <string name="name">Name</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
 </resources>

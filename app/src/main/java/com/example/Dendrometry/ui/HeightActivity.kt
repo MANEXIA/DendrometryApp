@@ -1,4 +1,4 @@
-package com.example.Dendrometry
+package com.example.Dendrometry.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -20,6 +20,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.Dendrometry.dbmshelpers.ClassificationDatabaseHelper
+import com.example.Dendrometry.dbmshelpers.DataClassification
+import com.example.Dendrometry.R
 import com.example.Dendrometry.databinding.ActivityHeightBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.time.LocalDateTime

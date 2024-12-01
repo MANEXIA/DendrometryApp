@@ -1,4 +1,4 @@
-package com.example.Dendrometry
+package com.example.Dendrometry.dbmshelpers
 
 
 import android.content.ContentValues
@@ -12,6 +12,8 @@ import android.widget.Toast
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import org.apache.poi.ss.usermodel.CellType
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
 class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
     companion object{
@@ -76,17 +78,49 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
         return classificationlist
     }
 
-    fun exportToSQLiteFile(context: Context, fileName: String) {
+    fun exportToExcelFile(context: Context, fileName: String) {
         val db = writableDatabase
-        // Modify the query to sort by tree species alphabetically
+        // Sort by tree species
         val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_TREE_SPECIES ASC", null)
 
         try {
             // Format the file name
-            val formattedFileName = if (!fileName.endsWith(".csv") && !fileName.endsWith(".db")) {
-                "$fileName.csv"
-            } else {
-                fileName
+            val formattedFileName = if (!fileName.endsWith(".xlsx")) "$fileName.xlsx" else fileName
+
+            // Create an Excel workbook and sheet
+            val workbook = XSSFWorkbook()
+            val sheet = workbook.createSheet("TreeData")
+
+            // Write header row
+            val headerRow = sheet.createRow(0)
+            val headers = arrayOf("Tree Species", "Height", "Diameter", "Volume(m³)", "Diameter Class", "Date")
+            headers.forEachIndexed { index, header ->
+                val cell = headerRow.createCell(index, CellType.STRING)
+                cell.setCellValue(header)
+            }
+
+            // Write data rows
+            var rowIndex = 1
+            while (cursor.moveToNext()) {
+                val row = sheet.createRow(rowIndex++)
+                row.createCell(0, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(
+                    COLUMN_TREE_SPECIES
+                )))
+                row.createCell(1, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(
+                    COLUMN_HEIGHT
+                )))
+                row.createCell(2, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(
+                    COLUMN_DIAMETER
+                )))
+                row.createCell(3, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(
+                    COLUMN_VOLUME
+                )))
+                row.createCell(4, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(
+                    COLUMN_DIAMETER_CLASS
+                )))
+                row.createCell(5, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(
+                    COLUMN_DATE
+                )))
             }
 
             // Open output stream for API 29+ or fallback for older versions
@@ -94,7 +128,7 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
                 // For Android Q and above
                 val contentValues = ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, formattedFileName)
-                    put(MediaStore.MediaColumns.MIME_TYPE, "text/csv")
+                    put(MediaStore.MediaColumns.MIME_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                     put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOCUMENTS + "/dendrometry/exports")
                 }
                 val uri = context.contentResolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
@@ -110,19 +144,8 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
             }
 
             outputStream?.use { os ->
-                // Write header row
-                val header = "Tree Species,Height,Diameter,Volume(m³),Diameter Class,Date\n"
-                os.write(header.toByteArray())
-                // Write data rows
-                while (cursor.moveToNext()) {
-                    val data = "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TREE_SPECIES))}," +
-                            "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HEIGHT))}," +
-                            "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DIAMETER))}," +
-                            "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_VOLUME))}," +
-                            "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DIAMETER_CLASS))}," +
-                            "${cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))}\n"
-                    os.write(data.toByteArray())
-                }
+                workbook.write(os)
+                workbook.close()
                 Toast.makeText(context, "Data exported successfully", Toast.LENGTH_SHORT).show()
             } ?: run {
                 Toast.makeText(context, "Failed to open output stream", Toast.LENGTH_SHORT).show()

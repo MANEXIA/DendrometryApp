@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.SignupActivity">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#165C42"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/guidetitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:text="@string/signup"
+            android:textColor="@color/guidecolortxt"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/name"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="20dp"
+            android:autofillHints="@string/name"
+            android:backgroundTint="@color/guidecolortxt"
+            android:hint="@string/name"
+            android:padding="10dp"
+            android:textColor="@color/guidecolortxt"
+            android:textColorHint="@color/guidecolortxt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guidetitle" />
+
+        <EditText
+            android:id="@+id/username"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:autofillHints="@string/username"
+            android:backgroundTint="@color/guidecolortxt"
+            android:hint="@string/username"
+            android:padding="10dp"
+            android:textColor="@color/guidecolortxt"
+            android:textColorHint="@color/guidecolortxt"
+            app:layout_constraintEnd_toEndOf="@+id/name"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/name"
+            app:layout_constraintTop_toBottomOf="@+id/name" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:inputType="textPassword"
+            android:autofillHints="@string/password"
+            android:backgroundTint="@color/guidecolortxt"
+            android:hint="@string/password"
+            android:padding="10dp"
+            android:textColor="@color/guidecolortxt"
+            android:textColorHint="@color/guidecolortxt"
+            app:layout_constraintEnd_toEndOf="@+id/username"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/username"
+            app:layout_constraintTop_toBottomOf="@+id/username" />
+
+
+        <Button
+            android:id="@+id/loginBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:background="#013220"
+            android:fontFamily="@font/inter_medium"
+            android:text="@string/login"
+            android:textAllCaps="false"
+            android:textColor="#BDBE86"
+            android:textSize="20sp"
+            android:visibility="visible"
+            app:cornerRadius="30dp"
+            app:layout_constraintEnd_toStartOf="@+id/signupBtn"
+            app:layout_constraintTop_toBottomOf="@+id/password" />
+
+
+        <Button
+            android:id="@+id/signupBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#013220"
+            android:fontFamily="@font/inter_medium"
+            android:text="@string/signup"
+            android:textAllCaps="false"
+            android:textColor="#BDBE86"
+            android:textSize="20sp"
+            android:visibility="visible"
+            app:cornerRadius="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
