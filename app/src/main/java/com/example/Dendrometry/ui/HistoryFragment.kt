@@ -2,12 +2,15 @@ package com.example.Dendrometry.ui
 
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -52,6 +55,20 @@ class HistoryFragment : Fragment() {
         binding.HistoryRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.HistoryRecyclerView.adapter = adapter
 
+        // Access the SharedPreferences where the data was saved
+        val sharedPreferences = requireActivity().getSharedPreferences("userSession", Context.MODE_PRIVATE)
+        // Retrieve the stored values
+        val loggedInUsername = sharedPreferences.getString("loggedInUsername", null)
+        val loggedInName = sharedPreferences.getString("loggedInName", null)
+
+        // Check if the values are retrieved successfully
+        if (loggedInUsername != null && loggedInName != null) {
+            // You can now use the logged-in username and name
+            Toast.makeText(requireContext(), "Logged in as: $loggedInName ($loggedInUsername)", Toast.LENGTH_SHORT).show()
+        } else {
+            // Handle the case where no user is logged in (if needed)
+            Toast.makeText(requireContext(), "No user logged in", Toast.LENGTH_SHORT).show()
+        }
 
         binding.savedataBtn.setOnClickListener {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&
@@ -66,11 +83,9 @@ class HistoryFragment : Fragment() {
                 // Define a date-time formatter to format the output
                 val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd") // Customize the format as needed
                 // Call the export method directly if permission is granted or on Android 10+
-                db.exportToExcelFile(requireContext(), "Classification_History (${currentDateTime.format(formatter)})")
+                db.exportToExcelFile(requireContext(), "${loggedInName}_Classification_History(${currentDateTime.format(formatter)})", "${loggedInUsername}")
             }
         }
-
-
 
     }
 

@@ -82,7 +82,7 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
         return classificationlist
     }
 
-    fun exportToExcelFile(context: Context, fileName: String) {
+    fun exportToExcelFile(context: Context, fileName: String, owner: String) {
         val db = writableDatabase
         val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_TREE_SPECIES ASC", null)
 
@@ -105,7 +105,7 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
 
             // Create the watermark cell
             val watermarkCell = watermarkRow.createCell(0, CellType.STRING)
-            watermarkCell.setCellValue("CONFIDENTIAL DATA") // Watermark text
+            watermarkCell.setCellValue(owner) // Watermark text
 
             // Merge cells to span across columns
             sheet.addMergedRegion(CellRangeAddress(watermarkRowIndex, watermarkRowIndex, 0, 5)) // Columns 0 to 5
