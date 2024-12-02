@@ -60,7 +60,10 @@ class HistoryFragment : Fragment() {
         // Retrieve the stored values
         val loggedInUsername = sharedPreferences.getString("loggedInUsername", null)
         val loggedInName = sharedPreferences.getString("loggedInName", null)
+        val loggedPwd = sharedPreferences.getString("loggedInPwd", null)
 
+
+//        Toast.makeText(requireContext(), "Logged in as: $loggedPwd", Toast.LENGTH_SHORT).show()
 
         binding.savedataBtn.setOnClickListener {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&
@@ -75,7 +78,7 @@ class HistoryFragment : Fragment() {
                 // Define a date-time formatter to format the output
                 val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd") // Customize the format as needed
                 // Call the export method directly if permission is granted or on Android 10+
-                db.exportToExcelFile(requireContext(), "${loggedInName}_Classification_History(${currentDateTime.format(formatter)})", "${loggedInUsername}")
+                db.exportToExcelFile(requireContext(), "${loggedInName}_Classification_History(${currentDateTime.format(formatter)})", "${loggedInUsername}","${loggedPwd}")
             }
         }
 

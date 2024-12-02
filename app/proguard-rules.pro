@@ -19,3 +19,20 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Keep Apache POI and related classes
+-keep class org.apache.poi.** { *; }
+-keep class org.apache.poi.xssf.** { *; }
+-keep class org.apache.poi.hssf.** { *; }
+
+# Keep java.awt classes (if necessary for POI functionality)
+-keep class java.awt.** { *; }
+
+# Keep all XML stream reader and SAX related classes
+-keep class javax.xml.stream.** { *; }
+-keep class net.sf.saxon.** { *; }
+
+# Ignore warnings for libraries that are not needed in Android
+-dontwarn org.apache.batik.**
+-dontwarn org.osgi.framework.**
+
