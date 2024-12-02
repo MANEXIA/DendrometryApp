@@ -1,10 +1,12 @@
 package com.example.Dendrometry.ui
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsetsController
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -70,6 +72,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             replaceFragment(HomeFragment())
             navigationView.setCheckedItem(R.id.nav_home)
         }
+
+        // Access the SharedPreferences where the data was saved
+        val sharedPreferences = getSharedPreferences("userSession", MODE_PRIVATE)
+        // Retrieve the stored values
+        val loggedInUsername = sharedPreferences.getString("loggedInUsername", null)
+        val loggedInName = sharedPreferences.getString("loggedInName", null)
+        // Check if the values are retrieved successfully
+        if (loggedInUsername != null && loggedInName != null) {
+            // You can now use the logged-in username and name
+            Toast.makeText(this, "Logged in as: $loggedInName ($loggedInUsername)", Toast.LENGTH_SHORT).show()
+        } else {
+            // Handle the case where no user is logged in (if needed)
+            Toast.makeText(this, "No user logged in", Toast.LENGTH_SHORT).show()
+        }
+
+
     }//END OF ON CREATE
 
     //Hide system navigation and status bar
@@ -124,12 +142,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_guide -> {
                 replaceFragment(GuideFragment())
             }
-//            R.id.nav_aboutus -> {
-//                replaceFragment(AboutUsFragment())
-//            }
+            R.id.nav_logout -> {
+                logout()
+            }
             // Add more cases for other menu items to navigate to different fragments
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
+
+    private fun logout() {
+        // Clear the SharedPreferences to log out the user
+        val sharedPreferences = getSharedPreferences("userSession", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        // Remove the stored session data
+        editor.remove("loggedInUsername")
+        editor.remove("loggedInName")
+        editor.apply()
+
+        // Navigate back to the LoginActivity
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish() // Close the current activity so the user can't go back to it
+    }
+
+
+
+
 }

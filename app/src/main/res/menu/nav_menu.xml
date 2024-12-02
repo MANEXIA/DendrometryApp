@@ -27,14 +27,23 @@
             android:title="@string/Guide"
             android:background="@drawable/nav_item_background"
         />
-<!--        <item-->
-<!--            android:id="@+id/nav_aboutus"-->
-<!--            android:icon="@drawable/baseline_info_outline_24"-->
-<!--            android:title="@string/Aboutus"-->
-<!--            android:background="@drawable/nav_item_background"-->
-<!--        />-->
+
 
     </group>
+
+
+    <item
+        android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/baseline_logout_24"
+                android:title="@string/logout"
+                android:background="@drawable/nav_item_background"
+            />
+
+        </menu>
+    </item>
 
 
 

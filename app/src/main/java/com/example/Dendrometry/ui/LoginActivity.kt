@@ -58,16 +58,46 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun loginDatabase(username: String, password: String){
-        val userExists = databaseHelper.readUser(username, password)
-        if(userExists){
-            Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }else{
+
+    private fun loginDatabase(username: String, password: String) {
+        // Get the cursor from the database helper
+        val cursor = databaseHelper.readUser(username, password)
+
+        // If the cursor is not null and contains data, proceed with login
+        if (cursor != null && cursor.moveToFirst()) {
+            // Get the column index for 'name' and 'username'
+            val nameColumnIndex = cursor.getColumnIndex(UserDatabaseHelper.COLUMN_NAME)
+            val usernameColumnIndex = cursor.getColumnIndex(UserDatabaseHelper.COLUMN_USERNAME)
+
+            // Check if the columns exist by ensuring the index is not -1
+            if (nameColumnIndex >= 0 && usernameColumnIndex >= 0) {
+                val name = cursor.getString(nameColumnIndex)
+
+                // Save username and name in SharedPreferences to maintain a session
+                val sharedPreferences = getSharedPreferences("userSession", MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.putString("loggedInUsername", username)
+                editor.putString("loggedInName", name)
+                editor.apply()
+
+                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
+
+                // Navigate to the MainActivity
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish() // Close the current activity to prevent going back to the login screen
+            } else {
+                // Column not found error
+                Toast.makeText(this, "Error: Missing expected columns", Toast.LENGTH_SHORT).show()
+            }
+        } else {
             Toast.makeText(this, "Login unsuccessful", Toast.LENGTH_SHORT).show()
         }
+        // Close the cursor after use
+        cursor?.close()
     }
+
+
+
 
 }

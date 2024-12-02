@@ -2,6 +2,7 @@ package com.example.Dendrometry.dbmshelpers
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.Dendrometry.dbmshelpers.ClassificationDatabaseHelper.Companion
@@ -13,8 +14,8 @@ class UserDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE
         private const val DATABASE_VERSION = 1
         private const val TABLE_NAME = "users"
         private const val COLUMN_ID = "id"
-        private const val COLUMN_NAME = "name"
-        private const val COLUMN_USERNAME = "username"
+        const val COLUMN_NAME = "name"
+        const val COLUMN_USERNAME = "username"
         private const val COLUMN_PASSWORD = "password"
     }
 
@@ -39,15 +40,21 @@ class UserDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE
         return db.insert(TABLE_NAME, null, values)
     }
 
-    fun readUser(username: String, password: String): Boolean{
+
+    fun readUser(username: String, password: String): Cursor? {
         val db = readableDatabase
         val selection = "$COLUMN_USERNAME = ? AND $COLUMN_PASSWORD = ?"
-        val selecetionArgs = arrayOf(username, password)
-        val cursor = db.query(TABLE_NAME, null, selection, selecetionArgs, null, null, null)
+        val selectionArgs = arrayOf(username, password)
 
-        val userExists = cursor.count > 0
-        cursor.close()
-        return userExists
+        // Query the database and return the cursor
+        val cursor = db.query(TABLE_NAME, null, selection, selectionArgs, null, null, null)
+
+        // Check if there are any rows and move to the first row if possible
+        if (cursor != null && cursor.moveToFirst()) {
+            return cursor
+        }
+        cursor?.close()  // Close the cursor if no data is found
+        return null  // No matching user found
     }
 
 }

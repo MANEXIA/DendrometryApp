@@ -72,15 +72,29 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun signupDatabase(name: String, username: String, password: String) {
-        val insertRowId = databaseHelper.insertUser(name, username, password)
-        if (insertRowId > -1) {
-            Toast.makeText(this, "Signup successful", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+        // Get the cursor from the database helper
+        val cursor = databaseHelper.readUser(username, password)
+        if (cursor != null && cursor.moveToFirst()) {
+            // User already exists
+            Toast.makeText(this, "Username already exists", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "Signup unsuccessful", Toast.LENGTH_SHORT).show()
+            // User doesn't exist, proceed with signup
+            val insertRowId = databaseHelper.insertUser(name, username, password)
+
+            if (insertRowId > -1) {
+                Toast.makeText(this, "Signup successful", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Signup unsuccessful", Toast.LENGTH_SHORT).show()
+            }
         }
+
+        // Always close the cursor after use
+        cursor?.close()
     }
+
+
 
 
 
