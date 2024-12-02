@@ -22,7 +22,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
     companion object{
         private const val DATABASE_NAME = "classification.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
         private const val TABLE_NAME = "classifications"
         private const val COLUMN_ID = "id"
         private const val COLUMN_TREE_SPECIES = "tree_species"
