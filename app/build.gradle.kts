@@ -45,8 +45,10 @@ android {
 dependencies {
 
     // Apache POI for Excel support
-    implementation("org.apache.poi:poi:5.2.3")
-    implementation("org.apache.poi:poi-ooxml:5.2.3")
+    implementation(libs.poi)
+    implementation(libs.poi.ooxml)
+    implementation(libs.poi.ooxml.schemas)
+    implementation(libs.commons.compress)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
