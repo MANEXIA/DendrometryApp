@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.example.Dendrometry.R
 import java.util.Locale
+
 
 class ClassificationAdapter(private var classificationList: List<DataClassification>, context: Context) : RecyclerView.Adapter<ClassificationAdapter.ClassificationViewHolder>(){
 
@@ -45,7 +48,7 @@ class ClassificationAdapter(private var classificationList: List<DataClassificat
 
         holder.deleteBtn.setOnClickListener{
             db.deleteClassificationItem(classification.id)
-            refreshData(db.getClassifications())
+            refreshData(db.getClassifications(classification.owner))
             Toast.makeText(holder.itemView.context, "Item Deleted", Toast.LENGTH_SHORT).show()
         }
     }
@@ -55,6 +58,11 @@ class ClassificationAdapter(private var classificationList: List<DataClassificat
         classificationList = newData
         notifyDataSetChanged()
     }
+
+
+
+
+
 
 
 }

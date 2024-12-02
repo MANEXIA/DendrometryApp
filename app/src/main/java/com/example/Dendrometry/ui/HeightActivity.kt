@@ -210,6 +210,8 @@ import kotlin.math.tan
 
             db = ClassificationDatabaseHelper(this)
 
+
+
         }//END OF ONCREATE FUNCTIONS
 
         //SHOW CALCULATION FOR VOLUME
@@ -249,8 +251,11 @@ import kotlin.math.tan
              dialog.dismiss()
          }
 
-
          //BUTTON FOR ADDING CLASSIFICATION TO DATABASE/HISTORY
+            val sharedPreferences = getSharedPreferences("userSession", MODE_PRIVATE)
+            // Retrieve the stored values
+            val loggedInUsername = sharedPreferences.getString("loggedInUsername", null)
+            val loggedInName = sharedPreferences.getString("loggedInName", null)
          dialog.findViewById<View>(R.id.addClassification)?.setOnClickListener{
                //ADD DATA TO DATABASE
                val treeSpeciesValueData = binding.TreeSpeciesValue.text.toString()
@@ -259,7 +264,7 @@ import kotlin.math.tan
                val volume = String.format(Locale.US,"%.4f", volumeValue).toDouble()
                val diameterSize = diameterClass
                val date = currentDateTime.format(formatter)
-               val data = DataClassification(0, treeSpeciesValueData, height, diameter, volume, diameterSize, date)
+               val data = DataClassification(0, treeSpeciesValueData, height, diameter, volume, diameterSize, date, "$loggedInUsername")
                db.insertClassification(data)
                dialog.dismiss()
                Toast.makeText(this, "Classification Added", Toast.LENGTH_SHORT).show()

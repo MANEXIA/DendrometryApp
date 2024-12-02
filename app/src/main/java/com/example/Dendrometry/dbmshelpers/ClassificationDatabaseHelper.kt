@@ -31,11 +31,11 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
         private const val COLUMN_VOLUME = "volume"
         private const val COLUMN_DIAMETER_CLASS = "diameter_class"
         private const val COLUMN_DATE = "date"
-
+        private const val COLUMN_OWNER = "owner"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val createTableQuery = "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_TREE_SPECIES TEXT, $COLUMN_HEIGHT REAL, $COLUMN_DIAMETER REAL, $COLUMN_VOLUME REAL, $COLUMN_DIAMETER_CLASS TEXT, $COLUMN_DATE TEXT)"
+        val createTableQuery = "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_TREE_SPECIES TEXT, $COLUMN_HEIGHT REAL, $COLUMN_DIAMETER REAL, $COLUMN_VOLUME REAL, $COLUMN_DIAMETER_CLASS TEXT, $COLUMN_DATE TEXT, $COLUMN_OWNER TEXT)"
         db?.execSQL(createTableQuery)
     }
 
@@ -54,14 +54,15 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
             put(COLUMN_VOLUME, dataclass.volume)
             put(COLUMN_DIAMETER_CLASS, dataclass.diameterClass)
             put(COLUMN_DATE, dataclass.date)
+            put(COLUMN_OWNER, dataclass.owner)
         }
         db.insert(TABLE_NAME, null, values)
     }
 
-    fun getClassifications(): List<DataClassification> {
+    fun getClassifications(owner: String): List<DataClassification> {
         val classificationlist = mutableListOf<DataClassification>()
         val db = readableDatabase
-        val query = "SELECT * FROM $TABLE_NAME"
+        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_OWNER = '$owner'"
         val cursor = db.rawQuery(query, null)
 
         while (cursor.moveToNext()){
@@ -72,8 +73,9 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
             val volume = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_VOLUME))
             val diameterClass = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DIAMETER_CLASS))
             val date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
+            val owner = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_OWNER))
 
-            val classification = DataClassification(id, treeSpecies, height, diameter, volume, diameterClass, date)
+            val classification = DataClassification(id, treeSpecies, height, diameter, volume, diameterClass, date, owner)
             classificationlist.add(classification)
         }
 
@@ -84,7 +86,7 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
 
     fun exportToExcelFile(context: Context, fileName: String, owner: String) {
         val db = writableDatabase
-        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_TREE_SPECIES ASC", null)
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $COLUMN_OWNER = '$owner' ORDER BY $COLUMN_TREE_SPECIES ASC", null)
 
         try {
             // Format the file name

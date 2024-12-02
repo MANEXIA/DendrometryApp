@@ -35,7 +35,7 @@ class HistoryFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         db = ClassificationDatabaseHelper(requireContext())
-        adapter = ClassificationAdapter(db.getClassifications(), requireContext())
+        adapter = ClassificationAdapter(db.getClassifications(getUsername()), requireContext())
 
     }
 
@@ -83,7 +83,7 @@ class HistoryFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        adapter.refreshData(db.getClassifications())
+        adapter.refreshData(db.getClassifications(getUsername()))
     }
 
     override fun onDestroyView() {
@@ -91,6 +91,11 @@ class HistoryFragment : Fragment() {
         _binding = null // Clean up the binding reference
     }
 
+    private fun getUsername():String{
+        val sharedPreferences = requireActivity().getSharedPreferences("userSession", MODE_PRIVATE)
+        val loggedInUsername = sharedPreferences.getString("loggedInUsername", null)
+        return "$loggedInUsername"
+    }
 
 
 
