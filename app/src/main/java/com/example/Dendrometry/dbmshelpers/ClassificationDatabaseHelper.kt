@@ -13,6 +13,10 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import org.apache.poi.ss.usermodel.CellType
+import org.apache.poi.ss.usermodel.HorizontalAlignment
+import org.apache.poi.ss.usermodel.IndexedColors
+import org.apache.poi.ss.usermodel.VerticalAlignment
+import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
 class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
@@ -80,7 +84,6 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
 
     fun exportToExcelFile(context: Context, fileName: String) {
         val db = writableDatabase
-        // Sort by tree species
         val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_TREE_SPECIES ASC", null)
 
         try {
@@ -91,41 +94,57 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
             val workbook = XSSFWorkbook()
             val sheet = workbook.createSheet("TreeData")
 
+            // Set column widths for better readability
+            for (i in 0..5) sheet.setColumnWidth(i, 5000)
+
+            // Calculate the row index for the watermark dynamically
+            val totalRows = cursor.count + 1 // Data rows + 1 header row
+            val watermarkRowIndex = totalRows + 2 // Place the watermark 2 rows below the last data row
+            val watermarkRow = sheet.createRow(watermarkRowIndex)
+            watermarkRow.heightInPoints = 30f // Increase row height for visibility
+
+            // Create the watermark cell
+            val watermarkCell = watermarkRow.createCell(0, CellType.STRING)
+            watermarkCell.setCellValue("CONFIDENTIAL DATA") // Watermark text
+
+            // Merge cells to span across columns
+            sheet.addMergedRegion(CellRangeAddress(watermarkRowIndex, watermarkRowIndex, 0, 5)) // Columns 0 to 5
+
+            // Apply style to the watermark
+            val watermarkStyle = workbook.createCellStyle()
+            val font = workbook.createFont().apply {
+                fontHeightInPoints = 18 // Large font size
+                bold = true
+                italic = true
+                color = IndexedColors.GREY_40_PERCENT.index // Grey text color
+            }
+            watermarkStyle.setFont(font)
+            watermarkStyle.alignment = HorizontalAlignment.CENTER
+            watermarkStyle.verticalAlignment = VerticalAlignment.CENTER
+            watermarkCell.cellStyle = watermarkStyle
+
             // Write header row
             val headerRow = sheet.createRow(0)
             val headers = arrayOf("Tree Species", "Height", "Diameter", "Volume(m³)", "Diameter Class", "Date")
             headers.forEachIndexed { index, header ->
-                val cell = headerRow.createCell(index, CellType.STRING)
-                cell.setCellValue(header)
+                val headerCell = headerRow.createCell(index, CellType.STRING)
+                headerCell.setCellValue(header)
             }
 
             // Write data rows
             var rowIndex = 1
             while (cursor.moveToNext()) {
                 val row = sheet.createRow(rowIndex++)
-                row.createCell(0, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(
-                    COLUMN_TREE_SPECIES
-                )))
-                row.createCell(1, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(
-                    COLUMN_HEIGHT
-                )))
-                row.createCell(2, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(
-                    COLUMN_DIAMETER
-                )))
-                row.createCell(3, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(
-                    COLUMN_VOLUME
-                )))
-                row.createCell(4, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(
-                    COLUMN_DIAMETER_CLASS
-                )))
-                row.createCell(5, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(
-                    COLUMN_DATE
-                )))
+                row.createCell(0, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TREE_SPECIES)))
+                row.createCell(1, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HEIGHT)))
+                row.createCell(2, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DIAMETER)))
+                row.createCell(3, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_VOLUME)))
+                row.createCell(4, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DIAMETER_CLASS)))
+                row.createCell(5, CellType.STRING).setCellValue(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)))
             }
 
-            // Open output stream for API 29+ or fallback for older versions
+            // Prepare output stream based on Android version
             val outputStream = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                // For Android Q and above
                 val contentValues = ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, formattedFileName)
                     put(MediaStore.MediaColumns.MIME_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -134,29 +153,28 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
                 val uri = context.contentResolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
                 uri?.let { context.contentResolver.openOutputStream(it) }
             } else {
-                // Legacy storage path for older devices
                 val externalStorageDir = Environment.getExternalStorageDirectory()
                 val exportDirPath = File(externalStorageDir, "dendrometry/exports")
-                if (!exportDirPath.exists()) {
-                    exportDirPath.mkdirs() // Create the directory if it does not exist
-                }
+                if (!exportDirPath.exists()) exportDirPath.mkdirs()
                 FileOutputStream(File(exportDirPath, formattedFileName))
             }
 
+            // Write to file
             outputStream?.use { os ->
                 workbook.write(os)
-                workbook.close()
                 Toast.makeText(context, "Data exported successfully", Toast.LENGTH_SHORT).show()
             } ?: run {
                 Toast.makeText(context, "Failed to open output stream", Toast.LENGTH_SHORT).show()
             }
-        } catch (e: IOException) {
+            workbook.close() // Ensure the workbook is closed
+        } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(context, "Export failed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Export failed: ${e.message}", Toast.LENGTH_SHORT).show()
         } finally {
-            cursor.close() // Ensure the cursor is closed
+            cursor.close() // Always close the cursor
         }
     }
+
 
     fun deleteClassificationItem(itemId: Int){
         val db = writableDatabase

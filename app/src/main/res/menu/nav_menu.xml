@@ -27,8 +27,6 @@
             android:title="@string/Guide"
             android:background="@drawable/nav_item_background"
         />
-
-
     </group>
 
 
