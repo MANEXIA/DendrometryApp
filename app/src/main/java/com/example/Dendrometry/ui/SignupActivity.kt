@@ -32,12 +32,37 @@ class SignupActivity : AppCompatActivity() {
 
         databaseHelper = UserDatabaseHelper(this)
 
-        binding.signupBtn.setOnClickListener(){
-            val signupName = binding.name.text.toString()
-            val signupUsername = binding.username.text.toString()
-            val signupPassword = binding.password.text.toString()
-            signupDatabase(signupName, signupUsername, signupPassword)
+        binding.signupBtn.setOnClickListener {
+            // Retrieve input values
+            val signupName = binding.name.text.toString().trim()
+            val signupUsername = binding.username.text.toString().trim()
+            val signupPassword = binding.password.text.toString().trim()
+
+            // Validate input fields
+            when {
+                signupName.isEmpty() -> {
+                    binding.name.error = "Name cannot be empty"
+                    binding.name.requestFocus() // Move cursor to the Name field
+                }
+                signupUsername.isEmpty() -> {
+                    binding.username.error = "Username cannot be empty"
+                    binding.username.requestFocus() // Move cursor to the Username field
+                }
+                signupPassword.isEmpty() -> {
+                    binding.password.error = "Password cannot be empty"
+                    binding.password.requestFocus() // Move cursor to the Password field
+                }
+                signupPassword.length < 6 -> { // Optional: Check for password strength
+                    binding.password.error = "Password must be at least 6 characters long"
+                    binding.password.requestFocus()
+                }
+                else -> {
+                    // If all inputs are valid, proceed to save the data
+                    signupDatabase(signupName, signupUsername, signupPassword)
+                }
+            }
         }
+
         binding.loginBtn.setOnClickListener(){
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)

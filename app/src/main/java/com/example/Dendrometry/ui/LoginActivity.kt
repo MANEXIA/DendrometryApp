@@ -28,11 +28,28 @@ class LoginActivity : AppCompatActivity() {
         }
 
         databaseHelper = UserDatabaseHelper(this)
-        binding.loginBtn.setOnClickListener(){
-            val loginUsername = binding.username.text.toString()
-            val loginPassword = binding.password.text.toString()
-            loginDatabase(loginUsername, loginPassword)
+        binding.loginBtn.setOnClickListener {
+            // Retrieve input values
+            val loginUsername = binding.username.text.toString().trim()
+            val loginPassword = binding.password.text.toString().trim()
+
+            // Validate input fields
+            when {
+                loginUsername.isEmpty() -> {
+                    binding.username.error = "Username cannot be empty"
+                    binding.username.requestFocus() // Move cursor to the Username field
+                }
+                loginPassword.isEmpty() -> {
+                    binding.password.error = "Password cannot be empty"
+                    binding.password.requestFocus() // Move cursor to the Password field
+                }
+                else -> {
+                    // If inputs are valid, proceed to check login credentials
+                    loginDatabase(loginUsername, loginPassword)
+                }
+            }
         }
+
 
         binding.signupBtn.setOnClickListener(){
             val intent = Intent(this, SignupActivity::class.java)
