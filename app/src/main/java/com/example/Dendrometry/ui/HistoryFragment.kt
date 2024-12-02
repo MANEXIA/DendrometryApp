@@ -61,14 +61,6 @@ class HistoryFragment : Fragment() {
         val loggedInUsername = sharedPreferences.getString("loggedInUsername", null)
         val loggedInName = sharedPreferences.getString("loggedInName", null)
 
-        // Check if the values are retrieved successfully
-        if (loggedInUsername != null && loggedInName != null) {
-            // You can now use the logged-in username and name
-            Toast.makeText(requireContext(), "Logged in as: $loggedInName ($loggedInUsername)", Toast.LENGTH_SHORT).show()
-        } else {
-            // Handle the case where no user is logged in (if needed)
-            Toast.makeText(requireContext(), "No user logged in", Toast.LENGTH_SHORT).show()
-        }
 
         binding.savedataBtn.setOnClickListener {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&

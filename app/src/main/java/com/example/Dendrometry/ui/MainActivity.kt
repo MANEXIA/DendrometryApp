@@ -87,7 +87,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Toast.makeText(this, "No user logged in", Toast.LENGTH_SHORT).show()
         }
 
-
     }//END OF ON CREATE
 
     //Hide system navigation and status bar
