@@ -11,6 +11,9 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.core.net.toFile
+import org.apache.commons.io.output.ByteArrayOutputStream
+import org.apache.poi.poifs.crypt.EncryptionInfo
+import org.apache.poi.poifs.crypt.EncryptionMode
 import org.apache.poi.poifs.filesystem.POIFSFileSystem
 import java.io.File
 import java.io.FileOutputStream
@@ -22,6 +25,7 @@ import org.apache.poi.ss.usermodel.VerticalAlignment
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.ByteArrayInputStream
 import java.io.OutputStream
 
 class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
@@ -196,6 +200,7 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
             // Set column widths for better readability
             for (i in 0..5) sheet.setColumnWidth(i, 5000)
 
+            // Add watermark
             val totalRows = cursor.count + 1
             val watermarkRowIndex = totalRows + 2
             val watermarkRow = sheet.createRow(watermarkRowIndex)
@@ -218,6 +223,7 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
             watermarkStyle.verticalAlignment = VerticalAlignment.CENTER
             watermarkCell.cellStyle = watermarkStyle
 
+            // Add headers
             val headerRow = sheet.createRow(0)
             val headers = arrayOf("Tree Species", "Height", "Diameter", "Volume(m³)", "Diameter Class", "Date")
             headers.forEachIndexed { index, header ->
@@ -225,6 +231,7 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
                 headerCell.setCellValue(header)
             }
 
+            // Populate rows
             var rowIndex = 1
             while (cursor.moveToNext()) {
                 val row = sheet.createRow(rowIndex++)
@@ -238,15 +245,24 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
 
             // Encrypt the workbook
             val encryptedFile = POIFSFileSystem()
-            val encryptor = EncryptionInfo(encryptedFile, EncryptionMode.standard).encryptor.apply {
-                confirmPassword(password)
-            }
-            val outputStream = encryptor.getDataStream(encryptedFile)
+            val encryptionInfo = EncryptionInfo(EncryptionMode.standard)
+            val encryptor = encryptionInfo.encryptor
+            encryptor.confirmPassword(password)
 
-            workbook.write(outputStream) // Write encrypted data to the stream
+            // Write the unencrypted workbook to a ByteArrayOutputStream
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            workbook.write(byteArrayOutputStream)
             workbook.close()
 
-            // Prepare the output stream for writing the encrypted file
+            // Convert the ByteArrayOutputStream to an InputStream
+            val inputStream = ByteArrayInputStream(byteArrayOutputStream.toByteArray())
+
+            // Encrypt the InputStream and write it to the POIFSFileSystem
+            val encryptedDataStream = encryptor.getDataStream(encryptedFile)
+            inputStream.use { it.copyTo(encryptedDataStream) } // Copy the unencrypted data to the encrypted stream
+            encryptedDataStream.close()
+
+            // Write the encrypted file to storage
             val finalOutputStream = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 val contentValues = ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, formattedFileName)
@@ -262,13 +278,14 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
                 FileOutputStream(File(exportDirPath, formattedFileName))
             }
 
-            // Write the encrypted file
+            // Write the encrypted POIFSFileSystem to the final file
             finalOutputStream?.use { fos ->
                 encryptedFile.writeFilesystem(fos)
                 Toast.makeText(context, "Data exported successfully", Toast.LENGTH_SHORT).show()
             } ?: run {
                 Toast.makeText(context, "Failed to open output stream", Toast.LENGTH_SHORT).show()
             }
+
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(context, "Export failed: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -276,8 +293,6 @@ class ClassificationDatabaseHelper(context: Context) : SQLiteOpenHelper(context,
             cursor.close()
         }
     }
-
-
 
 
     fun deleteClassificationItem(itemId: Int){
