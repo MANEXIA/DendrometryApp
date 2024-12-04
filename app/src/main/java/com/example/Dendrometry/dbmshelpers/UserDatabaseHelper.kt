@@ -59,4 +59,34 @@ class UserDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE
         return null  // No matching user found
     }
 
+
+    fun updateUserStatus(username: String, newStatus: String): Int {
+        // Get writable database
+        val db = writableDatabase
+
+        // Prepare the new values to update
+        val values = ContentValues().apply {
+            put(COLUMN_STATUS, newStatus) // Set the new status
+        }
+
+        // Define the selection condition for identifying the user
+        val selection = "$COLUMN_USERNAME = ?"
+        val selectionArgs = arrayOf(username) // Argument for the username placeholder in the condition
+
+        // Update the status in the database and return the number of rows affected
+        val rowsUpdated = db.update(
+            TABLE_NAME,    // The table where the update will happen
+            values,        // The new values to update
+            selection,     // The condition to find the specific user
+            selectionArgs  // The value for the username placeholder
+        )
+
+        // Close the database
+        db.close()
+
+        return rowsUpdated // Return the number of rows updated (should be 1 for a successful update)
+    }
+
+
+
 }

@@ -20,19 +20,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.Dendrometry.R
 import com.example.Dendrometry.databinding.ActivityMainBinding
+import com.example.Dendrometry.dbmshelpers.UserDatabaseHelper
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var drawerLayout: DrawerLayout
     lateinit var binding: ActivityMainBinding
+    private lateinit var databaseHelper: UserDatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-
+        databaseHelper = UserDatabaseHelper(this)
         // Adjust padding for system bars
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawer_layout)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -66,19 +68,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-
-        // Initially display HomeFragment and set the checked item in the navigation view
-        if (savedInstanceState == null) {
-            replaceFragment(HomeFragment())
-            navigationView.setCheckedItem(R.id.nav_home)
-        }
-
         // Access the SharedPreferences where the data was saved
         val sharedPreferences = getSharedPreferences("userSession", MODE_PRIVATE)
         // Retrieve the stored values
         val loggedInUsername = sharedPreferences.getString("loggedInUsername", null)
         val loggedInName = sharedPreferences.getString("loggedInName", null)
         val loggedStatus = sharedPreferences.getString("loggedStatus", null)
+
+        // Initially display HomeFragment and set the checked item in the navigation view
+        if (savedInstanceState == null) {
+            // Check if the user has already seen the tutorial
+            if (loggedStatus == "New") {
+                // User has not seen the tutorial, show the tutorial fragment
+                if (loggedInUsername != null) {
+                databaseHelper.updateUserStatus(loggedInUsername, "Old")
+                }
+                replaceFragment(TutorialFragment())
+                navigationView.setCheckedItem(R.id.nav_tutorial)
+            } else {
+                // User has seen the tutorial, show the home fragment or any default fragment
+                replaceFragment(HomeFragment())
+                navigationView.setCheckedItem(R.id.nav_home)
+            }
+
+        }
+
         // Check if the values are retrieved successfully
         if (loggedInUsername != null && loggedInName != null) {
             // You can now use the logged-in username and name
@@ -141,6 +155,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_guide -> {
                 replaceFragment(GuideFragment())
+            }
+            R.id.nav_tutorial -> {
+                replaceFragment(TutorialFragment())
             }
             R.id.nav_logout -> {
                 logout()

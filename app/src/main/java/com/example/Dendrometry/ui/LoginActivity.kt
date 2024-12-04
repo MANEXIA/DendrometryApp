@@ -83,12 +83,10 @@ class LoginActivity : AppCompatActivity() {
                 editor.putString("loggedStatus", status)
                 editor.apply()
 
-                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-
-                // Navigate to the MainActivity
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish() // Close the current activity to prevent going back to the login screen
+                    Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
 
 
             } else {
