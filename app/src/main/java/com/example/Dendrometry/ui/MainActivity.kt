@@ -78,10 +78,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Retrieve the stored values
         val loggedInUsername = sharedPreferences.getString("loggedInUsername", null)
         val loggedInName = sharedPreferences.getString("loggedInName", null)
+        val loggedStatus = sharedPreferences.getString("loggedStatus", null)
         // Check if the values are retrieved successfully
         if (loggedInUsername != null && loggedInName != null) {
             // You can now use the logged-in username and name
-            Toast.makeText(this, "Logged in as: $loggedInName ($loggedInUsername)", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Logged in as: $loggedInName ($loggedInUsername) status: $loggedStatus", Toast.LENGTH_SHORT).show()
         } else {
             // Handle the case where no user is logged in (if needed)
             Toast.makeText(this, "No user logged in", Toast.LENGTH_SHORT).show()

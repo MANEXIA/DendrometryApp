@@ -11,16 +11,17 @@ class UserDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE
 
     companion object{
         private const val DATABASE_NAME = "UserDatabase.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
         private const val TABLE_NAME = "users"
         private const val COLUMN_ID = "id"
         const val COLUMN_NAME = "name"
         const val COLUMN_USERNAME = "username"
         private const val COLUMN_PASSWORD = "password"
+        const val COLUMN_STATUS = "status"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val createTableQuery = ("CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_NAME TEXT, $COLUMN_USERNAME TEXT, $COLUMN_PASSWORD TEXT)")
+        val createTableQuery = ("CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_NAME TEXT, $COLUMN_USERNAME TEXT, $COLUMN_PASSWORD TEXT, $COLUMN_STATUS TEXT)")
         db?.execSQL(createTableQuery)
     }
 
@@ -30,11 +31,12 @@ class UserDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE
         onCreate(db)
     }
 
-    fun insertUser(name: String, username: String, password: String): Long{
+    fun insertUser(name: String, username: String, password: String, status: String): Long{
         val values = ContentValues().apply {
             put(COLUMN_NAME, name)
             put(COLUMN_USERNAME, username)
             put(COLUMN_PASSWORD, password)
+            put(COLUMN_STATUS, status)
         }
         val db = writableDatabase
         return db.insert(TABLE_NAME, null, values)

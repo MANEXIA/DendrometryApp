@@ -68,10 +68,11 @@ class LoginActivity : AppCompatActivity() {
             // Get the column index for 'name' and 'username'
             val nameColumnIndex = cursor.getColumnIndex(UserDatabaseHelper.COLUMN_NAME)
             val usernameColumnIndex = cursor.getColumnIndex(UserDatabaseHelper.COLUMN_USERNAME)
-
+            val statusColumnIndex = cursor.getColumnIndex(UserDatabaseHelper.COLUMN_STATUS)
             // Check if the columns exist by ensuring the index is not -1
             if (nameColumnIndex >= 0 && usernameColumnIndex >= 0) {
                 val name = cursor.getString(nameColumnIndex)
+                val status = cursor.getString(statusColumnIndex)
 
                 // Save username and name in SharedPreferences to maintain a session
                 val sharedPreferences = getSharedPreferences("userSession", MODE_PRIVATE)
@@ -79,6 +80,7 @@ class LoginActivity : AppCompatActivity() {
                 editor.putString("loggedInUsername", username)
                 editor.putString("loggedInName", name)
                 editor.putString("loggedInPwd", password)
+                editor.putString("loggedStatus", status)
                 editor.apply()
 
                 Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
@@ -87,6 +89,8 @@ class LoginActivity : AppCompatActivity() {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish() // Close the current activity to prevent going back to the login screen
+
+
             } else {
                 // Column not found error
                 Toast.makeText(this, "Error: Missing expected columns", Toast.LENGTH_SHORT).show()
