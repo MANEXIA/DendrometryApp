@@ -16,6 +16,20 @@
         android:background="@color/darkgreencolor"
         android:orientation="vertical">
 
+        <FrameLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#000">
+
+            <VideoView
+                android:id="@+id/videoTutorial"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
+
         <Button
             android:id="@+id/skipBtn"
             android:layout_width="120dp"
@@ -37,5 +51,7 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </RelativeLayout>
