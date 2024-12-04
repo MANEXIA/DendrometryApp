@@ -63,6 +63,8 @@ class HistoryFragment : Fragment() {
         val loggedPwd = sharedPreferences.getString("loggedInPwd", null)
 
 
+//        Toast.makeText(requireContext(), "Logged in as: $loggedPwd", Toast.LENGTH_SHORT).show()
+
         binding.savedataBtn.setOnClickListener {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&
                 ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

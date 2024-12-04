@@ -21,8 +21,8 @@ android {
     }
     buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -45,9 +45,9 @@ android {
 dependencies {
 
     // Apache POI for Excel support
-    implementation(libs.poi)
-    implementation(libs.poi.ooxml)
-    implementation(libs.poi.ooxml.schemas)
+    // Apache POI for Excel support (using only `poi-ooxml` or `poi-ooxml-lite`)
+    implementation(libs.poi.ooxml.lite)
+    implementation(libs.poi.ooxml)  // Includes everything you need for Excel support
     implementation(libs.commons.compress)
 
     implementation(libs.androidx.core.ktx)

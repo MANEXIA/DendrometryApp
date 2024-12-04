@@ -78,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
                 val editor = sharedPreferences.edit()
                 editor.putString("loggedInUsername", username)
                 editor.putString("loggedInName", name)
-                editor.putString("loogedPwd", password)
+                editor.putString("loggedInPwd", password)
                 editor.apply()
 
                 Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
