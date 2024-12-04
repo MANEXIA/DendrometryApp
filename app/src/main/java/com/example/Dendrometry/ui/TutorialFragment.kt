@@ -36,7 +36,6 @@ class TutorialFragment : Fragment() {
         // Retrieve the stored values
         val loggedInUsername = sharedPreferences.getString("loggedInUsername", null)
 
-
         binding.skipBtn.setOnClickListener {
             // Update the user's status to "Old" before navigating
             if (loggedInUsername != null) {
@@ -51,7 +50,6 @@ class TutorialFragment : Fragment() {
             // Clear the back stack to prevent returning to the TutorialFragment
             requireActivity().supportFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
-
 
 
     }
