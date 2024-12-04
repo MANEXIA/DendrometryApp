@@ -84,7 +84,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 databaseHelper.updateUserStatus(loggedInUsername, "Old")
                 }
                 replaceFragment(TutorialFragment())
-                navigationView.setCheckedItem(R.id.nav_tutorial)
             } else {
                 // User has seen the tutorial, show the home fragment or any default fragment
                 replaceFragment(HomeFragment())
