@@ -58,7 +58,8 @@ class SignupActivity : AppCompatActivity() {
                 }
                 else -> {
                     // If all inputs are valid, proceed to save the data
-                    signupDatabase(signupName, signupUsername, signupPassword)
+                    val userStatus = "New"
+                    signupDatabase(signupName, signupUsername, signupPassword, userStatus)
                 }
             }
         }
@@ -71,7 +72,7 @@ class SignupActivity : AppCompatActivity() {
 
     }
 
-    private fun signupDatabase(name: String, username: String, password: String) {
+    private fun signupDatabase(name: String, username: String, password: String, status: String) {
         // Get the cursor from the database helper
         val cursor = databaseHelper.readUser(username, password)
         if (cursor != null && cursor.moveToFirst()) {
@@ -79,7 +80,7 @@ class SignupActivity : AppCompatActivity() {
             Toast.makeText(this, "Username already exists", Toast.LENGTH_SHORT).show()
         } else {
             // User doesn't exist, proceed with signup
-            val insertRowId = databaseHelper.insertUser(name, username, password)
+            val insertRowId = databaseHelper.insertUser(name, username, password, status)
 
             if (insertRowId > -1) {
                 Toast.makeText(this, "Signup successful", Toast.LENGTH_SHORT).show()
