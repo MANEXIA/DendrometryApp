@@ -142,6 +142,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_guide -> {
                 replaceFragment(GuideFragment())
             }
+            R.id.nav_tutorial -> {
+                replaceFragment(TutorialFragment())
+            }
             R.id.nav_logout -> {
                 logout()
             }

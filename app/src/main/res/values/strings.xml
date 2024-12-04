@@ -123,4 +123,7 @@
     <string name="name">Name</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    
+    <string name="tutorial">Tutorial</string>
+    <string name="Skip">Skip</string>
 </resources>
